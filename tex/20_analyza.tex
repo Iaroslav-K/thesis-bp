@@ -39,9 +39,10 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
     \subsection{Registrace a přihlášeni do rodiny}
         Aplikace je navržena tak, že první uživatel, který má vytvořit svůj účet je jeden z rodičů. Pro registraci člověk potřebuje řadu povinných údajů:
         \begin{itemize}
-	        \item jméno - zvolené jméno se stává jeho implicitním jménem v systému
-	        \item příjmení - zvolené příjmení se stává jeho implicitním příjmením v systému
-	        \item email - zvolený email je identifikátorem uživatele v rámci systému
+	        \item \textit{name} - zvolené jméno se stává jeho implicitním jménem v systému
+	        \item \textit{surname} - zvolené příjmení se stává jeho implicitním příjmením v systému
+	        \item \textit{email} - zvolený email je identifikátorem uživatele v rámci systému
+	        \item \textit{password} - heslo pro autorizaci v systému
         \end{itemize}
         Na základe těchto údajů se vytváří unikátní uživatel v rámci systému. V tomto stavu člověk není přihlášeny do žádné rodiny a nemá žádnou roli. Podrobněji role budou popsané v sekci \ref{analyza:bezpecnost:role}. \textit{User} také může mít implicitní obrázek profilu (viz. obrázek \ref{image:User-Image1}).
         \begin{figure}\centering
@@ -55,22 +56,33 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         Kalendář je hlavním zdrojem informaci pro celou rodinu, který společný pro všechny uživatele. Na něm jsou zobrazené zvýrazněné různými barvami pečovatelské dny obou rodičů a důležité události, které mohou být jednorázové nebo pravidelné. 
         
         Kromě dlouhodobých nastavení pečovatelských dnu, kalendář může zobrazovat i jednorázové změny, které mohou vidět všechny členy rodiny. Takový postup pomáhá rodině eliminovat situace, kdy několik členu rodiny najednou myslí, že je v konkretní den dítě v jejích péči nebo několik členu rodiny najednou říkají, že není to jejích den.  
-        
     \subsection{Alimenty}    
         Aplikace řeší i finanční problémy. Hlavní problémem jsou alimenty, které má pravidelně uhrazovat jeden z rodičů. Tento proces byl rozdělen do dvou častí. První častí je nastavení dlouhodobých pravidel pro splacení alimentů. Druhou častí jsou samotné alimenty, které se generuje na základě dlouhodobých nastavení. Jedna rodina může mít zároveň několik nastavení v případě, že jedna rodina má několik dětí nebo chce rozdělit alimenty do logický částí.
-    
     \subsection{Kniha potřeb dítěte}
-        Aplikace by měla pomáhat i dítěti.    
-        
-   
     
+        Jedním s populárních problému, který vzniká v procesu rozvodu, je nakupování příliš drahých věci o kterých nevědí ostatní členy rodiny. Jako příklad je možné uvést nakupování bot pro dítěte. Jeden s rodičů může chtít "koupit lásku dítěte" a koupit několikrát dražší boty než dítěte opravdu potřebuje. Kniha potřeb dítěte je zaměřena na překonání takových situací.
+        
+        Potřeba může být typu \textit{need} a \textit{wish}. Podle současného návrhu je rozdíl mezi typy pouze pro informační účely. Každé instance \textit{Need} patři instance \textit{NeedPermission} (viz. obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivého člena rodiny. V případě, že uživatel nemá žádné z přístupových práv, uživatel nemá ve svém seznamu potřeb dítěte tento záznam.
+        \begin{figure}\centering
+	        \includegraphics[width=0.5\textwidth]{pdfs/NeedPermissions1}
+	        \caption[Návrh Rolí]{Návrh třídy NeedPermissions podle Doménovém modelu z předmětu BI-SP2}\label{image:NeedPermissions1}
+        \end{figure}
+        Potřeba má v sobě následující informace:
+        \begin{itemize}
+            \item \textit{description} - popis potřeby
+            \item \textit{reason} - příčina proč dítě tohle potřebuje
+            \item \textit{images} - obrázky
+            \item \textit{bills} - účtenky
+            \item \textit{comments} - komentáře
+        \end{itemize}
+     
     \section{Analýza současné implementace}\label{analyza:soucasnaImplementace}
         Projekt má ve složce \textit{main}\footnote{bi-springboot/src/main} 69 souborů a 845 řádek kódů. Implementace částečné pokrývá Doménový model zmíněný v sekci \ref{analyza:navrh:DomainModel}. 
     
     \section{Analýza požadavku frontendu}
     
     \section{Analýza konkurence}
-        Tento 
+        Tento návrhnjfgndd
 % \section{Analýza testování}
 
     \section{Analýza bezpečnosti}
