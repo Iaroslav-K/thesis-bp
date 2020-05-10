@@ -562,39 +562,3 @@ sp\^ osobom, ktor\'y nezni\v zuje hodnotu Diela (vr\'atane komer\v cn\'eho vyu\v
 	\mainmatter
 }
 
-
-% \AtBeginDocument{
-% 	\if@assignmentdefined{\includepdf[pages={1}]{\theassignment}}
-
-% 	\cleardoublepage
-% 	\titlepage
-	
-% 	\setcounter{page}{5}
-% 	\acknowledgementspage
-
-% 	\declarationofauthenticitypage
-% 	\imprintpage
-
-% 	\abstractpage
-
-% 	\cleardoublepage
-% 	\pagestyle{plain}
-% 	\tableofcontents*
-
-% 	\cleardoublepage
-% 	\listoflistingscond
-
-% 	%\cleardoublepage
-% 	%\listofdirfigurescond
-
-% 	\cleardoublepage
-% 	\listoftablescond
-
-% 	\cleardoublepage
-% 	\listoffigurescond
-
-% 	\pagestyle{ruled}
-% }
-
-% my
-
