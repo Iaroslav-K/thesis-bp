@@ -175,7 +175,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             Návrh bezpečné aplikace nebyl cílem předmětu zmíněných v sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}. Proto návrh a současná implementace neobsahuje proces přihlašovaní uživatele do systému. Nový procesu přihlašovaní bude zmíněn v sekci \ref{navrh:bezpecnost}.
         
         \subsection{Testování}
-            Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahujicí test, kterýt se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{} (viz. obrázek \ref{code:test-context-loads1}).
+            Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahující test, který se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{Pokročilý kontejner, který funguje podobně \textit{BeanFactory}. Načítá definice beanů, provazuje je a vydává v případe nutnosti} (viz. obrázek \ref{code:test-context-loads1}).
             \begin{figure}
             \begin{minted}{java}
             @RunWith(SpringRunner::class)
