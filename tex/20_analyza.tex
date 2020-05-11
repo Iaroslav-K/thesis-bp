@@ -74,7 +74,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
 	        \caption[Návrh Need]{Návrh třídy \textit{Need} podle Doménovém modelu z předmětu BI-SP2}\label{image:Need1}
         \end{figure}
         
-        Potřeba může být typu \textit{need} a \textit{wish}. Podle současného návrhu je rozdíl mezi typy pouze pro informační účely. Každé instance \textit{Need} patři instance \textit{NeedPermission} (viz. obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivého člena rodiny. V případě, že uživatel nemá žádné z přístupových práv, uživatel nemá ve svém seznamu potřeb dítěte tento záznam.
+        Potřeba může být typu \textit{need} a \textit{wish}. Podle současného návrhu je rozdíl mezi typy pouze pro informační účely. Každé instance \textit{Need} patři instance \textit{NeedPermission} (viz. obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivého člena rodiny. V případě, že uživatel nemá žádné z přístupových práv, pak tento záznam nemá ve svém seznamu potřeb dítěte. Toto pravidlo se netýká jenom rodíču, která mají pŕístup ke všemu. 
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/NeedPermissions1}
 	        \caption[Návrh NeedPermissions]{Návrh třídy \textit{NeedPermissions} podle Doménovém modelu z předmětu BI-SP2}\label{image:NeedPermissions1}
@@ -146,10 +146,16 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         \end{table}
     
     \section{Analýza požadavku frontendu}
-        % Po dobu práce backendového týmu v ramci předmětu, frontendový tým pracoval na implementaci Android aplikace. 
+        V rámci předmětu BI-SP2 současně s implementací backendové častí aplikace, probíhala implementace forntendové častí aplikace - Android aplikace. Během vývoje frotnendové častí aplikace byly zjištěny nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu.
+        \subsection{Interval}
+            Prvním takovým příkladem je návrh intervalu\ref{image:Interval1}, které jsou široce využívány v projektu. Návrh řešení tohoto problému bude popsán v sekci \ref{navrh:upravy}. tady bude popsán jenom problém samotný. Entita \textit{Interval} reprezentuje časové rozmezí pro pečovatelské dny, opakované události, nastavení alimentů a navazující na ně požadavky na změny a historické záznamy.
+            
+            Jádro problému je v tom, že entita je navržena pomoci generalizace, neboli dědičnosti z hlediska implementace. Takový návrh dává možnost vytvořit konkretní typ intervalu pomocí zvolení odpovídající třídy, ale na druhou stranu působí komplikace při implementace a nepokrývá všechny možné případy potřebných intervalu. Například, není možné sestavit interval, který se bude opakovat každý poslední den měsíce. Pokud by jsme chtěli se držet se aktuální implementaci a zároveň pokryt všechny možné případy, ztratili bychom přehlednost zvolení správné třídy při vytváření instance \textit{Intervalu}.
+            
+            Dalším problémem \textit{Intervalu} je provázanost s pečovatelskými dny. Podle návrhu frontendové častí se bylo zjištěno, že pečovatelské dny nepotřebují komplikované nastavení a zároveň bych potřebovali mít odkazy na konkretního rodiče, který je zodpovědný za dítěte v tento den nebo časový úsek.
     
-    \section{Analýza konkurence}
-        Tento návrhnjfgndd
+    % \section{Analýza konkurence}
+    %     Tento návrh...
 % \section{Analýza testování}
 
     \section{Analýza bezpečnosti}
@@ -157,12 +163,31 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         \subsection{Role}\label{analyza:bezpecnost:role}
     
     % Aplikace je navržená tak, že první věc, kterou uživatel udělat, je registrace. Uživatel potřebuje zvolit jméno, příjmení, email a heslo. Na základě těchto údajů se vytváří účet uživatele. V Doménovém modelu tato třída se jmenuje \textit{User}. V tento okamžik uživatel má role \textit{USER}, která mu nadává možnost udělat jenom omezený počet věcí.  
-        Každý uživatel po přihlášeni do rodiny má svou vlastní roli (viz. obrázek \ref{image:Role1}), podle které mohou lišit jeho přístupová práva. 
+        Než se uživatel přihlásí do rodiny, nemá žádnou roli nebo má roli uživatele bez rodiny. V takovém stavu uživatel by měl mít velice omezena přístupová práva. 
+        
+        Po přihlášeni do rodiny uživatel má svou vlastní roli (viz. obrázek \ref{image:Role1}), podle které mohou lišit jeho přístupová práva. Hlavní rolí v aplikace je rodič. Uživatel s takovou rolí má přístup ke všem potřebám dítěte a všem záznamem v kalendáři. Také, rodič může vytvořit pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně roli rodiče. Mimořádnou roli v rámci systému je dítěte. Uživatel s takovou rolí nemůže vlastnit pečovatelský den nebo splnit přání. Přihlášení dítěte muže proběhnout i bez vytvořeni klasického uživatele systému. Ostatní uživatele v rodině mají roli příbuzného.
         \begin{figure}\centering
 	        \includegraphics[width=0.7\textwidth]{pdfs/Role1}
 	        \caption[Návrh \textit{Role}]{Návrh třídy \textit{Role} podle Doménovém modelu z předmětu BI-SP2}\label{image:Role1}
         \end{figure}
     
         \subsection{Autorizace}
-            Bezpečnost serveru je možné rozdělit do dvou častí. 
-            Návrh bezpečné aplikace nebyl cílem předmětu zmíněných v sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}.
+            Návrh bezpečné aplikace nebyl cílem předmětu zmíněných v sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}. Proto návrh a současná implementace neobsahuje proces přihlašovaní uživatele do systému. Nový procesu přihlašovaní bude zmíněn v sekci \ref{navrh:bezpecnost}.
+        
+        \subsection{Testování}
+            Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahujicí test, kterýt se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{} (viz. obrázek \ref{code:test-context-loads1}).
+            \begin{figure}
+            \begin{minted}{java}
+            @RunWith(SpringRunner::class)
+            @SpringBootTest
+            class RozvodyApplicationTests {
+
+                @Test
+                fun contextLoads() {
+                }
+
+            }
+            \end{minted}
+            \caption{Ukázka současného testování} 
+            \label{code:test-context-loads1}
+            \end{figure}
