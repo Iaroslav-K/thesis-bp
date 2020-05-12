@@ -9,23 +9,23 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
 
 % Hlavním cílem teto bakalářské práce je implementovat návrh backendu podle návrhu a fragmentu implementace, které byly rozpracovány v rámci předmětů BI-SP1 BI-SP2 bakalářského studia vyučovaných na FIT ČVUT. Dalším cílem teto práci je navrhnou vhodné úpravy za účelem dosažení kvalitnějšího výsledku a splnění požadavku frontedové častí aplikace. Autor teto práci absolvoval zmíněné předměty, proto pro zajištění rozdilu v 
 
-    \section{Analýza současného návrhu} \label{analyza:analyza navrhu}
+\section{Analýza současného návrhu} \label{analyza:analyza navrhu}
     
-     \subsection{Předmět BI-SP1}\label{analyza:navrh:sp1}
-        V rámci předměty BI-SP1 pracovalo sedm lidí včetně autora teto práci. Tým měl za úkol analýz požadavku zákazníka a návrh implementaci aplikace. Aplikace se skládá ze dvou částí. Serverového backendu, který je předmětem teto bakalářské práci a frontendové častí aplikace, kterou současně v rámci bakalářské prací implementuje kolega - Martin Beran. Frontendová část aplikace je Android aplikací. Backendová část je serverovým backendém, který má poskytovat REST\footnote{Representational State Transfer} API pro Android aplikaci.
+    \subsection{Předmět BI-SP1}\label{analyza:navrh:sp1}
+    V rámci předměty BI-SP1 pracovalo sedm lidí včetně autora teto práci. Tým měl za úkol analýz požadavku zákazníka a návrh implementaci aplikace. Aplikace se skládá ze dvou částí. Serverového backendu, který je předmětem teto bakalářské práci a frontendové častí aplikace, kterou současně v rámci bakalářské prací implementuje kolega - Martin Beran. Frontendová část aplikace je Android aplikací. Backendová část je serverovým backendém, který má poskytovat REST\footnote{Representational State Transfer} API pro Android aplikaci.
     
-        Během semestru tým provedl kompletní analýzu požadavku zákazníka. Především, tým navrhl scénáře použiti aplikace:
-        \begin{itemize}
-	        \item Přihlašování/Registrace;
-	        \item Přihlašování/Registrace do rodiny;
-	        \item Role v aplikace a jejich vytváření;
-	        \item Nastavení pečovatelský dnů;
-	        \item Kalendář;
-	        \item Kniha potřeb dítěte;
-	        \item Uchování účtenek;
-	        \item Správa alimentů.
-        \end{itemize}
-        Potom byly navrženy Use Case Diagram a Activity Diagramy, podle kterých byly navrženy Wireframy a Doménový model. 
+    Během semestru tým provedl kompletní analýzu požadavku zákazníka. Především, tým navrhl scénáře použiti aplikace:
+    \begin{itemize}
+	   \item Přihlašování/Registrace;
+	   \item Přihlašování/Registrace do rodiny;
+	   \item Role v aplikace a jejich vytváření;
+	   \item Nastavení pečovatelský dnů;
+	   \item Kalendář;
+	   \item Kniha potřeb dítěte;
+	   \item Uchování účtenek;
+	   \item Správa alimentů.
+	\end{itemize}
+    Potom byly navrženy Use Case Diagram a Activity Diagramy, podle kterých byly navrženy Wireframy a Doménový model. 
     
     \subsection{Předmět BI-SP2}\label{analyza:navrh:sp2}
         Cílem předmětu BI-SP2 byla implementace návrhu předmětu BI-SP2. Autor teto práce pracoval v backendovém týmu a zároveň vystupoval v roli vedoucího backendového týmu.
@@ -89,9 +89,10 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             \item \textit{comments} - komentáře členu rodiny včetně dítěte
         \end{itemize}
      
-    \section{Analýza současné implementace}\label{analyza:soucasnaImplementace}
-        Projekt má ve složce \textit{main}\footnote{bi-springboot/src/main} 69 souborů a 845 řádek kódů. Implementace částečné pokrývá Doménový model zmíněný v sekci. \ref{analyza:navrh:DomainModel}.
+\section{Analýza současné implementace}\label{analyza:soucasnaImplementace}
+    Projekt má ve složce \textit{main}\footnote{bi-springboot/src/main} 69 souborů a 845 řádek kódů. Implementace částečné pokrývá Doménový model zmíněný v sekci. \ref{analyza:navrh:DomainModel}.
         
+    \subsection{Implementované třídy}
         Seznam implementovaných entit:
         \begin{itemize}
             \item \textit{AlimonyStatus}
@@ -113,6 +114,19 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             \item \textit{User}
         \end{itemize}
         
+        Byl přidány \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \textquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
+        \begin{table}\centering
+	    \caption[Exception handler]{Ukázka \textit{Exception handler} podle návrhu BI-SP2}\label{tab:excpetion-handler1}
+	    \begin{tabular}{|l|l|c|c|}\hline
+		  Typ chyby		& HTTP status		& zprava	& URL	\tabularnewline \hline \hline
+		  \textit{IllegalAccessException}	& 401	& původní zprava chyby		& původní cesta     \tabularnewline \hline
+		  \textit{IllegalArgumentException}	& 400	& původní zprava chyby		& původní cesta     \tabularnewline \hline
+		  \textit{NullPointerException}	& 500	& původní zprava chyby		& původní cesta     \tabularnewline \hline
+		  \textit{NoSuchElementException}	& 404	& nic		& nic     \tabularnewline \hline
+	    \end{tabular}
+        \end{table}
+    
+    \subsection{Dokumentáce API}
         Bylo provedeno nastavení frameworku Swagger\ref{resere:dokumentace} pro dokumentace API (viz. obrázek \ref{code:swagger-configuration}). Podrobněji framework Swagger byl popsán v sekci \ref{resere:dokumentace}.
         \begin{figure}
         \begin{minted}{java}
@@ -129,38 +143,39 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             }
         }
         \end{minted}
-        \caption{Ukázka nastavení frameworku Swagger} 
-        \label{code:swagger-configuration}
+        \caption{Ukázka nastavení frameworku Swagger}\label{code:swagger-configuration}
         \end{figure}
+    
+    \subsection{Profily}
+    TODO
+    
+\section{Analýza požadavku frontendu}\label{analyza:pozadavky-frontendu}
+    V rámci předmětu BI-SP2 současně s implementací backendové častí aplikace, probíhala implementace forntendové častí aplikace - Android aplikace. Během vývoje frotnendové častí aplikace byly zjištěny nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu.
+    \subsection{Interval}
+        Prvním takovým příkladem je návrh intervalu\ref{image:Interval1}, které jsou široce využívány v projektu. Návrh řešení tohoto problému bude popsán v sekci \ref{navrh:upravy}. tady bude popsán jenom problém samotný. Entita \textit{Interval} reprezentuje časové rozmezí pro pečovatelské dny, opakované události, nastavení alimentů a navazující na ně požadavky na změny a historické záznamy.
+            
+        Jádro problému je v tom, že entita je navržena pomoci generalizace, neboli dědičnosti z hlediska implementace. Takový návrh dává možnost vytvořit konkretní typ intervalu pomocí zvolení odpovídající třídy, ale na druhou stranu působí komplikace při implementace a nepokrývá všechny možné případy potřebných intervalu. Například, není možné sestavit interval, který se bude opakovat každý poslední den měsíce. Pokud by jsme chtěli se držet se aktuální implementaci a zároveň pokryt všechny možné případy, ztratili bychom přehlednost zvolení správné třídy při vytváření instance \textit{Intervalu}.
+            
+        Dalším problémem \textit{Intervalu} je provázanost s pečovatelskými dny. Podle návrhu frontendové častí se bylo zjištěno, že pečovatelské dny nepotřebují komplikované nastavení a zároveň bych potřebovali mít odkazy na konkretního rodiče, který je zodpovědný za dítěte v tento den nebo časový úsek.
+    
+    \subsection{Alimenty}
+        Druhou úpravou návrhu backendu, kterou potřebuje frontend, se tyká entity \textit{ALimony}.
+        Tato entita reprezentuje alimenty, které jeden rodič má posílat druhému rodiče. Jedna instance se odpovídá alimentům za jeden měsíc. Současný návrh popisuje návrh entity a její navázanost na entitu \textit{AlimonySettings}(viz. obrázek \ref{image:aliomny-draft1}), která definuje dlouhodobou konfiguraci, na základě které se vytváří jednotlivé instance alimentů. Nastavení alimentů se platí v rámci jedné rodiny. V případě potřeby, rodiče mají možnost rozdělit alimenty do několika nastavění. 
         
-        Byl přidány \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \textquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
-        \begin{table}\centering
-	    \caption[Exception handler]{Ukázka \textit{Exception handler} podle návrhu BI-SP2}\label{tab:excpetion-handler1}
-	        \begin{tabular}{|l|l|c|c|}\hline
-		        Typ chyby		& HTTP status		& zprava	& URL	\tabularnewline \hline \hline
-		        \textit{IllegalAccessException}	& 401	& původní zprava chyby		& původní cesta     \tabularnewline \hline
-		        \textit{IllegalArgumentException}	& 400	& původní zprava chyby		& původní cesta     \tabularnewline \hline
-		        \textit{NullPointerException}	& 500	& původní zprava chyby		& původní cesta     \tabularnewline \hline
-		        \textit{NoSuchElementException}	& 404	& nic		& nic     \tabularnewline \hline
-	        \end{tabular}
-        \end{table}
-    
-    \section{Analýza požadavku frontendu}\label{analyza:pozadavky-frontendu}
-        V rámci předmětu BI-SP2 současně s implementací backendové častí aplikace, probíhala implementace forntendové častí aplikace - Android aplikace. Během vývoje frotnendové častí aplikace byly zjištěny nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu.
-        \subsection{Interval}
-            Prvním takovým příkladem je návrh intervalu\ref{image:Interval1}, které jsou široce využívány v projektu. Návrh řešení tohoto problému bude popsán v sekci \ref{navrh:upravy}. tady bude popsán jenom problém samotný. Entita \textit{Interval} reprezentuje časové rozmezí pro pečovatelské dny, opakované události, nastavení alimentů a navazující na ně požadavky na změny a historické záznamy.
-            
-            Jádro problému je v tom, že entita je navržena pomoci generalizace, neboli dědičnosti z hlediska implementace. Takový návrh dává možnost vytvořit konkretní typ intervalu pomocí zvolení odpovídající třídy, ale na druhou stranu působí komplikace při implementace a nepokrývá všechny možné případy potřebných intervalu. Například, není možné sestavit interval, který se bude opakovat každý poslední den měsíce. Pokud by jsme chtěli se držet se aktuální implementaci a zároveň pokryt všechny možné případy, ztratili bychom přehlednost zvolení správné třídy při vytváření instance \textit{Intervalu}.
-            
-            Dalším problémem \textit{Intervalu} je provázanost s pečovatelskými dny. Podle návrhu frontendové častí se bylo zjištěno, že pečovatelské dny nepotřebují komplikované nastavení a zároveň bych potřebovali mít odkazy na konkretního rodiče, který je zodpovědný za dítěte v tento den nebo časový úsek.
-    
+        Hlavní problém je v tom, že instance alimentů by se měly vytvářet nezávisle na frontendové části aplikace. Podrobně návrh řešení problému bude popsán v sekci \ref{navrh:upravy:alimenty}.
+        
+        Dodatečným požadavkem frontendového týmu se týká entity \textit{Alimony} samotné. Za účelem zjednoduďení návrhu frontendové části je potřeba přidat zavislost na entitu \textit{Family}.
+        \begin{figure}\centering
+	        \includegraphics[width=0.5\textwidth]{pdfs/AlimonyDraft1}
+	        \caption[Návrh \textit{Alimony} a \textit{AlimonySettings}]{Návrh entit \textit{Alimony} a \textit{AlimonySettings} podle Doménovém modelu z předmětu BI-SP2}\label{image:aliomny-draft1}
+        \end{figure}
     % \section{Analýza konkurence}
     %     Tento návrh...
 % \section{Analýza testování}
 
-    \section{Analýza bezpečnosti}
+\section{Analýza bezpečnosti}
     
-        \subsection{Role}\label{analyza:bezpecnost:role}
+    \subsection{Role}\label{analyza:bezpecnost:role}
     
     % Aplikace je navržená tak, že první věc, kterou uživatel udělat, je registrace. Uživatel potřebuje zvolit jméno, příjmení, email a heslo. Na základě těchto údajů se vytváří účet uživatele. V Doménovém modelu tato třída se jmenuje \textit{User}. V tento okamžik uživatel má role \textit{USER}, která mu nadává možnost udělat jenom omezený počet věcí.  
         Než se uživatel přihlásí do rodiny, nemá žádnou roli nebo má roli uživatele bez rodiny. V takovém stavu uživatel by měl mít velice omezena přístupová práva. 
@@ -168,15 +183,15 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         Po přihlášeni do rodiny uživatel má svou vlastní roli (viz. obrázek \ref{image:Role1}), podle které mohou lišit jeho přístupová práva. Hlavní rolí v aplikace je rodič. Uživatel s takovou rolí má přístup ke všem potřebám dítěte a všem záznamem v kalendáři. Také, rodič může vytvořit pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně roli rodiče. Mimořádnou roli v rámci systému je dítěte. Uživatel s takovou rolí nemůže vlastnit pečovatelský den nebo splnit přání. Přihlášení dítěte muže proběhnout i bez vytvořeni klasického uživatele systému. Ostatní uživatele v rodině mají roli příbuzného.
         \begin{figure}\centering
 	        \includegraphics[width=0.7\textwidth]{pdfs/Role1}
-	        \caption[Návrh \textit{Role}]{Návrh třídy \textit{Role} podle Doménovém modelu z předmětu BI-SP2}\label{image:Role1}
+	        \caption[Návrh \textit{Role}]{Návrh entity \textit{Role} podle Doménovém modelu z předmětu BI-SP2}\label{image:Role1}
         \end{figure}
     
-        \subsection{Autorizace}
-            Návrh bezpečné aplikace nebyl cílem předmětu zmíněných v sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}. Proto návrh a současná implementace neobsahuje proces přihlašovaní uživatele do systému. Nový procesu přihlašovaní bude zmíněn v sekci \ref{navrh:bezpecnost}.
+    \subsection{Autorizace}
+        Návrh bezpečné aplikace nebyl cílem předmětu zmíněných v sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}. Proto návrh a současná implementace neobsahuje proces přihlašovaní uživatele do systému. Nový procesu přihlašovaní bude zmíněn v sekci \ref{navrh:bezpecnost}.
         
-        \subsection{Testování}
-            Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahující test, který se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{Pokročilý kontejner, který funguje podobně \textit{BeanFactory}. Načítá definice beanů, provazuje je a vydává v případe nutnosti} (viz. obrázek \ref{code:test-context-loads1}).
-            \begin{figure}
+    \subsection{Testování}
+        Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahující test, který se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{Pokročilý kontejner, který funguje podobně \textit{BeanFactory}. Načítá definice beanů, provazuje je a vydává v případe nutnosti} (viz. obrázek \ref{code:test-context-loads1}).
+        \begin{figure}
             \begin{minted}{java}
             @RunWith(SpringRunner::class)
             @SpringBootTest
@@ -190,4 +205,4 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             \end{minted}
             \caption{Ukázka současného testování} 
             \label{code:test-context-loads1}
-            \end{figure}
+        \end{figure}
