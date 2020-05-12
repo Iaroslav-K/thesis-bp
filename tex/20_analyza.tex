@@ -117,7 +117,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         Byl přidány \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \textquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
         \begin{table}\centering
 	    \caption[Exception handler]{Ukázka \textit{Exception handler} podle návrhu BI-SP2}\label{tab:excpetion-handler1}
-	    \begin{tabular}{|l|l|c|c|}\hline
+	    \begin{tabular}{|l|c|c|c|}\hline
 		  Typ chyby		& HTTP status		& zprava	& URL	\tabularnewline \hline \hline
 		  \textit{IllegalAccessException}	& 401	& původní zprava chyby		& původní cesta     \tabularnewline \hline
 		  \textit{IllegalArgumentException}	& 400	& původní zprava chyby		& původní cesta     \tabularnewline \hline
@@ -130,18 +130,18 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         Bylo provedeno nastavení frameworku Swagger\ref{resere:dokumentace} pro dokumentace API (viz. obrázek \ref{code:swagger-configuration}). Podrobněji framework Swagger byl popsán v sekci \ref{resere:dokumentace}.
         \begin{figure}
         \begin{minted}{java}
-        @Configuration
-        @EnableSwagger2
-        class SwaggerConfig {
-        @Bean
-        fun api(): Docket {
-            return Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build()
-            }
-        }
+@Configuration
+@EnableSwagger2
+class SwaggerConfig {
+@Bean
+fun api(): Docket {
+    return Docket(DocumentationType.SWAGGER_2)
+        .select()
+        .apis(RequestHandlerSelectors.any())
+        .paths(PathSelectors.any())
+        .build()
+    }
+}
         \end{minted}
         \caption{Ukázka nastavení frameworku Swagger}\label{code:swagger-configuration}
         \end{figure}
@@ -164,7 +164,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         
         Hlavní problém je v tom, že instance alimentů by se měly vytvářet nezávisle na frontendové části aplikace. Podrobně návrh řešení problému bude popsán v sekci \ref{navrh:upravy:alimenty}.
         
-        Dodatečným požadavkem frontendového týmu se týká entity \textit{Alimony} samotné. Za účelem zjednoduďení návrhu frontendové části je potřeba přidat zavislost na entitu \textit{Family}.
+        Dodatečným požadavkem frontendového týmu se týká entity \textit{Alimony} samotné. Za účelem zjednoduďení návrhu frontendové části je potřeba přidat závislost na entitu \textit{Family}. % V takovém pŕípade aplikace může ihned po nalazení novych alimentu rict uZivateli ktere rodine patri tyto alimenty.
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/AlimonyDraft1}
 	        \caption[Návrh \textit{Alimony} a \textit{AlimonySettings}]{Návrh entit \textit{Alimony} a \textit{AlimonySettings} podle Doménovém modelu z předmětu BI-SP2}\label{image:aliomny-draft1}
