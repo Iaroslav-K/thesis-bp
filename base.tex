@@ -18,12 +18,12 @@
 % \usepackage{amssymb} %additional math symbols
 
 \usepackage{dirtree} %directory tree visualisation
-\usepackage{biblatex}
-\usepackage{csquotes}
+\usepackage[style=iso-numeric]{biblatex}
 \usepackage{xevlna}
 \usepackage{graphics}
 \usepackage{parskip}
 \usepackage{minted}
+\usepackage{csquotes}
 \addbibresource{template/mybibliographyfile.bib}
 
 \setlength{\parindent}{0em}
@@ -78,7 +78,12 @@
 % \printbibliography
 
 
-\printbibliography
+% \printbibliography 
+\printbibliography[keyword=pouzita,title={Seznam použité literatury}]
+
+% \printbibliography[keyword=doporucena,title={Seznam doporučené literatury}]
+
+% \printbibliography[keyword=obrazek,title={Seznam použitých obrázků}]
 
 \appendix
 
