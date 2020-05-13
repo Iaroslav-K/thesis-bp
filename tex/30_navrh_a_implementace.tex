@@ -1,7 +1,7 @@
 \chapter{Návrh a implementace}
-V této kapitole bude popsán návrh backendu, který se skládá s současného návrhu, navržených změn a návrhu chybějící funkcionality.
-\section{Navržené úpravy}\label{navrh:upravy}
-    V teto sekce budou navrženy změny návrhu vzhledem k nedostatkům aktuálního návrhu, které byly nalezeny během vývoje backendové a forntendové částí aplikace. 
+V této kapitole bude popsán návrh backendu, který se skládá s současného návrhu, navržených změn a návrhu chybějící funkcionality. A také, bude popsána implementace navržených a změn a chybějící funkcionality podle existujícího návrhu aplikace.
+\section{Úpravy podle požadávků}\label{navrh:upravy}
+    V teto sekce budou popsány navrženy změny a jejích implementace vzhledem k nedostatkům aktuálního návrhu, které byly nalezeny během vývoje backendové a forntendové částí aplikace. 
     
     \subsection{Interval}\label{narh:upravy:interval}
         První změnou je nový návrh entity Interval. Původní návrh (viz. obrázek \ref{image:Interval1}) nevyhovoval svojí složitostí a zároveň jenom částečným pokrytím možných případů. Podrobněji teto problém je popsán v sekci \ref{analyza:pozadavky-frontendu}. Entita interval byla rozdělena do dvou entit. První entita (viz. obrázek \ref{image:Interval2}) úplně nahrazuje původní entitu. Druhou entitou je \textit{CareDayInterval} (viz. obrázek \ref{image:careDayInterval}), která reprezentuje časové rozmezí pečovatelských dnů.
@@ -20,29 +20,7 @@ V této kapitole bude popsán návrh backendu, který se skládá s současného
     
         Nový návrh je postaven na úplně jiném principu. Časové rozmezí může být reprezentované dvěma způsoby. Oba dva způsoby vyžadují uvedení začátku intervalu. Tento parametr je povinný. První způsob, kromě začátku intervalu, vyžaduje i konec intervalu. Takovým způsobem můžeme definovat jednorázový interval po sobě jdoucích dnů. Druhý způsob vyžaduje zadání pravidlo opakování. Takhle můžeme definovat stejnou interval, ale mnohem složitějším způsobem. Na druhou stranu, pomocí takového pravidla můžeme definovat libovolně složitý interval. Takový návrh vyžaduje aby, buď byl zadán jenom konec intervalu, nebo bylo jenem zadáno pravidlo opakování. Pokud tyto dva parametry budou zadány najednou, server vyhodí chybu a zastaví vytvoření nesprávného intervalu.
     
-        Pravidlo opakování je reprezentováno pomocí textového řetězce a má být zadáno ve standardu {RFC 5545}\cite{recurrence-rule}. Pro pohodlné testování byl navržen a implementován {interní DSL jazyk}\footnote{DSL jazyk využívající obecný programovací jazyk}, který nadává možnost vytvořit pravidlo opakovaní. Dále uvádím příklad \textit{Intervalu}, který má pravidlo opakování vytvořené pomoci DSL jazyku. Tento interval bude použit při testování.
-        \begin{figure}
-            \begin{minted}{java}
-/**
-* Valid Interval with recurrence rule.
-*/
-private val validInterval = Interval(
-        id = 1,
-        interval_start = creationTime,
-        interval_end = null,
-        rRule = rule(frequency = Frequency.WEEKLY, count = 10) {
-            byDays {
-                and(DayOfWeek.MONDAY)
-                and(DayOfWeek.WEDNESDAY)
-                and(DayOfWeek.SUNDAY)
-            }
-        }
-)
-            \end{minted}
-            \caption{Ukázka \textit{Intervalu} s pravidlem opakování} 
-            \label{code:valid-interval}
-        \end{figure}
-        %TODO popsat implemenaci interniho DSL
+        Pravidlo opakování je reprezentováno pomocí textového řetězce a má být zadáno ve standardu {RFC 5545}\cite{recurrence-rule}. Pro pohodlné testování byl navržen a implementován {interní DSL jazyk}\footnote{DSL jazyk využívající obecný programovací jazyk}, který bude popsán v sekci \ref{navrh:zmeny:dsl}.
     \subsection{Alimenty}\label{navrh:upravy:alimenty}
         Druha důležitá úprava současného návrhu se tyká třídy \textit{Alimony} a spravování instancí teto třídy. Podrobněji příčiny potřeby úprav byly popsány v sekci \ref{analyza:pozadavky-frontendu}. Tato sekce je věnovaná popisu navržených úprav samotných.
     
@@ -93,7 +71,7 @@ scheduled.alimonyFactory.cronExpression=0 1 1 1 * ?
                 \label{code:cron-expression}
             \end{figure}
             
-            Pomocí konfiguračního souboru byla přidána možnost měnit čas spouštění metody, ale také bychom potřebovali mít možnost vypnout tuto metodu. Proto přidána třída, která vytváří instanci tříd, obsahující automaticky spustitelné metody, podle \textit{property} konfiguračního souboru. V případě, že nutné \textit{property} nebyly definovány aplikace se neukončí běh a nastáví tyto property na implicitní hodnoty. Pro zapínaní běhu metody vytvářejići alimenty je potřeba definovat \textit{property} \textit{scheduled.alimonyFactory} a nastavit na hodnotu \textit{true} (viz. obrázek \ref{code:alimony-factory-true}).
+            Pomocí konfiguračního souboru byla přidána možnost měnit čas spouštění metody, ale také bychom potřebovali mít možnost vypnout tuto metodu. Proto přidána třída, která vytváří instanci tříd, obsahující automaticky spustitelné metody, podle \textit{property} konfiguračního souboru. V případě, že nutné \textit{property} nebyly definovány aplikace se neukončí běh a nastaví tyto \textit{property} na implicitní hodnoty. Pro zapínaní běhu metody vytvářející alimenty je potřeba definovat \textit{property} \textit{scheduled.alimonyFactory} a nastavit na hodnotu \textit{true} (viz. obrázek \ref{code:alimony-factory-true}).
             \begin{figure}
                 \begin{minted}{yaml}
 scheduled.alimonyFactory=true
@@ -101,16 +79,47 @@ scheduled.alimonyFactory=true
                 \caption{Ukázka \textit{property} zapinající \textit{AlimonyFactory}} 
                 \label{code:alimony-factory-true}
             \end{figure}
-            
+\section{Navržené změny}
+    \subsection{Interní DSL}
+        % TODO popsat podroneji
+        Interní DSL jazyk poskytuje možnost vytvořit pravidlo opakovaní. Dále uvádím příklad \textit{Intervalu}, který má pravidlo opakování vytvořené pomoci DSL jazyku. Tento interval bude použit při testování.
+        \begin{figure}
+            \begin{minted}{java}
+/**
+* Valid Interval with recurrence rule.
+*/
+private val validInterval = Interval(
+        id = 1,
+        interval_start = creationTime,
+        interval_end = null,
+        rRule = rule(frequency = Frequency.WEEKLY, count = 10) {
+            byDays {
+                and(DayOfWeek.MONDAY)
+                and(DayOfWeek.WEDNESDAY)
+                and(DayOfWeek.SUNDAY)
+            }
+        }
+)
+            \end{minted}
+            \caption{Ukázka \textit{Intervalu} s pravidlem opakování} 
+            \label{code:valid-interval}
+        \end{figure}
+    
+    \subsection{Converter}
+    TODO popis konvertetu mezi entitou i dto
 \section{Navrh bezpečnosti}\label{navrh:bezpecnost}
     \subsection{OAuth 2.0}
         % TODO
-        Za účelem zabezpečení procesu autorizace byl zvolen protokol OAuth 2.0 . 
+        TODO Za účelem zabezpečení procesu autorizace byl zvolen protokol OAuth 2.0 . 
     \subsection{HTTPS}
+        certificaty TODO
+\section{Databáze}
+    TODOdatabaze pro profil production
 \section{Profily}\label{navrh:profily}
-        % TODO
+    TODO nové profily a jejích konfigurace
 \section{Návrh testování}\label{navrh:testovani}
-    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Podrobný popis těchto frameworků byl v sekci \ref{resere:testovani}. Testování se skládá s \textit{unit}\footnote{testy, zaměřené na ověření správnosti fungování samostatně testovatelné části programu} testů a \textit{integration}\footnote{testy, zaměřené na ověření správné komunikace mezi komponentami} testů. Návrh testů se bude podstatné lišit mezi sebou. Proto bude využita funkcionalita frameworku JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů. Princip chování tagů najdete v sekci \ref{resere:testovani}. Podrobnější informaci o implementaci tagů bude popsána v sekci \ref{testovani:tagy}.
+    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Podrobný popis těchto frameworků byl v sekci \ref{resere:testovani}. Testování se skládá s \textit{unit}\footnote{testy, zaměřené na ověření správnosti fungování samostatně testovatelné části programu} testů a \textit{integration}\footnote{testy, zaměřené na ověření správné komunikace mezi komponentami} testů. Návrh testů se bude podstatné lišit mezi sebou. Proto bude využita funkcionalita frameworku JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů. Princip chování tagů najdete v sekci \ref{resere:testovani}. Podrobnější informaci o implementaci tagů bude popsána v sekci \ref{testovani:tagy}. 
+    Kompletní implementáce testování bude popsána v kapitole \ref{testovani}.
     \subsection{Unit testy}
         Unit testy využívají jenom funkcionalitu frameworku JUnit 5 a testují základní funkcionalitu. Otestovány mají byt třídy a metody, které mohou být otestovány samostatně. Také, tyto testy mají být označeny jako unit testy pomocí tagů.  %TODO popsat podrobneji
     \subsection{Integráční testy}

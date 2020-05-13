@@ -147,7 +147,17 @@ fun api(): Docket {
         \end{figure}
     
     \subsection{Profily}
-    TODO
+    %spring profiles: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles
+    %applicatioon peoperties: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-application-property-files
+        Framework Spring poskytuje možnost rozdělit implementaci do logických bloků, které budou existovat jenom v konkrétních profilech\cite{spring-profile}. Implicitně všechny komponenty nezávisle na aktuálních profilech. Pro zavedení profilů pro konkretní komponentu je potřeba ji označit anotací \textit{Profile}. V závorkách vedle anotací je potřeba přidat seznam profilu, ve kterých tato komponenta bude existovat. Konfigurace aktuálně zapnutých profilů se provádí pomocí souboru \textit{application.properties}\footnote{TODO}, který definuje \textit{property}\footnote{TODO} pro prostředí aplikace.
+    
+        Každý profil také může obsahovat vlastní konfigurační soubor, který definuje všechny nutné \textit{property}. Soubor má byt zadán ve formátu \textit{application-\{profile\}.properties}, kde \textit{profile} je názvem profilu kterému patří tento soubor. Současný návrh aplikace obsahuje dva konfiguračních souboru.
+    
+        První konfigurační soubor obsahuje implicitní \textit{property} pro prostředí aplikace. Aktuálně soubor má jenom definici aktuálního profilu aplikace. 
+    
+        Druhý konfigurační soubor patří profilu \textit{development}. Tento profil je určen pro pohodlný proces vývoje aplikace. Soubor obsahuje konfiguraci databáze a konfiguraci žurnálu aplikace. Podrobněji použita databáze pude popsána v sekci \ref{analyza:soucasnaImplementace:databaze}.
+    \subsection{Databáze}\label{analyza:soucasnaImplementace:databaze}
+        Pro proce vývoje byla zvolena relační\footnote{relacni DB TODO} databáze H2\cite{ht-db}. Zvolená databáze umožňuje vytvářet tabulky při každém zapuštěni aplikace přímo v pamětí aplikace. Podrobněji tato databáze a její princip fungování byly popsány v sekci \ref{resere:databaze}
     
 \section{Analýza požadavku frontendu}\label{analyza:pozadavky-frontendu}
     V rámci předmětu BI-SP2 současně s implementací backendové častí aplikace, probíhala implementace forntendové častí aplikace - Android aplikace. Během vývoje frotnendové častí aplikace byly zjištěny nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu.
