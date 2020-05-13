@@ -105,9 +105,20 @@ private val validInterval = Interval(
             \label{code:valid-interval}
         \end{figure}
     
+    \subsection{Album}
+        TODO
+    \subsection{Oznámení}
+        TODO alert a notification
     \subsection{Converter}
-    TODO popis konvertetu mezi entitou i dto
-\section{Navrh bezpečnosti}\label{navrh:bezpecnost}
+        TODO popis konverteru mezi entitou i dto
+    \subsection{Našeptavač pro výjimky}
+        TODO novy format vyjimek + pridane nove vyjimky
+    \subsection{Implementace Service layer}%prejmenovat na ceskou verzi
+        TODO business logika ohledne updatovani a vytvoreni entit
+    \subsection{Implementace Controlleru}
+        TODO POST vs PUT
+
+\section{Návrh bezpečnosti}\label{navrh:bezpecnost}
     \subsection{OAuth 2.0}
         % TODO
         TODO Za účelem zabezpečení procesu autorizace byl zvolen protokol OAuth 2.0 . 
@@ -117,8 +128,12 @@ private val validInterval = Interval(
     TODOdatabaze pro profil production
 \section{Profily}\label{navrh:profily}
     TODO nové profily a jejích konfigurace
+\section{Implementace historických záznamů}
+    TODO history + seznam trid kterych se tykaji zmeny
+\section{Implementace požadávků na změny}
+    TODO requests
 \section{Návrh testování}\label{navrh:testovani}
-    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Podrobný popis těchto frameworků byl v sekci \ref{resere:testovani}. Testování se skládá s \textit{unit}\footnote{testy, zaměřené na ověření správnosti fungování samostatně testovatelné části programu} testů a \textit{integration}\footnote{testy, zaměřené na ověření správné komunikace mezi komponentami} testů. Návrh testů se bude podstatné lišit mezi sebou. Proto bude využita funkcionalita frameworku JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů. Princip chování tagů najdete v sekci \ref{resere:testovani}. Podrobnější informaci o implementaci tagů bude popsána v sekci \ref{testovani:tagy}. 
+    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Podrobný popis těchto frameworků byl v sekci \ref{resere:testovani}. Testování se skládá s \textit{unit}\footnote{testy, zaměřené na ověření správnosti fungování samostatně testovatelné části programu} testů a \textit{integration}\footnote{testy, zaměřené na ověření správné komunikace mezi komponentami} testů. Návrh testů se bude podstatné lišit mezi sebou. Proto bude využita funkcionalita frameworku JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů\cite{junit-tags}. Princip chování tagů najdete v sekci \ref{resere:testovani}. Podrobnější informaci o implementaci tagů bude popsána v sekci \ref{testovani:tagy}. 
     Kompletní implementáce testování bude popsána v kapitole \ref{testovani}.
     \subsection{Unit testy}
         Unit testy využívají jenom funkcionalitu frameworku JUnit 5 a testují základní funkcionalitu. Otestovány mají byt třídy a metody, které mohou být otestovány samostatně. Také, tyto testy mají být označeny jako unit testy pomocí tagů.  %TODO popsat podrobneji

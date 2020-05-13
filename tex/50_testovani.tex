@@ -1,16 +1,101 @@
 \chapter{Testování}\label{testovani}
 % Nedílnou součástí vývoje softwaru je testování. Testování bylo rozděleno do dvou vrstev. Základní vrstvou jsou unit testy. Pro tvorbu těchto testů byl použit framework JUnit 5. Druhou vrstvou jsou integrační testy, které jsou implementovány pomoci funkcionality, kterou poskytuje framework Spring.
-V teto kapitole bude popsán proces testování, doplňková funkcionalita, zjednodušující proces testování a také popis pokrytí kódů testy.
+Testování je nedílnou součástí implementace libovolného softwaru a je jeho velice důležitou častí. V rámci této bakalářské práce testům byla věnovaná řádná pozornost, proto bylo vyřešeno věnovat testům samostatnou kapitolu. V teto kapitole bude popsán proces testování, doplňující funkcionalita, zjednodušující proces testování. Také bude popsáno pokrytí kódů testy.
 \section{Tagy}\label{testovani:tagy}
-    TODO popis tagu a jejich implementace
+    Tagy už byly zmíněné v sekci \ref{navrh:testovani}, proto v teto sekci ihned se zanoříme do podrobného popisu implementace. 
+    
+    Na začátku je potřeba popsat chování tagů a proč je potřebujeme. Tagy označují jednotlivé testy nebo celé testovací třídy pomocí obyčejného textového řetězce (viz. obrázek \ref{code:tag-junit-5}). Obsah řetězce může být libovolný. Za účelem pohodlnějšího využití testu byly zvolené tagy, které popisuje konkretní aspekt jeho chování. Například, pomalý test nebo integrační test. Při spouštěni testů pomocí frameworku JUnit můžeme definovat testy které bychom potřebovali spustit pomocí předem definovaných tagů. Stejného výsledku bychom mohli dosáhnout pomocí třídění testů do různých složek, ale podstatný rozdíl mezi těmito postupy je v tom, že jeden test může mít několik tagů zároveň. Například test může být anotován jako pomalý integrační test a zároveň jako pomalý test, protože využívá databázi. Takový výsledek je docela složitý při tříděni testů do různých složek.
+    \begin{figure}
+        \begin{minted}{java}
+@Tags(
+        Tag("integration_test")
+)
+        \end{minted}
+        \caption{Příklad tagu frameworku JUnit 5} 
+        \label{code:tag-junit-5}
+    \end{figure}
+    
+    Tagy jsou jenom textové řetězce, proto je docela očividně, že je velká pravděpodobnost překlepu při implementací velkého počtu testů\footnote{na moment odevzdání bakalářské práci bylo implementováno 126 testů v 25 třídách}. Proto bylo vyřešeno definovat vlastní anotace s předem definovanými tagy. Ve výsledku byly implementovány 4 tagy:
+    \begin{itemize}
+            \item \textit{IntergationTest}, který má tag obsahující text \enquote{integration\_test}
+            \item \textit{SecurityTest}, který má tag obsahující text \enquote{security\_test}
+            \item \textit{SlowTest}, který má tag obsahující text \enquote{slow\_test}
+            \item \textit{UnitTest}, který má tag obsahující text \enquote{unit\_test}
+    \end{itemize}
+    
+    Anotace mají stejnou implementací a liší se jenom pomocí textu uvnitř tagů. Kotlin poskytuje funkcionalitu pro vytváření vlastních anotací, proto byla využita vestavěna třída anotace (viz. obrázek \ref{code:annotation-class}). Anotace jsou implementovány takovým způsobem, že pomocí ně je možné anotovat ne jenom testové metody, ale i celé třídy. Pak anotace se aplikuje na každý test, který obsahuje anotovaná třída. Také je možné anotovat i jiné anotace.
+    \begin{figure}
+        \begin{minted}{java}
+/**
+ * Specifies test as a Integration test.
+ */
+@Target(allowedTargets = [
+        AnnotationTarget.FUNCTION,
+        AnnotationTarget.ANNOTATION_CLASS,
+        AnnotationTarget.CLASS
+])
+@Retention(AnnotationRetention.RUNTIME)
+@MustBeDocumented
+@Tags(
+        Tag("integration_test")
+)
+annotation class IntegrationTest
+        \end{minted}
+        \caption{Příklad třídy Anotace zaměňující tag s textem \enquote{integration\_test}} 
+        \label{code:annotation-class}
+    \end{figure}
     % Během vývoje velkých projektů zpouštění testů je významným problémem pro programátory. 
     % Framework JUnit 5 poskytuje možnost označovat metody a třídy pomocí tagu.
 \section{Zobrazování testů}\label{testovani:zobrazovani}
-    TODO popis CamelCaseGeneratoru a displayname
-\section{Integrační testy}\label{testovani:intergacni}
-    TODO podrobny popis
+    % TODO v pripade ze pobezi testy pres IDEA. Pres terminal nefunguje CamelCaseGenerator
+    Správné a pochopitelné zobrazování názvů testu mnohem zjednodušuje proces testování. Proto před začátkem implementaci testů byly navrženo pravidlo pro zobrazování testu. Název testu má obsahovat v názvu stručný popis toho, co by měl test otestovat. 
+    
+    Pro čitelnější zobrazování byl implementován generátor transformující jméno testu nebo jméno třídy do čitelnější podoby (viz. obrázek \ref{code:pretty-tests-comparison}). Princip fingování je založen na překladu názvu ve velbloudí notace na obyčejný text s mezerami. Také výsledné názvy testu a tříd neobsahují žádné zbytečné symboly\footnote{například, za zbytečné symboly jsou považovány prázdné závorky na konci názvu metody} Pro pohodlné využiti generátoru byla implementována anotace, která je aplikovatelná na třídy. Anotace aktivuje generátor pro všechny testy, které třída obsahuje. 
+    
+    V případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použit anotaci \textit{DisplayName} a v závorkách teto anotaci uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto tato anotace může být použita ve třídě, která má anotaci generátoru. 
+%     \begin{figure}
+%         \begin{minted}{java}
+% class CamelCaseGenerator : DisplayNameGenerator.Standard() {
+%     override fun generateDisplayNameForNestedClass(
+%             nestedClass: Class<*>?): String {
+%         return toCamelCase(super.generateDisplayNameForNestedClass(nestedClass))
+%     }
+
+%     override fun generateDisplayNameForMethod(
+%             testClass: Class<*>?,
+%             testMethod: Method?): String {
+%         return toCamelCase(testMethod!!.name)
+%     }
+
+%     override fun generateDisplayNameForClass(testClass: Class<*>?): String {
+%         return toCamelCase(super.generateDisplayNameForClass(testClass))
+%     }
+
+%     private fun toCamelCase(name: String): String {
+%         val result = StringBuilder()
+%         result.append(name.ifEmpty { return "" }.first())
+%         for (char in name.substring(1)) {
+%             if (Character.isUpperCase(char)) {
+%                 result.append(' ')
+%                 result.append(Character.toLowerCase(char))
+%             } else {
+%                 result.append(char)
+%             }
+%         }
+%         return result.toString()
+%     }
+
+% }
+%         \end{minted}
+%         \caption{Třída transformující jména metod a tříd do čítelné podoby} 
+%         \label{code:DNG}
+%     \end{figure}
+    
 \section{Unit testy}\label{testovani:unit}
     TODO podrobny popis
+\section{Integrační testy}\label{testovani:intergacni}
+    TODO podrobny popis
+\section{Samostatný profil pro testování}
 \section{Pokrytí kódu testy}\label{testovani:pokryti}
     TODO V teto sekci je uveden popis provedéní analýzy pokrýtí kódu testy.
     % TODO smazat subsection pokud nebude pridan jeste jeden

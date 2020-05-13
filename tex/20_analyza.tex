@@ -114,7 +114,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             \item \textit{User}
         \end{itemize}
         
-        Byl přidány \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \textquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
+        Byl přidán \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \textquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
         \begin{table}\centering
 	    \caption[Exception handler]{Ukázka \textit{Exception handler} podle návrhu BI-SP2}\label{tab:excpetion-handler1}
 	    \begin{tabular}{|l|c|c|c|}\hline
@@ -159,7 +159,7 @@ fun api(): Docket {
     \subsection{Databáze}\label{analyza:soucasnaImplementace:databaze}
         Pro proce vývoje byla zvolena relační\footnote{relacni DB TODO} databáze H2\cite{ht-db}. Zvolená databáze umožňuje vytvářet tabulky při každém zapuštěni aplikace přímo v pamětí aplikace. Podrobněji tato databáze a její princip fungování byly popsány v sekci \ref{resere:databaze}
     
-\section{Analýza požadavku frontendu}\label{analyza:pozadavky-frontendu}
+\section{Analýza požadavku frontendu na změny}\label{analyza:pozadavky-frontendu}
     V rámci předmětu BI-SP2 současně s implementací backendové častí aplikace, probíhala implementace forntendové častí aplikace - Android aplikace. Během vývoje frotnendové častí aplikace byly zjištěny nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu.
     \subsection{Interval}
         Prvním takovým příkladem je návrh intervalu\ref{image:Interval1}, které jsou široce využívány v projektu. Návrh řešení tohoto problému bude popsán v sekci \ref{navrh:upravy}. tady bude popsán jenom problém samotný. Entita \textit{Interval} reprezentuje časové rozmezí pro pečovatelské dny, opakované události, nastavení alimentů a navazující na ně požadavky na změny a historické záznamy.
@@ -199,20 +199,20 @@ fun api(): Docket {
     \subsection{Autorizace}
         Návrh bezpečné aplikace nebyl cílem předmětu zmíněných v sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}. Proto návrh a současná implementace neobsahuje proces přihlašovaní uživatele do systému. Nový procesu přihlašovaní bude zmíněn v sekci \ref{navrh:bezpecnost}.
         
-    \subsection{Testování}
-        Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahující test, který se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{Pokročilý kontejner, který funguje podobně \textit{BeanFactory}. Načítá definice beanů, provazuje je a vydává v případe nutnosti} (viz. obrázek \ref{code:test-context-loads1}).
-        \begin{figure}
-            \begin{minted}{java}
-            @RunWith(SpringRunner::class)
-            @SpringBootTest
-            class RozvodyApplicationTests {
+\section{Analýza testování}\label{analyza:testovani}
+    Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahující test, který se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{Pokročilý kontejner, který funguje podobně \textit{BeanFactory}. Načítá definice beanů, provazuje je a vydává v případe nutnosti} (viz. obrázek \ref{code:test-context-loads1}).
+    \begin{figure}
+    \begin{minted}{java}
+@RunWith(SpringRunner::class)
+@SpringBootTest
+class RozvodyApplicationTests {
 
-                @Test
-                fun contextLoads() {
-                }
+    @Test
+    fun contextLoads() {
+    }
 
-            }
-            \end{minted}
-            \caption{Ukázka současného testování} 
-            \label{code:test-context-loads1}
+}
+        \end{minted}
+        \caption{Ukázka současného testování} 
+        \label{code:test-context-loads1}
         \end{figure}
