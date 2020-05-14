@@ -114,20 +114,20 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             \item \textit{User}
         \end{itemize}
         
-        Byl přidán \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \textquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
+        Byl přidán \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \enquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
         \begin{table}\centering
 	    \caption[Exception handler]{Ukázka \textit{Exception handler} podle návrhu BI-SP2}\label{tab:excpetion-handler1}
 	    \begin{tabular}{|l|c|c|c|}\hline
 		  Typ chyby		& HTTP status		& zprava	& URL	\tabularnewline \hline \hline
-		  \textit{IllegalAccessException}	& 401	& původní zprava chyby		& původní cesta     \tabularnewline \hline
-		  \textit{IllegalArgumentException}	& 400	& původní zprava chyby		& původní cesta     \tabularnewline \hline
-		  \textit{NullPointerException}	& 500	& původní zprava chyby		& původní cesta     \tabularnewline \hline
-		  \textit{NoSuchElementException}	& 404	& nic		& nic     \tabularnewline \hline
+		  \textit{Illegal Access}	& 401	& původní zprava chyby		& původní cesta     \tabularnewline \hline
+		  \textit{Illegal Argument}	& 400	& původní zprava chyby		& původní cesta     \tabularnewline \hline
+		  \textit{Null Pointer}	& 500	& původní zprava chyby		& původní cesta     \tabularnewline \hline
+		  \textit{No Such Element}	& 404	& nic		& nic     \tabularnewline \hline
 	    \end{tabular}
         \end{table}
     
-    \subsection{Dokumentáce API}
-        Bylo provedeno nastavení frameworku Swagger\ref{resere:dokumentace} pro dokumentace API (viz. obrázek \ref{code:swagger-configuration}). Podrobněji framework Swagger byl popsán v sekci \ref{resere:dokumentace}.
+    \subsection{Dokumentace API}
+        Bylo provedeno nastavení frameworku Swagger pro dokumentace API (viz. obrázek \ref{code:swagger-configuration}). Podrobněji framework Swagger byl popsán v sekci \ref{resere:dokumentace}.
         \begin{figure}
         \begin{minted}{java}
 @Configuration

@@ -1,6 +1,7 @@
 \chapter{Testování}\label{testovani}
 % Nedílnou součástí vývoje softwaru je testování. Testování bylo rozděleno do dvou vrstev. Základní vrstvou jsou unit testy. Pro tvorbu těchto testů byl použit framework JUnit 5. Druhou vrstvou jsou integrační testy, které jsou implementovány pomoci funkcionality, kterou poskytuje framework Spring.
-Testování je nedílnou součástí implementace libovolného softwaru a je jeho velice důležitou častí. V rámci této bakalářské práce testům byla věnovaná řádná pozornost, proto bylo vyřešeno věnovat testům samostatnou kapitolu. V teto kapitole bude popsán proces testování, doplňující funkcionalita, zjednodušující proces testování. Také bude popsáno pokrytí kódů testy.
+Testování je nedílnou součástí implementace libovolného softwaru a je jeho velice důležitou častí. V rámci této bakalářské práce testům byla věnovaná řádná pozornost, proto bylo vyřešeno věnovat testům samostatnou kapitolu. V teto kapitole bude popsán proces testování a doplňující funkcionalita, zjednodušující proces testování. Také bude popsáno pokrytí kódů testy.
+
 \section{Tagy}\label{testovani:tagy}
     Tagy už byly zmíněné v sekci \ref{navrh:testovani}, proto v teto sekci ihned se zanoříme do podrobného popisu implementace. 
     
@@ -23,7 +24,6 @@ Testování je nedílnou součástí implementace libovolného softwaru a je jeh
             \item \textit{UnitTest}, který má tag obsahující text \enquote{unit\_test}
     \end{itemize}
     
-    Anotace mají stejnou implementací a liší se jenom pomocí textu uvnitř tagů. Kotlin poskytuje funkcionalitu pro vytváření vlastních anotací, proto byla využita vestavěna třída anotace (viz. obrázek \ref{code:annotation-class}). Anotace jsou implementovány takovým způsobem, že pomocí ně je možné anotovat ne jenom testové metody, ale i celé třídy. Pak anotace se aplikuje na každý test, který obsahuje anotovaná třída. Také je možné anotovat i jiné anotace.
     \begin{figure}
         \begin{minted}{java}
 /**
@@ -44,6 +44,41 @@ annotation class IntegrationTest
         \caption{Příklad třídy Anotace zaměňující tag s textem \enquote{integration\_test}} 
         \label{code:annotation-class}
     \end{figure}
+    Anotace mají stejnou implementací a liší se jenom pomocí textu uvnitř tagů. Kotlin poskytuje funkcionalitu pro vytváření vlastních anotací, proto byla využita vestavěna třída anotace (viz. obrázek \ref{code:annotation-class}). Anotace jsou implementovány takovým způsobem, že pomocí ně je možné anotovat ne jenom testové metody, ale i celé třídy. Pak anotace se aplikuje na každý test, který obsahuje anotovaná třída. Také je možné anotovat i jiné anotace.
+
+    \begin{figure}
+        \begin{minted}{groovy}
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events 'PASSED', 'FAILED', 'SKIPPED'
+    }
+
+    maxHeapSize = "1G"
+}
+
+task unitTests(type: Test) {
+    useJUnitPlatform {
+        includeTags 'unit_test'
+    }
+    testLogging {
+        events 'PASSED', 'FAILED', 'SKIPPED'
+    }
+}
+
+task integrationTests(type: Test) {
+    useJUnitPlatform {
+        includeTags 'integration_test'
+    }
+    testLogging {
+        events 'PASSED', 'FAILED', 'SKIPPED'
+    }
+}
+        \end{minted}
+        \caption{Úkoly pro spouštění testů} 
+        \label{code:gradle-tests}
+    \end{figure}
+    Pro spouštění testů je potřena využit buildovácí systém Gradle, který byl podrobně popsán v sekcí \ref{resere:build}. Testy jsou rozdělené podle jejich typu pomocí tagů, proto byla přidána možnost, nejenom spustit všechny testy najednou, ale i spustit jenom unit testy nebo jenom integrační testy (viz. obrázek \ref{code:gradle-tests}).
     % Během vývoje velkých projektů zpouštění testů je významným problémem pro programátory. 
     % Framework JUnit 5 poskytuje možnost označovat metody a třídy pomocí tagu.
 \section{Zobrazování testů}\label{testovani:zobrazovani}
@@ -56,7 +91,7 @@ annotation class IntegrationTest
     \end{figure}
     Pro čitelnější zobrazování byl implementován generátor transformující jméno testu nebo jméno třídy do čitelnější podoby (viz. obrázek \ref{image:pretty-tests-comparison}). Princip fingování je založen na překladu názvu ve velbloudí notace na obyčejný text s mezerami. Také výsledné názvy testu a tříd neobsahují žádné zbytečné symboly\footnote{například, za zbytečné symboly jsou považovány prázdné závorky na konci názvu metody} Pro pohodlné využiti generátoru byla implementována anotace, která je aplikovatelná na třídy. Anotace aktivuje generátor pro všechny testy, které třída obsahuje. 
     
-    V případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použit anotaci \textit{DisplayName} a v závorkách teto anotaci uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto tato anotace může být použita ve třídě, která má anotaci generátoru. Příkladem takového nevhodného názvu může být třída se jménem \enquote{ImageDTO}, která bude přeložena na \enquote{Image d t o}, což zjevně není požadováným výsledkem.
+    V případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použit anotaci \textit{DisplayName} a v závorkách teto anotaci uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto tato anotace může být použita ve třídě, která má anotaci generátoru. Příkladem takového nevhodného názvu může být třída se jménem \enquote{ImageDTO}, která bude přeložena na \enquote{Image~d~t~o}, což zjevně není požadováným výsledkem.
 %     \begin{figure}
 %         \begin{minted}{java}
 % class CamelCaseGenerator : DisplayNameGenerator.Standard() {
@@ -96,10 +131,16 @@ annotation class IntegrationTest
 %     \end{figure}
     
 \section{Unit testy}\label{testovani:unit}
-    TODO Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd.
+    % Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd
+    Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd. Všechny unit testy jsou anotovány jako unit testy (viz. sekci \ref{testovani:tagy}) za účelem přidání možnosti spustit tyto testy zvlášť od ostatních testů. Žádný z testů není závislý na celém kontextu aplikace nebo její části, proto všechny unit testy jsou rychle.
     
 \section{Integrační testy}\label{testovani:intergacni}
-    TODO Integrační testy zaměřené na ověření správné komunikace mezi komponentami aplikace.
+    % TODO Integrační testy zaměřené na ověření správné komunikace mezi komponentami aplikace.
+    Velka pozornost byla věnovaná integračním testům. Tyto testy ověřují, že jednotlivé komponenty aplikace pracuje podle jejích návrhu. Testy jsou označeny anotovány jako integrační testy (viz. sekci \ref{testovani:tagy}) za účelem přidání možnosti spustit tyto testy zvlášť od ostatních, stejně jako unit testy. 
+    
+    Integrační testy vyžadují nahrání celého kontextu aplikace nebo jeho častí, proto jsou pomalejší než unit testy. Některé testy navíc mění kontext aplikace a vyžadují zničeni kontextu po dokončení jejich běhu. Takové test jsou anotovány jako pomalé testy\footnote{anotace \textit{SlowTest}, obsahující tag \enquote{slow\_test}}.
+    
+    Většina integračních testů jsou zaměřená na ověření správného fungování vrstvy controlleru\footnote{Vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kód a zajišťuje omezení pro jednotlivých uživatelů}. Testování se provádí pomocí nástroje, který 
     
 \section{Samostatný profil pro testování}
 
@@ -136,4 +177,3 @@ annotation class IntegrationTest
             \item 90,1 \% metod
             \item 89,3 \% řádek kódů
     \end{itemize}
-    
