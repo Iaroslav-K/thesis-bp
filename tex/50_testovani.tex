@@ -51,12 +51,12 @@ annotation class IntegrationTest
     Správné a pochopitelné zobrazování názvů testu mnohem zjednodušuje proces testování. Proto před začátkem implementaci testů byly navrženo pravidlo pro zobrazování testu. Název testu má obsahovat v názvu stručný popis toho, co by měl test otestovat. 
     
     \begin{figure}\centering
-	   \includegraphics[width=1.0\textwidth]{pngs/pretty-tests-comparison}
+	   \includegraphics[angle=-90, width=1.0\textwidth]{pdfs/pretty-tests-comparison}
 	   \caption[Srovnaní zobrazováni kódu]{Příklad vypisování testů pomocí generátoru a bez}\label{image:pretty-tests-comparison}
     \end{figure}
     Pro čitelnější zobrazování byl implementován generátor transformující jméno testu nebo jméno třídy do čitelnější podoby (viz. obrázek \ref{image:pretty-tests-comparison}). Princip fingování je založen na překladu názvu ve velbloudí notace na obyčejný text s mezerami. Také výsledné názvy testu a tříd neobsahují žádné zbytečné symboly\footnote{například, za zbytečné symboly jsou považovány prázdné závorky na konci názvu metody} Pro pohodlné využiti generátoru byla implementována anotace, která je aplikovatelná na třídy. Anotace aktivuje generátor pro všechny testy, které třída obsahuje. 
     
-    V případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použit anotaci \textit{DisplayName} a v závorkách teto anotaci uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto tato anotace může být použita ve třídě, která má anotaci generátoru. 
+    V případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použit anotaci \textit{DisplayName} a v závorkách teto anotaci uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto tato anotace může být použita ve třídě, která má anotaci generátoru. Příkladem takového nevhodného názvu může být třída se jménem \enquote{ImageDTO}, která bude přeložena na \enquote{Image d t o}, což zjevně není požadováným výsledkem.
 %     \begin{figure}
 %         \begin{minted}{java}
 % class CamelCaseGenerator : DisplayNameGenerator.Standard() {
@@ -104,7 +104,7 @@ annotation class IntegrationTest
     
     Pro testování byla  využita stejná databáze jako i pro proces vývoje, za účelem kompletního a rychlého testování serveru. Databáze umožňuje rychle zničit a vytvořit tab, což nám umožňuje rychle zničit kontext aplikace mezi integračními testy.
     
-    Také profil pro testování má vlastní implementaci pro \textit{UserDetailsService}\footnote{TODO}, obsahující tří implicitní uživatele:
+    Také profil pro testování má vlastní implementaci pro \textit{UserDetailsService}\footnote{Základní rozhraní, které framework Spring využívá pro načítaní informace o uživateli}, obsahující tří implicitní uživatele:
     \begin{itemize}
             \item \textit{root}, vlastnící role \enquote{ROLE\_USER} a \enquote{ROLE\_ROOT} 
             \item \textit{userEmail}, vlastnící role \enquote{ROLE\_USER}
@@ -112,11 +112,14 @@ annotation class IntegrationTest
         \end{itemize}
     Tyto implicitní uživatel jsou využité v integračních testech pro spouštění požadavků (\textit{requestů}) přes instanci MocMvc. Podrobněji integrační testy byly popsány v sekci \ref{testovani:intergacni}.
 \section{Pokrytí kódu testy}\label{testovani:pokryti}
-    TODO V teto sekci je uveden popis provedéní analýzy pokrýtí kódu testy.
-    % TODO smazat subsection pokud nebude pridan jeste jeden
-    \subsection{JoCoCo}
-    TODO pokryti kodu testy podle jacoco
-    \cite{JoCoCo}
+    % TODO V teto sekci je uveden popis provedéní analýzy pokrýtí kódu testy.
+    V teto sekci bude popsáno pokrytí kódů testy a uvedeny statistiky. Za účelem zvýšení pravděpodobnosti provedené analýzy testování, byly využité speciální nástroje pro zhodnocení pokrýti kódů.
+    \subsection{JaCoCo}
+    Prvním nástrojem, který byl využit pro analýzu testů, je Jacoco. Tento nástroj byl podrobně popsán v sekci \ref{resere:testovani:jacoco}. V teto sekci uvedeme jenom proces analýzy a její výsledky.
+    
+    JaCoCo vyžaduje implementování vlastního \textit{tasku}\footnote{Konfigurovatelný úkol pro buildovácí systém Gradle. Například, \textit{test} nebo \textit{build}}(\textit{jacocoTestReport}) v Gradle. Generování výsledků závisí na spouštění klasického úkolu \textit{test} od Gradle. 
+    
+    Generování výsledků pokrýti testu bylo využito jako nápověda pro identifikování důležitého kódu nepokrytého testy. Proto úkol \textit{jacocoTestReport} byl spouštěn několikrát. Podle poslední verze výsledku 85 \% kódů jsou pokryté testy. Podrobnou infromací se můžete dozvědět v příloze \ref{dodatek:code-coverage}.
     % vestaveny junit engine v IntelifIDEA prestal fingovat po dosazeni velkeho poctu testu
-    % \subsection{IntelliJ IDEA code coverage runner}
-    % \cite{IntelliJ IDEA code coverage runner}
+    \subsection{IntelliJ IDEA code coverage runner}
+    TODO
