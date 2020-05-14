@@ -50,7 +50,11 @@ annotation class IntegrationTest
     % TODO v pripade ze pobezi testy pres IDEA. Pres terminal nefunguje CamelCaseGenerator
     Správné a pochopitelné zobrazování názvů testu mnohem zjednodušuje proces testování. Proto před začátkem implementaci testů byly navrženo pravidlo pro zobrazování testu. Název testu má obsahovat v názvu stručný popis toho, co by měl test otestovat. 
     
-    Pro čitelnější zobrazování byl implementován generátor transformující jméno testu nebo jméno třídy do čitelnější podoby (viz. obrázek \ref{code:pretty-tests-comparison}). Princip fingování je založen na překladu názvu ve velbloudí notace na obyčejný text s mezerami. Také výsledné názvy testu a tříd neobsahují žádné zbytečné symboly\footnote{například, za zbytečné symboly jsou považovány prázdné závorky na konci názvu metody} Pro pohodlné využiti generátoru byla implementována anotace, která je aplikovatelná na třídy. Anotace aktivuje generátor pro všechny testy, které třída obsahuje. 
+    \begin{figure}\centering
+	   \includegraphics[width=1.0\textwidth]{pngs/pretty-tests-comparison}
+	   \caption[Srovnaní zobrazováni kódu]{Příklad vypisování testů pomocí generátoru a bez}\label{image:pretty-tests-comparison}
+    \end{figure}
+    Pro čitelnější zobrazování byl implementován generátor transformující jméno testu nebo jméno třídy do čitelnější podoby (viz. obrázek \ref{image:pretty-tests-comparison}). Princip fingování je založen na překladu názvu ve velbloudí notace na obyčejný text s mezerami. Také výsledné názvy testu a tříd neobsahují žádné zbytečné symboly\footnote{například, za zbytečné symboly jsou považovány prázdné závorky na konci názvu metody} Pro pohodlné využiti generátoru byla implementována anotace, která je aplikovatelná na třídy. Anotace aktivuje generátor pro všechny testy, které třída obsahuje. 
     
     V případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použit anotaci \textit{DisplayName} a v závorkách teto anotaci uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto tato anotace může být použita ve třídě, která má anotaci generátoru. 
 %     \begin{figure}
@@ -92,10 +96,21 @@ annotation class IntegrationTest
 %     \end{figure}
     
 \section{Unit testy}\label{testovani:unit}
-    TODO podrobny popis
+    TODO Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd.
 \section{Integrační testy}\label{testovani:intergacni}
-    TODO podrobny popis
+    TODO Integrační testy zaměřené na ověření správné komunikace mezi komponentami aplikace.
 \section{Samostatný profil pro testování}
+    Testovaní aplikace vyžaduje vlastní nastavení, proto byl vytvořen samostatný profil, který odděluje testovací nastavení od nastavení produkce a vývoje. Profil má vlastní konfigurační soubor (\textit{application-test.properties}), obsahující nastavění databáze.
+    
+    Pro testování byla  využita stejná databáze jako i pro proces vývoje, za účelem kompletního a rychlého testování serveru. Databáze umožňuje rychle zničit a vytvořit tab, což nám umožňuje rychle zničit kontext aplikace mezi integračními testy.
+    
+    Také profil pro testování má vlastní implementaci pro \textit{UserDetailsService}\footnote{TODO}, obsahující tří implicitní uživatele:
+    \begin{itemize}
+            \item \textit{root}, vlastnící role \enquote{ROLE\_USER} a \enquote{ROLE\_ROOT} 
+            \item \textit{userEmail}, vlastnící role \enquote{ROLE\_USER}
+            \item \textit{user2Email}, vlastnící role \enquote{ROLE\_USER}
+        \end{itemize}
+    Tyto implicitní uživatel jsou využité v integračních testech pro spouštění požadavků (\textit{requestů}) přes instanci MocMvc. Podrobněji integrační testy byly popsány v sekci \ref{testovani:intergacni}.
 \section{Pokrytí kódu testy}\label{testovani:pokryti}
     TODO V teto sekci je uveden popis provedéní analýzy pokrýtí kódu testy.
     % TODO smazat subsection pokud nebude pridan jeste jeden
