@@ -97,9 +97,12 @@ annotation class IntegrationTest
     
 \section{Unit testy}\label{testovani:unit}
     TODO Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd.
+    
 \section{Integrační testy}\label{testovani:intergacni}
     TODO Integrační testy zaměřené na ověření správné komunikace mezi komponentami aplikace.
+    
 \section{Samostatný profil pro testování}
+
     Testovaní aplikace vyžaduje vlastní nastavení, proto byl vytvořen samostatný profil, který odděluje testovací nastavení od nastavení produkce a vývoje. Profil má vlastní konfigurační soubor (\textit{application-test.properties}), obsahující nastavění databáze.
     
     Pro testování byla  využita stejná databáze jako i pro proces vývoje, za účelem kompletního a rychlého testování serveru. Databáze umožňuje rychle zničit a vytvořit tab, což nám umožňuje rychle zničit kontext aplikace mezi integračními testy.
@@ -109,8 +112,9 @@ annotation class IntegrationTest
             \item \textit{root}, vlastnící role \enquote{ROLE\_USER} a \enquote{ROLE\_ROOT} 
             \item \textit{userEmail}, vlastnící role \enquote{ROLE\_USER}
             \item \textit{user2Email}, vlastnící role \enquote{ROLE\_USER}
-        \end{itemize}
+    \end{itemize}
     Tyto implicitní uživatel jsou využité v integračních testech pro spouštění požadavků (\textit{requestů}) přes instanci MocMvc. Podrobněji integrační testy byly popsány v sekci \ref{testovani:intergacni}.
+    
 \section{Pokrytí kódu testy}\label{testovani:pokryti}
     % TODO V teto sekci je uveden popis provedéní analýzy pokrýtí kódu testy.
     V teto sekci bude popsáno pokrytí kódů testy a uvedeny statistiky. Za účelem zvýšení pravděpodobnosti provedené analýzy testování, byly využité speciální nástroje pro zhodnocení pokrýti kódů.
@@ -119,7 +123,17 @@ annotation class IntegrationTest
     
     JaCoCo vyžaduje implementování vlastního \textit{tasku}\footnote{Konfigurovatelný úkol pro buildovácí systém Gradle. Například, \textit{test} nebo \textit{build}}(\textit{jacocoTestReport}) v Gradle. Generování výsledků závisí na spouštění klasického úkolu \textit{test} od Gradle. 
     
-    Generování výsledků pokrýti testu bylo využito jako nápověda pro identifikování důležitého kódu nepokrytého testy. Proto úkol \textit{jacocoTestReport} byl spouštěn několikrát. Podle poslední verze výsledku 85 \% kódů jsou pokryté testy. Podrobnou infromací se můžete dozvědět v příloze \ref{dodatek:code-coverage}.
+    Generování výsledků pokrýti testu bylo využito jako nápověda pro identifikování důležitého kódu nepokrytého testy. Proto úkol \textit{jacocoTestReport} byl spouštěn několikrát. Podle poslední verze výsledku, která byla spouštěna pro poslední verzi aplikace, 85 \% instrukcí jsou pokryté testy. Podrobnou informaci se můžete dozvědět v příloze \ref{dodatek:code-coverage}.
     % vestaveny junit engine v IntelifIDEA prestal fingovat po dosazeni velkeho poctu testu
-    \subsection{IntelliJ IDEA code coverage runner}
-    TODO
+    \subsection{IntelliJ IDEA}
+    Druhým testovacím nástrojem, který byl využit pro zjištění pokrytí kódů testy, je InteliJ IDEA. Podrobněji tento nástroj byl popsán v sekci \ref{resere:testovani:intellij-idea}. 
+    
+    Tento nástroj také byl využit jako pomocný nástroj při implementaci testů. V teto sekci budou uvedený jenom výsledky posledního spouštění pro poslední verzi aplikace. Kompletní informaci o výsledcích najdete v příloze \ref{dodatek:code-coverage}.
+    
+    IntelliJ IDEA poskytuje trochu jinou informaci o pokrytí kódů než nástroj JaCoCo. Podle výsledku jsou pokryté testy:
+    \begin{itemize}
+            \item 72,6 \% tříd
+            \item 90,1 \% metod
+            \item 89,3 \% řádek kódů
+    \end{itemize}
+    
