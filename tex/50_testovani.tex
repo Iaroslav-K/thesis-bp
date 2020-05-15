@@ -92,43 +92,6 @@ task integrationTests(type: Test) {
     Pro čitelnější zobrazování byl implementován generátor transformující jméno testu nebo jméno třídy do čitelnější podoby (viz. obrázek \ref{image:pretty-tests-comparison}). Princip fingování je založen na překladu názvu ve velbloudí notace na obyčejný text s mezerami. Také výsledné názvy testu a tříd neobsahují žádné zbytečné symboly\footnote{například, za zbytečné symboly jsou považovány prázdné závorky na konci názvu metody} Pro pohodlné využiti generátoru byla implementována anotace, která je aplikovatelná na třídy. Anotace aktivuje generátor pro všechny testy, které třída obsahuje. 
     
     V případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použit anotaci \textit{DisplayName} a v závorkách teto anotaci uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto tato anotace může být použita ve třídě, která má anotaci generátoru. Příkladem takového nevhodného názvu může být třída se jménem \enquote{ImageDTO}, která bude přeložena na \enquote{Image~d~t~o}, což zjevně není požadováným výsledkem.
-%     \begin{figure}
-%         \begin{minted}{java}
-% class CamelCaseGenerator : DisplayNameGenerator.Standard() {
-%     override fun generateDisplayNameForNestedClass(
-%             nestedClass: Class<*>?): String {
-%         return toCamelCase(super.generateDisplayNameForNestedClass(nestedClass))
-%     }
-
-%     override fun generateDisplayNameForMethod(
-%             testClass: Class<*>?,
-%             testMethod: Method?): String {
-%         return toCamelCase(testMethod!!.name)
-%     }
-
-%     override fun generateDisplayNameForClass(testClass: Class<*>?): String {
-%         return toCamelCase(super.generateDisplayNameForClass(testClass))
-%     }
-
-%     private fun toCamelCase(name: String): String {
-%         val result = StringBuilder()
-%         result.append(name.ifEmpty { return "" }.first())
-%         for (char in name.substring(1)) {
-%             if (Character.isUpperCase(char)) {
-%                 result.append(' ')
-%                 result.append(Character.toLowerCase(char))
-%             } else {
-%                 result.append(char)
-%             }
-%         }
-%         return result.toString()
-%     }
-
-% }
-%         \end{minted}
-%         \caption{Třída transformující jména metod a tříd do čítelné podoby} 
-%         \label{code:DNG}
-%     \end{figure}
     
 \section{Unit testy}\label{testovani:unit}
     % Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd
@@ -140,7 +103,33 @@ task integrationTests(type: Test) {
     
     Integrační testy vyžadují nahrání celého kontextu aplikace nebo jeho častí, proto jsou pomalejší než unit testy. Některé testy navíc mění kontext aplikace a vyžadují zničeni kontextu po dokončení jejich běhu. Takové test jsou anotovány jako pomalé testy\footnote{anotace \textit{SlowTest}, obsahující tag \enquote{slow\_test}}.
     
-    Většina integračních testů jsou zaměřená na ověření správného fungování vrstvy controlleru\footnote{Vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kód a zajišťuje omezení pro jednotlivých uživatelů}. Testování se provádí pomocí nástroje, který 
+        \begin{figure}
+        \begin{minted}{java}
+mvc.perform(
+        MockMvcRequestBuilders
+            .post("/api/v1/comment")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(commentDTO.toString())
+)
+    .andExpect(status().isCreated)
+    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+    .andExpect(jsonPath("$.createdById", is(
+        commentDTO.createdById.toInt()
+        )))
+    .andExpect(jsonPath("$.text", is(commentDTO.text)))
+    .andExpect(jsonPath("$.createdAt", is(
+        commentDTO.createdAt.format(
+            DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            )
+        )))
+
+        \end{minted}
+        \caption{Příklad použití nástroje MockMvc} 
+        \label{code:mockmvc}
+    \end{figure}
+    Většina integračních testů jsou zaměřená na ověření správného fungování vrstvy controlleru\footnote{Vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kód a zajišťuje omezení pro jednotlivých uživatelů}. Testování se provádí pomocí nástroje MockMvc\cite{mock-mvc}, který poskytuje framework Spring. Nástroj umožňuje otestovat funkcionalitu aplikace bez její úplného nastartování. Příklad využití nastroje je na obrázku \ref{code:mockmvc}. Tento kód má za úkol otestovat, zda controller správně vytváří instanci entity \textit{Comment}. Kontrola správností atributu se provádí na základě DTO\footnote{TODO v pripade ze DTO nebudou zmineny}, který se vrátí jako návratová hodnota.
+    
+    V rámci integračních testu byly také ověřené přístupová práva (viz. sekci \ref{navrh:bezpecnost}). Při testování controllerů bylo zapnuté filtrování podle role přihlášeného uživatele. Každému testu patří jeden uživatel, který je nastaven pomocí uživatelského jména\footnote{Uživatelský jménem uživatele v systému je adresa jeho elektronické pošty}. V případě, že uživatel nemá dostatečná přístupová práva, controller musí vrátit HTTP status s číslem 400\footnote{Bad Request}.
     
 \section{Samostatný profil pro testování}
 
