@@ -84,6 +84,8 @@ scheduled.alimonyFactory=true
                 \label{code:alimony-factory-true}
             \end{figure}
             Pomocí konfiguračního souboru byla přidána možnost měnit čas spouštění metody, ale také bychom potřebovali mít možnost vypnout tuto metodu. Proto přidána třída, která vytváří instanci tříd, obsahující automaticky spustitelné metody, podle \textit{property} konfiguračního souboru. V případě, že nutné \textit{property} nebyly definovány aplikace se neukončí běh a nastaví tyto \textit{property} na implicitní hodnoty. Pro zapínaní běhu metody vytvářející alimenty je potřeba definovat \textit{property} \textit{scheduled.alimonyFactory} a nastavit na hodnotu \textit{true} (viz. obrázek \ref{code:alimony-factory-true}).
+        
+        
             
 \section{Navržené změny}
     V teto sekci budou popsány navržené změny autorem teto práci, které vylepšují výslednou aplikaci.
@@ -130,6 +132,27 @@ private val validInterval = Interval(
         
     \subsection{Implementace Controlleru}
         TODO POST vs PUT
+        
+    \subsection{Implementace historie změn}
+        Důležitou častí aplikace je zaznamenání změn udělaných uživatelem. Úpravou je změna záznamu entity, kterou uživatel s rolí \enquote{ROLE\_USER} může upravit. Aktivita \textit{root}\footnote{uživatel s rolí \enquote{ROLE\_ROOT}} není zajímavá, protože tento uživatel je odstraněn v rámci profilu pro produkci. Příkladem takové změny může být změna nastavení alimentů nebo označení oznámení jako přečtený.
+    
+        \begin{figure}\centering
+	        \includegraphics[width=1.0\textwidth]{pdfs/History1}
+	        \caption[Návrh entity History]{Návrh entity \textit{History} podle Doménového modelu z předmětu BI-SP2}\label{image:History1}
+        \end{figure}
+        Historie změn ještě nebyly implementovány, ale návrh již existoval a hlavní myšlenka se zůstává úplně stejnou. Záznam historie kopíruje všechny atributy entity a přidává čas vytvoření záznamu a vlastní identifikátor\footnote{identifikátor v rámci databáze}. Entita History je abstraktní třídou, neboli generalizace v případě návrhu v doménovém modelu. Jednotlivé entity, které jsou zděděné od teto entity, reprezentuje historie příslušné entity (viz. obrázek \ref{image:History1}). 
+    
+        \begin{figure}\centering
+	        \includegraphics[width=1.0\textwidth]{pdfs/History1_2}
+	        \caption[Návrh entity History po změnách návrhu]{Návrh entity \textit{History} po navržení změn pro entity, kterým patří příslušné entity historie}\label{image:History1_2}
+        \end{figure}
+        Tato entita byla implementována jako poslední a všechny změny, které se ji týkají, jsou srozumitelné jenom po přečtení všech změn návrhu. Než se zanořit do navržení vhodných změn teto entity, byla potřeba nejdřív upravit návrh podle navržených změn (viz. obrázek \ref{image:History1_2}). Byly opraveny atributy, které mají entity v souladu s entity, kterým patří jednotlivé historie.
+        
+        Dalším krokem úprav je navržení úprav, které už není nutné, ale výrazně zlepšují výsledný návrh serveru:
+        \begin{itemize}
+            \item přidání do každé entity History odkazů na příslušnou entitu. Například, entita AlimonyHistory bude mít navíc odkaz na entitu Alimony.
+            \item zavedení nové entity CareDaysSettingHistory podle návrhu entity CareDaysSetting, která byla popsána v sekci 
+        \end{itemize}
 
 \section{Návrh bezpečnosti}\label{navrh:bezpecnost}
     \subsection{OAuth 2.0}
@@ -138,6 +161,9 @@ private val validInterval = Interval(
         
     \subsection{HTTPS}
         certificaty TODO
+        
+\section{Návrh požadavků na změny}
+    TODO bude v budoucích krocích
         
 \section{Profily}\label{navrh:profily}
     Při implementace byl rozšířen návrh profilů aplikace. Původní návrh obsahoval jenom implicitní profil a vývojový profil, dosahující konfiguraci databáze H2. Výsledný návrh aplikace potřebuje více profilu, proto byly přidány dva profily aplikace: profil pro produkce a profil pro testování. Příčinami přidání dalších profilu jsou rozdíly mezi konfiguracemi, která potřebují konkretní případy spouštěni aplikace. Princip chovaní profilu byl již zmíněn v sekci \ref{analyza:soucasnaImplementace:profily}, proto ihned se zanoříme do provedených změn.
@@ -171,8 +197,8 @@ private val validInterval = Interval(
             \item PostgresSQL poskytuje možnost definovat vlastní typy\cite{pstgres-create-type}
             \item autor teto práce má zkušenosti s PostgresSQL
     \end{itemize}
+    Informace o rozdílech těchto databází byly převzaty s několika článku na internetu. Nejpoužitelnějšími pro autora teto práce byly \cite{mysql-postgres1, mysql-postgres2}  
     
-\section{Implementace historii zm}
     
     
 \section{Implementace požadavků na změny}
