@@ -47,7 +47,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         Na základe těchto údajů se vytváří unikátní uživatel v rámci systému. V tomto stavu člověk není přihlášeny do žádné rodiny a nemá žádnou roli. Podrobněji role budou popsané v sekci \ref{analyza:bezpecnost:role}. \textit{User} také může mít implicitní obrázek profilu (viz. obrázek \ref{image:User-Image1}).
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/User-Image1}
-	        \caption[Návrh User-Image]{Vztah mezi třídami \textit{User} a \textit{Image} podle Doménovém modelu z předmětu BI-SP2}\label{image:User-Image1}
+	        \caption[Návrh User-Image]{Vztah mezi třídami \textit{User} a \textit{Image} podle Doménového modelu z předmětu BI-SP2}\label{image:User-Image1}
         \end{figure}
         
         Potom uživatel má možnost vytvořit rodinu nebo přihlásit se do již existující rodiny. Pro vytvoření nové rodiny, uživatel potřebuje zadat jméno rodiny a přidat členy rodiny. Autor teto rodiny automaticky se stává jedním s rodičů teto rodiny. jinou možností je přihlásit se do rodiny, která již existuje. Podmínkou k tomu je existování pozvání do některé existující rodiny. V takovém případě uživatel už nemá možnost zvolit role v rámci rodiny. Role má být nastavena uživatelem, který vytvořil toto pozvání.
@@ -60,24 +60,24 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         Aplikace řeší i finanční problémy. Hlavní problémem jsou alimenty, které má pravidelně uhrazovat jeden z rodičů. Tento proces byl rozdělen do dvou častí. První častí je nastavení dlouhodobých pravidel (viz. obrázek \ref{image:AlimonySettings1}) pro splacení alimentů. Druhou častí jsou samotné alimenty (viz. obrázek \ref{image:Alimony1}), které se generuje na základě dlouhodobých nastavení. Jedna rodina může mít zároveň několik nastavení v případě, že jedna rodina má několik dětí nebo chce rozdělit alimenty do logický částí.
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/AlimonySettings1}
-	        \caption[Návrh AlimonySettings]{Návrh třídy \textit{AlimonySettings} podle Doménovém modelu z předmětu BI-SP2}\label{image:AlimonySettings1}
+	        \caption[Návrh AlimonySettings]{Návrh třídy \textit{AlimonySettings} podle Doménového modelu z předmětu BI-SP2}\label{image:AlimonySettings1}
         \end{figure}
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/Alimony1}
-	        \caption[Návrh Alimony]{Návrh třídy \textit{Alimony} podle Doménovém modelu z předmětu BI-SP2}\label{image:Alimony1}
+	        \caption[Návrh Alimony]{Návrh třídy \textit{Alimony} podle Doménového modelu z předmětu BI-SP2}\label{image:Alimony1}
         \end{figure}
     \subsection{Kniha potřeb dítěte}
     
         Jedním s populárních problému, který vzniká v procesu rozvodu, je nakupování příliš drahých věci o kterých nevědí ostatní členy rodiny. Jako příklad je možné uvést nakupování bot pro dítěte. Jeden s rodičů může chtít "koupit lásku dítěte" a koupit několikrát dražší boty než dítěte opravdu potřebuje. Kniha potřeb dítěte (viz. obrázek \ref{image:Need1}) je zaměřena na překonání takových situací.
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/Need1}
-	        \caption[Návrh Need]{Návrh třídy \textit{Need} podle Doménovém modelu z předmětu BI-SP2}\label{image:Need1}
+	        \caption[Návrh Need]{Návrh třídy \textit{Need} podle Doménového modelu z předmětu BI-SP2}\label{image:Need1}
         \end{figure}
         
         Potřeba může být typu \textit{need} a \textit{wish}. Podle současného návrhu je rozdíl mezi typy pouze pro informační účely. Každé instance \textit{Need} patři instance \textit{NeedPermission} (viz. obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivého člena rodiny. V případě, že uživatel nemá žádné z přístupových práv, pak tento záznam nemá ve svém seznamu potřeb dítěte. Toto pravidlo se netýká jenom rodíču, která mají pŕístup ke všemu. 
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/NeedPermissions1}
-	        \caption[Návrh NeedPermissions]{Návrh třídy \textit{NeedPermissions} podle Doménovém modelu z předmětu BI-SP2}\label{image:NeedPermissions1}
+	        \caption[Návrh NeedPermissions]{Návrh třídy \textit{NeedPermissions} podle Doménového modelu z předmětu BI-SP2}\label{image:NeedPermissions1}
         \end{figure}
        
        Potřeba má v sobě následující informace:
@@ -146,7 +146,7 @@ fun api(): Docket {
         \caption{Ukázka nastavení frameworku Swagger}\label{code:swagger-configuration}
         \end{figure}
     
-    \subsection{Profily}
+    \subsection{Profily}\label{analyza:soucasnaImplementace:profily}
     %spring profiles: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles
     %applicatioon peoperties: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-application-property-files
         Framework Spring poskytuje možnost rozdělit implementaci do logických bloků, které budou existovat jenom v konkrétních profilech\cite{spring-profile}. Implicitně všechny komponenty nezávisle na aktuálních profilech. Pro zavedení profilů pro konkretní komponentu je potřeba ji označit anotací \textit{Profile}. V závorkách vedle anotací je potřeba přidat seznam profilu, ve kterých tato komponenta bude existovat. Konfigurace aktuálně zapnutých profilů se provádí pomocí souboru \textit{application.properties}\footnote{TODO}, který definuje \textit{property}\footnote{TODO} pro prostředí aplikace.
@@ -177,7 +177,7 @@ fun api(): Docket {
         Dodatečným požadavkem frontendového týmu se týká entity \textit{Alimony} samotné. Za účelem zjednoduďení návrhu frontendové části je potřeba přidat závislost na entitu \textit{Family}. % V takovém pŕípade aplikace může ihned po nalazení novych alimentu rict uZivateli ktere rodine patri tyto alimenty.
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/AlimonyDraft1}
-	        \caption[Návrh \textit{Alimony} a \textit{AlimonySettings}]{Návrh entit \textit{Alimony} a \textit{AlimonySettings} podle Doménovém modelu z předmětu BI-SP2}\label{image:aliomny-draft1}
+	        \caption[Návrh \textit{Alimony} a \textit{AlimonySettings}]{Návrh entit \textit{Alimony} a \textit{AlimonySettings} podle Doménového modelu z předmětu BI-SP2}\label{image:aliomny-draft1}
         \end{figure}
     % \section{Analýza konkurence}
     %     Tento návrh...
@@ -193,7 +193,7 @@ fun api(): Docket {
         Po přihlášeni do rodiny uživatel má svou vlastní roli (viz. obrázek \ref{image:Role1}), podle které mohou lišit jeho přístupová práva. Hlavní rolí v aplikace je rodič. Uživatel s takovou rolí má přístup ke všem potřebám dítěte a všem záznamem v kalendáři. Také, rodič může vytvořit pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně roli rodiče. Mimořádnou roli v rámci systému je dítěte. Uživatel s takovou rolí nemůže vlastnit pečovatelský den nebo splnit přání. Přihlášení dítěte muže proběhnout i bez vytvořeni klasického uživatele systému. Ostatní uživatele v rodině mají roli příbuzného.
         \begin{figure}\centering
 	        \includegraphics[width=0.7\textwidth]{pdfs/Role1}
-	        \caption[Návrh \textit{Role}]{Návrh entity \textit{Role} podle Doménovém modelu z předmětu BI-SP2}\label{image:Role1}
+	        \caption[Návrh \textit{Role}]{Návrh entity \textit{Role} podle Doménového modelu z předmětu BI-SP2}\label{image:Role1}
         \end{figure}
     
     \subsection{Autorizace}
@@ -216,3 +216,6 @@ class RozvodyApplicationTests {
         \caption{Ukázka současného testování} 
         \label{code:test-context-loads1}
         \end{figure}
+\section{Průběžná integrace}
+    TODO CI
+   
