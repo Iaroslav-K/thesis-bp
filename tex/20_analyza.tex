@@ -2,8 +2,10 @@
 \label{chapter:analyza}
 Hlavním cílem teto bakalářské práce je implementovat návrh backendu podle návrhu a fragmentu implementace, které byly udělány v rámci předmětů BI-SP1 a BI-SP2 bakalářského studia vyučovaných na FIT ČVUT v akademickém roce 2018/2019 a 2019/2020. Tato kapitola se zabývá analýzou výsledků zmíněných předmětu. Autor práce je zároveň i absolventem těchto předmětů, kde pracoval v týmu na analýze požadavku zákazníka a pak pracoval jako backend vývojář a vedoucí backendového týmu.
 
-Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kapitoly, uvádím datům ukončení práce na projektu v rámci předmětu BI-SP2 - 25. února 2020. Také pro možnost pohodlně vyhledat konkretní verze uvádím poslední 
-\textit{commit}\footnote{252b0288dbfe9942446b78fd452c0edce810a370} udělaný v rámci tohoto předmětu.
+Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kapitoly, uvádím datům ukončení práce na projektu v rámci předmětu BI-SP2 - 25. února 2020. Také, pro možnost pohodlně vyhledat konkretní verze na GitLabu (\url{https://gitlab.fit.cvut.cz/rozvody/be-springboot}), uvádím poslední \textit{commit}\footnote{proces při kterém se uloží všechny udělané v rámci systému řízení verzí změny a zařadí se do historie změn} udělaný přes Git\footnote{ distribuovaný systém řízení verzí} v rámci tohoto předmětu: 
+\begin{quote}
+    \enquote{252b0288dbfe9942446b78fd452c0edce810a370}
+\end{quote}
 
 % Tato kapitola se zabývá popisem současného stavu aplikace, který je výsledkem zmíněných předmětů.
 
@@ -25,7 +27,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
 	   \item Uchování účtenek;
 	   \item Správa alimentů.
 	\end{itemize}
-    Potom byly navrženy Use Case Diagram a Activity Diagramy, podle kterých byly navrženy Wireframy a Doménový model. 
+    Potom byly navrženy Diagram užití\footnote{popisuje chování systému z vnějšího pohledu} a Diagram aktivit\footnote{zobrazuje jak objekty spolupracují}, podle kterých byly navrženy Wireframy\footnote{grafickém zobrazením hlavních prvků frontendové častí aplikace} a Doménový model\footnote{náčrt základních entit systému a vztahů mezi nimi}. 
     
     \subsection{Předmět BI-SP2}\label{analyza:navrh:sp2}
         Cílem předmětu BI-SP2 byla implementace návrhu předmětu BI-SP2. Autor teto práce pracoval v backendovém týmu a zároveň vystupoval v roli vedoucího backendového týmu.
@@ -34,7 +36,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         
     
     \subsection{Doménový model}\label{analyza:navrh:DomainModel}
-        Hlavním zdrojem informace o výsledném návrhu serveru je Doménový model. Kompletní Doménový model se nachází v příloze \ref{dodatek:DomainModel}. Zelenou barvou jsou označeny třídy, které už jsou implementovány. žlutou barvou jsou označeny třídy, které ještě nejsou implementovány. Také, jsou třídy označeny zároveň žlutou a zelenou barvou, což znamená, že třída je implementována jenom částečně. Taková situace se mohla nastat v případe, že implementace vyžadovala implementace jiné třídy, která ještě neexistovala. Tento Doménový model má určité nedostatky podle požadavku frontedové části aplikace. Jako příklad takových nedostatku je možné uvést zbytečně komplikovaný návrh Intervalů (viz. obrázek \ref{image:Interval1}), který byl od začátku předělán.
+        Hlavním zdrojem informace o výsledném návrhu serveru je Doménový model. Kompletní Doménový model se nachází v příloze \ref{dodatek:DomainModel}. Zelenou barvou jsou označeny třídy, které už jsou implementovány. žlutou barvou jsou označeny třídy, které ještě nejsou implementovány. Také, jsou třídy označeny zároveň žlutou a zelenou barvou, což znamená, že třída je implementována jenom částečně. Taková situace se mohla nastat v případe, že implementace vyžadovala implementace jiné třídy, která ještě neexistovala. Tento Doménový model má určité nedostatky podle požadavku frontedové části aplikace. Jako příklad takových nedostatku je možné uvést zbytečně komplikovaný návrh entity \textit{Interval} (viz. obrázek \ref{image:Interval1}), který byl úplně předělán.
 
     \subsection{Registrace a přihlášeni do rodiny}
         Aplikace je navržena tak, že první uživatel, který má vytvořit svůj účet je jeden z rodičů. Pro registraci člověk potřebuje řadu povinných údajů:
@@ -57,7 +59,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         
         Kromě dlouhodobých nastavení pečovatelských dnu, kalendář může zobrazovat i jednorázové změny, které mohou vidět všechny členy rodiny. Takový postup pomáhá rodině eliminovat situace, kdy několik členu rodiny najednou myslí, že je v konkretní den dítě v jejích péči nebo několik členu rodiny najednou říkají, že není to jejích den.  
     \subsection{Alimenty}    
-        Aplikace řeší i finanční problémy. Hlavní problémem jsou alimenty, které má pravidelně uhrazovat jeden z rodičů. Tento proces byl rozdělen do dvou častí. První častí je nastavení dlouhodobých pravidel (viz. obrázek \ref{image:AlimonySettings1}) pro splacení alimentů. Druhou častí jsou samotné alimenty (viz. obrázek \ref{image:Alimony1}), které se generuje na základě dlouhodobých nastavení. Jedna rodina může mít zároveň několik nastavení v případě, že jedna rodina má několik dětí nebo chce rozdělit alimenty do logický částí.
+        Aplikace řeší i finanční problémy. Hlavním problémem jsou alimenty, které má pravidelně uhrazovat jeden z rodičů. Tento proces byl rozdělen do dvou častí. První častí je dlouhodobé nastávení alimentů (viz. obrázek \ref{image:AlimonySettings1}) . Druhou častí jsou samotné alimenty (viz. obrázek \ref{image:Alimony1}), které se generuje na základě dlouhodobých nastavení. Jedna rodina může mít zároveň několik nastavení v případě, že jedna rodina má několik dětí nebo chce rozdělit alimenty do logických částí.
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/AlimonySettings1}
 	        \caption[Návrh AlimonySettings]{Návrh třídy \textit{AlimonySettings} podle Doménového modelu z předmětu BI-SP2}\label{image:AlimonySettings1}
@@ -68,13 +70,13 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         \end{figure}
     \subsection{Kniha potřeb dítěte}
     
-        Jedním s populárních problému, který vzniká v procesu rozvodu, je nakupování příliš drahých věci o kterých nevědí ostatní členy rodiny. Jako příklad je možné uvést nakupování bot pro dítěte. Jeden s rodičů může chtít "koupit lásku dítěte" a koupit několikrát dražší boty než dítěte opravdu potřebuje. Kniha potřeb dítěte (viz. obrázek \ref{image:Need1}) je zaměřena na překonání takových situací.
+        Jedním s populárních problému, které vznikají v procesu rozvodu, je nakupování příliš drahých věci o kterých nevědí ostatní členy rodiny. Jako příklad je možné uvést nakupování bot pro dítěte. Jeden s rodičů může chtít \enquote{koupit lásku dítěte} a koupit několikrát dražší boty než dítěte opravdu potřebuje. Kniha potřeb dítěte (viz. obrázek \ref{image:Need1}) je zaměřena na překonání takových situací.
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/Need1}
 	        \caption[Návrh Need]{Návrh třídy \textit{Need} podle Doménového modelu z předmětu BI-SP2}\label{image:Need1}
         \end{figure}
         
-        Potřeba může být typu \textit{need} a \textit{wish}. Podle současného návrhu je rozdíl mezi typy pouze pro informační účely. Každé instance \textit{Need} patři instance \textit{NeedPermission} (viz. obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivého člena rodiny. V případě, že uživatel nemá žádné z přístupových práv, pak tento záznam nemá ve svém seznamu potřeb dítěte. Toto pravidlo se netýká jenom rodíču, která mají pŕístup ke všemu. 
+        Potřeba může být typu \textit{need} a \textit{wish}. Podle současného návrhu je rozdíl mezi typy pouze pro informační účely. Každé instance \textit{Need} patři instance \textit{NeedPermission} (viz. obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivé členy rodiny. V případě, že uživatel nemá žádné z přístupových práv, potřeba se nevyskytuje v jeho seznamu potřeb dítěte. Toto pravidlo se netýká jenom rodičů, která mají přistup ke všem potřebam automaticky. 
         \begin{figure}\centering
 	        \includegraphics[width=0.5\textwidth]{pdfs/NeedPermissions1}
 	        \caption[Návrh NeedPermissions]{Návrh třídy \textit{NeedPermissions} podle Doménového modelu z předmětu BI-SP2}\label{image:NeedPermissions1}
@@ -90,7 +92,11 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
         \end{itemize}
      
 \section{Analýza současné implementace}\label{analyza:soucasnaImplementace}
-    Projekt má ve složce \textit{main}\footnote{bi-springboot/src/main} 69 souborů a 845 řádek kódů. Implementace částečné pokrývá Doménový model zmíněný v sekci. \ref{analyza:navrh:DomainModel}.
+    \begin{figure}\centering
+	   \includegraphics[angle=-90, width=0.7\textwidth]{pdfs/Cloc1}
+	   \caption[Počet řádků kódu před začátkem práce]{Počet řádků kódu před začátkem práce}\label{image:cloc1}
+    \end{figure}
+    Současná implementace obsahuje 69 souborů a 845 řádek kódů (viz. obrázek \ref{image:cloc1}), které byly vytvořeny a napsány členy týmu. Za účelem zvětšení přesnosti analýzy byl zvolen nástroj pro analýzu počtu řádek kódu - CLOC (viz. sekci \ref{reserse:cloc}). Implementace částečné pokrývá Doménový model zmíněný v sekci. \ref{analyza:navrh:DomainModel}.
         
     \subsection{Implementované třídy}
         Seznam implementovaných entit:
@@ -114,7 +120,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
             \item \textit{User}
         \end{itemize}
         
-        Byl přidán \textit{Controller} pro testování, zda aplikace běží. \textit{Controller} je namapován na \enquote{/}. Také, byl přidaná třída, která obsahuje nápovědy pro ostatní \textit{Controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
+        Byl přidán \textit{controller}\footnote{vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kóda zajišťuje omezení pro jednotlivých uživatelů} pro testování, zda aplikace běží, který je namapován\footnote{přidání konkrétnímu controlleru adresy pomocí anotací frameworku Spring, která se zadává jako URI při odesílaní požadavků na Server} na cestu \enquote{/}. Také, byla přidaná třída, která obsahuje nápovědy pro ostatní \textit{controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz. tabulka \ref{tab:excpetion-handler1}). 
         \begin{table}\centering
 	    \caption[Exception handler]{Ukázka \textit{Exception handler} podle návrhu BI-SP2}\label{tab:excpetion-handler1}
 	    \begin{tabular}{|l|c|c|c|}\hline
@@ -149,20 +155,22 @@ fun api(): Docket {
     \subsection{Profily}\label{analyza:soucasnaImplementace:profily}
     %spring profiles: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles
     %applicatioon peoperties: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-application-property-files
-        Framework Spring poskytuje možnost rozdělit implementaci do logických bloků, které budou existovat jenom v konkrétních profilech\cite{spring-profile}. Implicitně všechny komponenty nezávisle na aktuálních profilech. Pro zavedení profilů pro konkretní komponentu je potřeba ji označit anotací \textit{Profile}. V závorkách vedle anotací je potřeba přidat seznam profilu, ve kterých tato komponenta bude existovat. Konfigurace aktuálně zapnutých profilů se provádí pomocí souboru \textit{application.properties}\footnote{TODO}, který definuje \textit{property}\footnote{TODO} pro prostředí aplikace.
+        Framework Spring poskytuje možnost rozdělit implementaci do logických bloků, které budou existovat jenom v konkrétních profilech\cite{spring-profile}. Implicitně všechny komponenty nezávisle na aktuálních profilech. Pro zavedení profilů pro konkretní komponentu je potřeba ji označit anotací \textit{Profile}. V závorkách vedle anotací je potřeba přidat seznam profilu, ve kterých tato komponenta bude existovat. Konfigurace aktuálně zapnutých profilů se provádí pomocí souboru \textit{application.properties}, který definuje proměnné pro prostředí aplikace. Soubor se nachází ve slo+zce s cestou \enquote{be-springboot/src/main/resources}.
     
-        Každý profil také může obsahovat vlastní konfigurační soubor, který definuje všechny nutné \textit{property}. Soubor má byt zadán ve formátu \textit{application-\{profile\}.properties}, kde \textit{profile} je názvem profilu kterému patří tento soubor. Současný návrh aplikace obsahuje dva konfiguračních souboru.
+        Každý profil také může obsahovat vlastní konfigurační soubor, který definuje všechny nutné proměnné. Soubor má byt zadán ve formátu \textit{application-\{profile\}.properties}, kde \textit{profile} je názvem profilu kterému patří tento soubor. Současný návrh aplikace obsahuje dva konfiguračních souboru.
     
-        První konfigurační soubor obsahuje implicitní \textit{property} pro prostředí aplikace. Aktuálně soubor má jenom definici aktuálního profilu aplikace. 
+        První konfigurační soubor obsahuje implicitní proměnné pro prostředí aplikace. Aktuálně soubor má jenom definici aktuálního profilu aplikace. 
     
         Druhý konfigurační soubor patří profilu \textit{development}. Tento profil je určen pro pohodlný proces vývoje aplikace. Soubor obsahuje konfiguraci databáze a konfiguraci žurnálu aplikace. Podrobněji použita databáze pude popsána v sekci \ref{analyza:soucasnaImplementace:databaze}.
+        
     \subsection{Databáze}\label{analyza:soucasnaImplementace:databaze}
-        Pro proce vývoje byla zvolena relační\footnote{relacni DB TODO} databáze H2\cite{ht-db}. Zvolená databáze umožňuje vytvářet tabulky při každém zapuštěni aplikace přímo v pamětí aplikace. Podrobněji tato databáze a její princip fungování byly popsány v sekci \ref{resere:databaze}
+        Pro proce vývoje byla zvolena relační databáze H2. Zvolená databáze umožňuje vytvářet tabulky při každém zapuštěni aplikace přímo v pamětí aplikace. Podrobněji tato databáze a její princip fungování byly popsány v sekci \ref{resere:databaze} .
     
 \section{Analýza požadavku frontendu na změny}\label{analyza:pozadavky-frontendu}
     V rámci předmětu BI-SP2 současně s implementací backendové častí aplikace, probíhala implementace forntendové častí aplikace - Android aplikace. Během vývoje frotnendové častí aplikace byly zjištěny nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu.
+    
     \subsection{Interval}
-        Prvním takovým příkladem je návrh intervalu\ref{image:Interval1}, které jsou široce využívány v projektu. Návrh řešení tohoto problému bude popsán v sekci \ref{navrh:upravy}. tady bude popsán jenom problém samotný. Entita \textit{Interval} reprezentuje časové rozmezí pro pečovatelské dny, opakované události, nastavení alimentů a navazující na ně požadavky na změny a historické záznamy.
+        Prvním takovým příkladem je návrh intervalu \ref{image:Interval1}, které jsou široce využívány v projektu. Návrh řešení tohoto problému bude popsán v sekci \ref{navrh:upravy}. tady bude popsán jenom problém samotný. Entita \textit{Interval} reprezentuje časové rozmezí pro pečovatelské dny, opakované události, nastavení alimentů a navazující na ně požadavky na změny a historické záznamy.
             
         Jádro problému je v tom, že entita je navržena pomoci generalizace, neboli dědičnosti z hlediska implementace. Takový návrh dává možnost vytvořit konkretní typ intervalu pomocí zvolení odpovídající třídy, ale na druhou stranu působí komplikace při implementace a nepokrývá všechny možné případy potřebných intervalu. Například, není možné sestavit interval, který se bude opakovat každý poslední den měsíce. Pokud by jsme chtěli se držet se aktuální implementaci a zároveň pokryt všechny možné případy, ztratili bychom přehlednost zvolení správné třídy při vytváření instance \textit{Intervalu}.
             
@@ -190,17 +198,17 @@ fun api(): Docket {
     % Aplikace je navržená tak, že první věc, kterou uživatel udělat, je registrace. Uživatel potřebuje zvolit jméno, příjmení, email a heslo. Na základě těchto údajů se vytváří účet uživatele. V Doménovém modelu tato třída se jmenuje \textit{User}. V tento okamžik uživatel má role \textit{USER}, která mu nadává možnost udělat jenom omezený počet věcí.  
         Než se uživatel přihlásí do rodiny, nemá žádnou roli nebo má roli uživatele bez rodiny. V takovém stavu uživatel by měl mít velice omezena přístupová práva. 
         
-        Po přihlášeni do rodiny uživatel má svou vlastní roli (viz. obrázek \ref{image:Role1}), podle které mohou lišit jeho přístupová práva. Hlavní rolí v aplikace je rodič. Uživatel s takovou rolí má přístup ke všem potřebám dítěte a všem záznamem v kalendáři. Také, rodič může vytvořit pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně roli rodiče. Mimořádnou roli v rámci systému je dítěte. Uživatel s takovou rolí nemůže vlastnit pečovatelský den nebo splnit přání. Přihlášení dítěte muže proběhnout i bez vytvořeni klasického uživatele systému. Ostatní uživatele v rodině mají roli příbuzného.
-        \begin{figure}\centering
+        \begin{figure}
 	        \includegraphics[width=0.7\textwidth]{pdfs/Role1}
 	        \caption[Návrh \textit{Role}]{Návrh entity \textit{Role} podle Doménového modelu z předmětu BI-SP2}\label{image:Role1}
         \end{figure}
+        Po přihlášeni do rodiny uživatel má svou vlastní roli (viz. obrázek \ref{image:Role1}), podle které mohou lišit jeho přístupová práva. Hlavní rolí v aplikace je rodič. Uživatel s takovou rolí má přístup ke všem potřebám dítěte a všem záznamem v kalendáři. Také, rodič může vytvořit pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně roli rodiče. Mimořádnou roli v rámci systému je dítěte. Uživatel s takovou rolí nemůže vlastnit pečovatelský den nebo splnit přání. Přihlášení dítěte muže proběhnout i bez vytvořeni klasického uživatele systému. Ostatní uživatele v rodině mají roli příbuzného.
     
     \subsection{Autorizace}
         Návrh bezpečné aplikace nebyl cílem předmětu zmíněných v sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}. Proto návrh a současná implementace neobsahuje proces přihlašovaní uživatele do systému. Nový procesu přihlašovaní bude zmíněn v sekci \ref{navrh:bezpecnost}.
         
 \section{Analýza testování}\label{analyza:testovani}
-    Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahující test, který se zaměřuje na ověření, zda se načetl {\textit{Context} aplikace}\footnote{Pokročilý kontejner, který funguje podobně \textit{BeanFactory}. Načítá definice beanů, provazuje je a vydává v případe nutnosti} (viz. obrázek \ref{code:test-context-loads1}).
+    Současný návrh neobsahuje informaci o implementaci testování. Současná implementace obsahuje jednu třídu, obsahující test, který se zaměřuje na ověření, zda se načetl {kontext aplikace}\footnote{Pokročilý kontejner, který funguje podobně \textit{BeanFactory}. Načítá definice beanů, provazuje je a vydává v případe nutnosti} (viz. obrázek \ref{code:test-context-loads1}).
     \begin{figure}
     \begin{minted}{java}
 @RunWith(SpringRunner::class)
