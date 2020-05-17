@@ -85,7 +85,8 @@ scheduled.alimonyFactory=true
             \end{figure}
             Pomocí konfiguračního souboru byla přidána možnost měnit čas spouštění metody, ale také bychom potřebovali mít možnost vypnout tuto metodu. Proto přidána třída, která vytváří instanci tříd, obsahující automaticky spustitelné metody, podle \textit{property} konfiguračního souboru. V případě, že nutné \textit{property} nebyly definovány aplikace se neukončí běh a nastaví tyto \textit{property} na implicitní hodnoty. Pro zapínaní běhu metody vytvářející alimenty je potřeba definovat \textit{property} \textit{scheduled.alimonyFactory} a nastavit na hodnotu \textit{true} (viz. obrázek \ref{code:alimony-factory-true}).
         
-        
+        \subsection{Pečovatelské dny}\label{navrh:upravy:caredays}
+            TODO novy navrh 
             
 \section{Navržené změny}
     V teto sekci budou popsány navržené změny autorem teto práci, které vylepšují výslednou aplikaci.
@@ -132,7 +133,7 @@ private val validInterval = Interval(
         
     \subsection{Implementace Controlleru}
         TODO POST vs PUT
-        
+    
     \subsection{Implementace historie změn}
         Důležitou častí aplikace je zaznamenání změn udělaných uživatelem. Úpravou je změna záznamu entity, kterou uživatel s rolí \enquote{ROLE\_USER} může upravit. Aktivita \textit{root}\footnote{uživatel s rolí \enquote{ROLE\_ROOT}} není zajímavá, protože tento uživatel je odstraněn v rámci profilu pro produkci. Příkladem takové změny může být změna nastavení alimentů nebo označení oznámení jako přečtený.
     
@@ -151,8 +152,10 @@ private val validInterval = Interval(
         Dalším krokem úprav je navržení úprav, které už není nutné, ale výrazně zlepšují výsledný návrh serveru:
         \begin{itemize}
             \item přidání do každé entity History odkazů na příslušnou entitu. Například, entita AlimonyHistory bude mít navíc odkaz na entitu Alimony.
-            \item zavedení nové entity CareDaysSettingHistory podle návrhu entity CareDaysSetting, která byla popsána v sekci 
+            \item zavedení nové entity CareDaysSettingHistory podle návrhu entity CareDaysSetting, která byla popsána v sekci \ref{navrh:upravy:caredays}
         \end{itemize}
+         TODO image
+        Výsledný návrh entity History (viz. obrázek \ref{image:History2}) byl kompletně implementován a provázán s funkcionalitou příslušných controllerů. Implementace vyžadovala rozdělení servisní vrstvy do dvou logických bloků. První blok se zabývá spravováním požadavků frontendové části aplikace, což aktuálně jsou požadavky na nalezení všech existujících záznamu a požadavky na nalezení konkretního záznamu podle jejího identifikátoru. Historii změn by neměl spravovat uživatel, proto byl mazání, upravování a mazání záznamu těchto entit jsou zakázány pro uživatele. Celou logikou se zabývá server samotný. Za tímto účelem byl vytvořen druhý logický blok servisní vrstvy, který poskytuje možnost vytvořit konkretní historii. Typ historii, který bude vytvořen definuje typ DTO, který předán do metody.
 
 \section{Návrh bezpečnosti}\label{navrh:bezpecnost}
     \subsection{OAuth 2.0}
@@ -162,7 +165,7 @@ private val validInterval = Interval(
     \subsection{HTTPS}
         certificaty TODO
         
-\section{Návrh požadavků na změny}
+\section{Návrh požadavků na změny}\label{navrh:requests}
     TODO bude v budoucích krocích
         
 \section{Profily}\label{navrh:profily}
@@ -197,11 +200,9 @@ private val validInterval = Interval(
             \item PostgresSQL poskytuje možnost definovat vlastní typy\cite{pstgres-create-type}
             \item autor teto práce má zkušenosti s PostgresSQL
     \end{itemize}
-    Informace o rozdílech těchto databází byly převzaty s několika článku na internetu. Nejpoužitelnějšími pro autora teto práce byly \cite{mysql-postgres1, mysql-postgres2}  
+    Informace o rozdílech těchto databází byly převzaty s několika článku na internetu. Nejpoužitelnějšími pro autora teto práce byly \cite{mysql-postgres1, mysql-postgres2}
     
-    
-    
-\section{Implementace požadavků na změny}
+\section{Implementace požadavků na změny}\label{impl:requests}
     TODO requests
     
 \section{Návrh testování}\label{navrh:testovani}
