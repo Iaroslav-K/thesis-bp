@@ -96,7 +96,7 @@ Pro jasné zajištěni verze aplikace, která bude předmětem analýzy teto kap
 	   \includegraphics[angle=-90, width=0.7\textwidth]{pdfs/Cloc1}
 	   \caption[Počet řádků kódu před začátkem práce]{Počet řádků kódu před začátkem práce}\label{image:cloc1}
     \end{figure}
-    Současná implementace obsahuje 69 souborů a 845 řádek kódů (viz. obrázek \ref{image:cloc1}), které byly vytvořeny a napsány členy týmu. Za účelem zvětšení přesnosti analýzy byl zvolen nástroj pro analýzu počtu řádek kódu - CLOC (viz. sekci \ref{reserse:cloc}). Implementace částečné pokrývá Doménový model zmíněný v sekci. \ref{analyza:navrh:DomainModel}.
+     V teto sekci bude stručně popsán soćasný stav implementace. Současná implementace obsahuje 69 souborů a 845 řádek kódů (viz. obrázek \ref{image:cloc1}), které byly vytvořeny a napsány členy týmu. Za účelem zvětšení přesnosti analýzy byl zvolen nástroj pro analýzu počtu řádek kódu - CLOC (viz. sekci \ref{reserse:cloc}). Implementace částečné pokrývá Doménový model zmíněný v sekci. \ref{analyza:navrh:DomainModel}.
         
     \subsection{Implementované třídy}
         Seznam implementovaných entit:
@@ -187,6 +187,15 @@ fun api(): Docket {
 	        \includegraphics[width=0.5\textwidth]{pdfs/AlimonyDraft1}
 	        \caption[Návrh \textit{Alimony} a \textit{AlimonySettings}]{Návrh entit \textit{Alimony} a \textit{AlimonySettings} podle Doménového modelu z předmětu BI-SP2}\label{image:aliomny-draft1}
         \end{figure}
+        
+        \subsection{Pečovatelské dny}\label{analyza:pozadavky:caredays}
+            Než se zanořit do podrobného popisu problému, je potřeba popsat účel teto entity a její využiti backendém a frontendém. Tato entita reprezentuje jednorázový interval nebo opakující interval pečovatelských jednoho z rodičů nebo libovolného jiného člena rodiny. Každý člen rodinu má vlastní barvou, která se využívá pro označování pečovatelských dnů v kalendáři. Tato entita se používá za dvěma účely. První a nejdůležitější účel je nastavení pečovatelských dnů pro rodiče. Nastavení musí pokrývat všechny dny kalendáře. Dítě by nemělo mít ve svém kalendáři den, který není označen žádnou barvou zároveň by neměly vznikat konflikty. Druhým účelem jsou jednorázové změny pečovatelských dnů. Tyto změny jsou vyžadovány pro případy, kdy dlouhodobé nastavení kalendáře neplatí. Příkladem může být výlet dítěte k babičce a dědečkovi. Během tohoto časového intervalu rodiče nejsou zodpovědné za dítěte, proto je potřeba uvést jednorázovou změny do kalendáře, která zaznamená tuto situaci 
+            
+            \begin{figure}\centering
+	            \includegraphics[width=0.7\textwidth]{pdfs/CareDays1}
+	            \caption[Návrh pečovatelských dnů]{Návrh pečovatelských dnů podle Doménového modelu předmětu BI-SP2}\label{image:caredays1}
+            \end{figure}
+            Aktuální návrh pečovatelských dnů je příliš komplikovaně navržen\ref{imgae:caredays1}. Dlouhodobá nastavení pečovatelských dnů rodičů nevyžaduje komplikovaný návrh intervalů (viz. sekci \ref{analyza:pozadavky-frontendu}). Také je potřeba přidat odkaz na konkretního rodiče, který je zodpovědný za tento den pro zjednodušení práce s touto entitou v rámci frontedové části aplikace. Pro návrh jednorázových změn pečovatelských dnů aktuální návrh je vhodnější než pro dlouhodobá pravidla, protože komplikované intervaly jsou vyžadovány. Popis navržených změn a následné implementace bude popsán v sekci \ref{navrh:upravy:caredays}
     % \section{Analýza konkurence}
     %     Tento návrh...
 % \section{Analýza testování}
