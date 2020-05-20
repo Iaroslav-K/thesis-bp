@@ -31,7 +31,7 @@ Při úpravách současného návrhu byl udělán velký počet změn různé v�
         \subsubsection{Úprava entity}
             Za účelem větší samostatnosti instancí entity \textit{Alimony} byla přidána závislost na entitu \textit{Family}. Také byl přidán atribut \textit{value}, který kopíruje stejný atribut z entity \textit{AlimonySetting}. Příčinou přidání tohoto atributu je možnost aktualizování konfigurací alimentů. V případě, že rodiče změní hodnotu alimentů, ztratí se možnost zjistit hodnoty alimentů, které byly vytvořeny do změny.
             
-        \subsubsection{Spravování alimentů}
+        \subsubsection{Spravování alimentů} 
             V teto sekci bude popsán návrh třídy, která se věnuje vytváření alimentů.
         
             Všechny instance alimentů je potřeba vytvářet každý měsíc. Proto tento proces byl objednán do jednoho procesu, který je stejný pro všechny instance. Proces vytváření alimentů zajišťuje jedna metoda (viz. obrázek \ref{code:create-alimony}), která se nachází ve třídě \textit{AlimonyFactory}. Metoda vyhledáva všechny aktivní instance \textit{AlimonySetting} a pro každou vytvoří alimenty. Aktivita nastavení je zajištěna atributem \textit{enabled}, který byl přidán v rámci úprav pro rozlišování serverem aktivních a neaktivních nastavení alimentů.
@@ -85,25 +85,36 @@ scheduled.alimonyFactory=true
             \end{figure}
             Pomocí konfiguračního souboru byla přidána možnost měnit čas spouštění metody, ale také bychom potřebovali mít možnost vypnout tuto metodu. Proto přidána třída, která vytváří instanci tříd, obsahující automaticky spustitelné metody, podle \textit{property} konfiguračního souboru. V případě, že nutné \textit{property} nebyly definovány aplikace se neukončí běh a nastaví tyto \textit{property} na implicitní hodnoty. Pro zapínaní běhu metody vytvářející alimenty je potřeba definovat \textit{property} \textit{scheduled.alimonyFactory} a nastavit na hodnotu \textit{true} (viz. obrázek \ref{code:alimony-factory-true}).
         
-        \subsection{Pečovatelské dny}\label{navrh:upravy:caredays}
-            \begin{figure}\centering
-	            \includegraphics[width=0.8\textwidth]{pdfs/CareDays2}
-	            \caption[Nový návrh pečovatelských dnů]{Nový návrh pečovatelských dnů}\label{image:caredays2}
-            \end{figure}
-            Podrobný popis problému byl popsán v sekci \ref{analyza:pozadavky:caredays} . Tady se soustředíme na návrhu řešení, vyhovujícím frontendové části aplikace. V předchozím návrhu implementace dlouhodobých nastavení pečovatelských dnů pro rodiče a jednorázové nastavení byly reprezentované pomocí jedné entity (viz. obrázek \ref{image:caredays1}). Kostra problému právě ve sjednocení několika problému do jednoho. Proto bylo vyřešeno řešit problém distribucí. Výsledný návrh se skládá s čtyř entit (viz. obrázek \ref{image:caredays2}):
-            \begin{itemize}
-                \item \textit{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů
-                \item \textit{CareDayInterval}, reprezentující interval pečovatelských dnů pro dvoudobé nastavení
-                \item \textit{CareDay}, reprezentující jeden pečovatelský den pro dlouhodobé nastavení
-                \item \textit{CareDayChange}, reprezentující změnu pečovatelských dnů
-            \end{itemize}
+    \subsection{Pečovatelské dny}\label{navrh:upravy:caredays} % PECOVATELSKE DNY
+        \begin{figure}\centering
+	       \includegraphics[width=0.8\textwidth]{pdfs/CareDays2}
+	       \caption[Nový návrh pečovatelských dnů]{Nový návrh pečovatelských dnů}\label{image:caredays2}
+        \end{figure}
+        Podrobný popis problému byl popsán v sekci \ref{analyza:pozadavky:caredays} . Tady se soustředíme na návrhu řešení, vyhovujícím frontendové části aplikace. V předchozím návrhu implementace dlouhodobých nastavení pečovatelských dnů pro rodiče a jednorázové nastavení byly reprezentované pomocí jedné entity (viz. obrázek \ref{image:caredays1}). Kostra problému právě ve sjednocení několika problému do jednoho. Proto bylo vyřešeno řešit problém distribucí. Výsledný návrh se skládá s čtyř entit (viz. obrázek \ref{image:caredays2}):
+        \begin{itemize}
+            \item \textit{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů
+            \item \textit{CareDayInterval}, reprezentující interval pečovatelských dnů pro dvoudobé nastavení
+            \item \textit{CareDay}, reprezentující jeden pečovatelský den pro dlouhodobé nastavení
+            \item \textit{CareDayChange}, reprezentující změnu pečovatelských dnů
+        \end{itemize}
             
-            Dlouhodobá nastavení jsou reprezentovány seznamem pečovatelských dnů, kde každý den má odkaz na člena rodiny, který má v tento den peče o dítě. Jeden \textit{CareDayInterval} obsahuje seznám takových pečovatelských dnů, ale nereprezentuje nastavení. Za účelem pohodlné modifikovatelností, \textit{CareDayInterval} je jenom pomocnou entitou, kterou udržuje entita \textit{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů. Tudíž, uživatel má možnost změnit interval pečovatelských dnů tím, že nahradí jiným záznamem, a současně bude vytvořena kopie tohoto záznamu v historii.
+        Dlouhodobá nastavení jsou reprezentovány seznamem pečovatelských dnů, kde každý den má odkaz na člena rodiny, který má v tento den peče o dítě. Jeden \textit{CareDayInterval} obsahuje seznám takových pečovatelských dnů, ale nereprezentuje nastavení. Za účelem pohodlné modifikovatelností, \textit{CareDayInterval} je jenom pomocnou entitou, kterou udržuje entita \textit{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů. Tudíž, uživatel má možnost změnit interval pečovatelských dnů tím, že nahradí jiným záznamem, a současně bude vytvořena kopie tohoto záznamu v historii (viz. sekci \ref{navrh:testovani}).
+        
+    \subsection{Oznámení}\label{navrh:upravy:notification}
+        \begin{figure}\centering
+	       \includegraphics[width=0.8\textwidth]{pdfs/Notification2}
+	       \caption[Nový návrh oznámení]{Nový návrh oznámený upraveny podle požadavků frontendové části aplikace}\label{image:notification2}
+        \end{figure}
+        Předchozí návrh oznámení nebyl vhodný pro frontendovou část aplikace a zároveň byl určen jenom pro konkretní případ využití. Oznámení byly navrženy obecně a neměly konkretní typ. Tudíž oznámení pomocí elektronické pošty a pomocí upozornění v telefonu jsou reprezentovány pomocí stejné entity. Zároveň oznámení byly využity jenom pro oznámení uživatele o nových požadavcích na změny. Aktuální návrh frontendové části aplikace vyžaduje přesnější návrh oznámení, přizpůsobené pro upozornění v rámci Android aplikace, což znamená, že je potřeba přidat specifické atributy. 
+        
+        Bylo vyřešeno zachránit abstraktní návrh entity \textit{Notification}, která nebude obsahovat specifické atributy pro konkretní typ oznámení, a přidat entitu \textit{Alert}\ref{image:Alert}, která je zděděna od entitu \textit{Notification} a odpovídá požadavkům frontendové části aplikace. Pro zaručení konkretizace příčiny vytvoření oznámení byl přidán odkaz na událost do abstraktní entity a také typ teto události jako atribut. Typ události je reprezentován pomoci entity výčtového typu - \textit{AlertCause}. Pro zaručení kvalitního API, podle požadavku, byla přidána možnost přečtení všech upozornění najednou. Přečtení upozornění je reprezentováno pomocí přidání atributu \textit{read} hodnoty \textit{true}.
+        
+        Pro dosažení kvalitnějšího výsledku také byla odstraněny komentáře, které nejsou potřebné pro nový návrh oznámení. Také byl přidán atribut \textit{text}, který je nutným pro uváděni podrobnějšího popisu oznámení. Výsledný návrh oznámení je zobrazen na obrázku \ref{image:notification2} .
             
 \section{Navržené změny}
     V teto sekci budou popsány navržené změny autorem teto práci, které vylepšují výslednou aplikaci.
     
-    \subsection{Interní DSL}
+    \subsection{Interní DSL}\label{navrh:zmeny:dsl}
         % TODO popsat podrobneji
         \begin{figure} % [H] TODO
             \begin{minted}{java}
@@ -129,10 +140,7 @@ private val validInterval = Interval(
         Pro pohodlné testování byl implementován interní DSL jazyk poskytující možnost vytvořit pravidlo opakovaní. Dále uvádím příklad \textit{Intervalu}, který má pravidlo opakování vytvořené pomoci DSL jazyku. Tento interval bude použit při testování.
 
     \subsection{Album}
-        TODO
-        
-    \subsection{Oznámení}
-        TODO alert a notification
+        TODO Byl pridan jenom nazev albumu - neni dulezita zmena
         
     \subsection{Konverter}
         TODO popis konverteru mezi entitou i dto
