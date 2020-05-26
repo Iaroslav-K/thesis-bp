@@ -1,5 +1,6 @@
 \chapter{Teoretická část}\label{resere}
-TODO reserse neni dokoncena
+Tato kapitola obsahuje základní teoretickou informací o technologiích, které se jsou použité v současné implementace aplikace a také o technologiích, které se budou použity při implementaci během 
+
 \section{Pravidla farameworku Angular pro Git}\label{reserse:git}
     Na začátku je potřeba říct, že framework Angular není využít v této bakalářské práci. Prozkoumané pravidla nebyly kompletně převzaty. Byla provedena analýza a následně byly převzata část, která
     je použitelná při implementaci serveru, který je předmětem teto bakalářské práci. Kompletní přehled pravidel se nachází na GitHub\footnote{ GitHub je webový platformou pro vývoj softwaru pomocí systému řízení verzí Git}\cite{angular-git}.
@@ -19,7 +20,7 @@ TODO reserse neni dokoncena
     \end{figure}
     \begin{figure}
 	   \includegraphics[angle=-90, width=1.0\textwidth]{pdfs/GitLabTree}
-	   \caption[Ukázka použití konvenci pro práci z Git]{Ukázka použití konvenci pro práci z Git na grafu větví} 
+	   \caption[Ukázka použití konvenci pro práci z Git]{Ukázka použití konvenci pro práci z Git na grafu větví}\label{image:gitlab-tree}
     \end{figure}
     Tato konvence byla zavedena v moment začátku práci autora na implementaci bakalářské práci (viz obrázek \ref{image:gitlab-tree}). Struktura pro \verb|commit|, která je definovaná ve zbroji (viz obrázek \ref{code:angular-commit}), se skládá z šestí častí, které byly kompletně převzaty nebo upraveny:
     \begin{itemize}
@@ -57,6 +58,7 @@ TODO reserse neni dokoncena
         Zápatí je určeno pro definování přelomových změn a definování závislostí na konkretní požadavky v rámci GitHub nebo GitLab\footnote{TODO GitLab}. V rámci této bakalářské práci každému požadavku v rámci GitLab jsou přiděleny jednotlivé větví, proto není potřeba uvádět identifikátor požadavku ve zápatí.
     
 \section{Kotlin}\label{resere:kotlin}
+    TODO
     Kotlin je relativně nový jazyk pro JVM\footnote{Java Virtual Machine}. Poprvé tento jazyk byl představen společnosti v 2011 roku. První stabilní verze byla představena v únoru roku 2016. Ale už v květnu roku 2017 Kotlin se stal oficiálním jazykem pro Android.
     
     Kotlin byl vytvořen jako alternativa jazyku Java a řeší některé jí problémy. Například, Kotlin řeší problém použití null, také známý jako \textit{The Billion Dollar Mistake}\cite{theBDM}, a spojené s ní problémy. Java samotna nemá podporu pro \textit{not-null} proměnné, ale Kotlin takovou podporu má, a to v podobě oddělení \textit{nullable} typu pomocí ? operátoru.
@@ -65,30 +67,105 @@ TODO reserse neni dokoncena
     
     
     Kotlin je Kotlin podporuje \textit{type-safe builder}
-\section{Spring}\label{resere:j2ee}
+
+\section{Nástroj pro automatizaci sestavování programu}\label{resere:build}
+    % https://gradle.org/maven-vs-gradle/
+    % https://www.baeldung.com/ant-maven-gradle
+    Pro automatizaci sestavování programu se používá nástroj Gradle. Tento nástroj už se používá v současné implementace aplikace. Existuje populární alternativa -- Maven --, ale Gradle je modernější a pohodlnější. Konfigurace se provádí v jazyce Groove nebo přímo v jazyce Kotlin. Také Gradle poskytuje možnost definovat vlastní úkoly spustitelné pomoci příkazové řádky, které pak budou využity při analýze a spuštění restů. Podrobnější informaci o porovnání nástrojů Gradle a Maven je na stránkách \cite{grale-vs-mavem} a \cite{gradle-vs-maven-bealsung}.
+
+\section{Framework pro vývoj podnikové aplikace}\label{resere:j2ee}
+    % https://spring.io/projects/spring-framework
+    % https://spring.io/projects
+    % \cite{spring-framework}
+    Spring je jeden z nejznámějších frameworku určených pro vývoj podnikových aplikací. Infrastruktura Spring je velká a komplikovaná. Na moment práce na bakalářské práci, Spring se skládal ze 24 aktivních projektů\cite{spring-projects}. V rámci této bakalářské práci budou využity současně několik různých projektů, které zajišťují korektní funkčnost různých aspektů serveru. V této sekci budou popsány jenom projekty, které budou následně využity při implementaci serveru. Popis je velice stručným a je uveden za účelem zaručení pochopení čtenářem základů použitých technologii. Pro podrobnější informace o zmíněných projektech je doporučeno navštíví oficiální webovou stránku\cite{spring-official}
+    
+    \subsection{Spring framework}
+        \cite{spring-framework}
+        Spring framework je základem pro ekosystém různých projektů, které budou popsány v následujících sekcích. Tento nástroj samotný je správcem závislostí (\textit{dependency manajer}). Správování závislostí je reprezenotováno pomocí principu IoC\footnote{\textit{Inversion of Control}}, což znamená, že framework Spring je kontejnerem, který je zodpovědný za vytváření objektů a provázaní je mezi sebou. Konfigurace aplikace je reprezentována pomocí rozhraní \texttt{ApplicationContext}.
+        
+        \begin{figure}
+            \begin{minted}{yaml}
+spring.profiles.active=dev
+            \end{minted}
+            \caption{Příklad definování profilu aplikace pomocí proměnné prostředí} 
+            \label{code:current-spring-profile}
+        \end{figure}
+        Pro pohodlnou práci a zvýšení efektivity napsaného kódu Spring má navíc od spravování závislostí spoustu skvělých řešení. Jak bylo zmíněno, popisovat všechno nemá smysl, ale několik nejdůležitějších věcí není možné opomenout. První funkcí, která bude široce využita při implementaci, se týká proměnných v rámci prostředí aplikace. Tyto proměnné umožňují definovat důležité proměnné pro konfiguraci běhu aplikace zvlášť jejích využití v kódu. Framework Spring umožňuje využit tyto proměnné přímo v kódu. Implicitním souborem obsahujícím tyto proměnné je soubor \texttt{application.properties}. Pro zavedení různých proměnných pro různé případy použití aplikace je možné definovat několik takových souboru pro každý z profilů. Jedinou věcí, kterou je potřeba udělat, je vytvořit soubor, který bude mít v názvu jméno profilu, kterému patří. Pro definování který profil aplikace má použit v následujících spouštěních, je potřeba v implicitním souboru zadat potřebný profil jako proměnnou (viz obrázek \ref{code:current-spring-profile}). 
+        
+        
+        \begin{figure}
+            \begin{minted}{Kotlin}
+@Bean
+@ConditionalOnProperty(
+        value = ["scheduled.alimonyFactory"],
+        matchIfMissing = false,
+        havingValue = "true")
+fun startAlimonyFactory(): AlimonyFactory {
+    logger.info("Schedule job: starting AlimonyFactory")
+    return AlimonyFactory(
+            alimonySettingRepository,
+            alimonyRepository)
+}
+            \end{minted}
+            \caption{Příklad aspektově orientovaného programování v Spring} 
+            \label{code:spring-conditional}
+        \end{figure}
+        Spring framework používá techniku vkládání závislosti (\textit{dependency injection}), což nadává možnost psání kvalitnějšího softwaru, ale Spring poskytuje možnost zlepšit výsledný kód ještě více. Framework Spring také používá paradigma aspektově orientovaného programování (AOP). Tato paradigma má za cíl zvýšit modularitu výsledného softwaru pomocí rozdělení kódu do logických častí, nalezení opakujících se častí, které jsou nazývané průřezové problémy, a nahrazení opakujícího se kódu. Příkladem AOP je anotace zaměřené na podmíněné spouštění metody v závislosti na výsledku předem definované podmínce v závorkách (viz obrázek \ref{code:spring-conditional}).
+    
+    \subsection{Spring Boot}
+        % https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config
+        \cite{spring-boot}
+        Spring Boot je pomocný nástroj pro programátora při konfiguraci aplikaci využívající framework Spring. Spring Boot registruje 17 různých implicitních zdrojů proměnných. Kompletní popis zdrojů je na oficiálních stránkách dokumentace\cite{spring-property-sources}. Podle nalezených proměnných framework provádí analýzu konfigurace aplikace a následně, pomocí anotací pro podmínky, automaticky nastavuje prostředí aplikace. Navíc od klasického frameworku Spring, Sping Boot obsahuje rozšířený seznam anotací pro podmínky, které jsou široce využity pro zmíněnou automatickou konfiguraci.
+    
+    \subsection{Spring Security}
+        \cite{spring-security}
+        Spring Security je framework určený pro návrh autentizace, autorizace a filtrů. Framework vyžaduje využiti frameworku Spring, případně i frameworku Spring Boot. TODO
+    
+    \subsection{Spring Data}
+        Spring Data je framework pro pohodlnou práci programátora při implementace perzistentní vrstvy\footnote{vrstva aplikace, která komunikuje z databází}. Framewok vytváří dodatečnou vrstvu nad implementací Java Persistense API\footnote{Application programming interface} (JPA). Implementací JPA může být EclipseLink nebo Hibernate. Příkladem využití je rozhraní \texttt{CrudRepository}, které bude využité v této bakalářské práci. Rozhraní definuje základní operace s databází a dovoluje programátoru jenom definovat týt entity a typ primárního klíče. V případě, že programátor potřebuje složitější dotazy na databází, framework poskytuje možnost definování metod, které ve svých názvech obsahují popis dotazů. Framework rozebírá název na jednotlivé část a překládá ho na SQL\footnote{Structured Query Language} dotaz.
+    
+    \subsection{Spring Web Services}
+        \cite{spring-web-services}
+        Spring Web Services je frameworkem určeným pro implementaci webových služeb. V rámci této bakalářské práci framework bude využit pro implementaci aplikační vrstvy serveru. Aplikační vrstva aplikace má pokrývat případy využití aplikace. TODO
+        
+
+%  \section{Spring Boot}\label{reserse:spring-boot}
+    % https://spring.io/projects/spring-boot
+    % \cite{spring-boot}
+    % TODO Spring Boot je nástrojem určeným pro rychlý a
     
 \section{Testování}\label{resere:testovani}
+    Testování aplikace se skládá z několika častí. První část je testování softwaru samotného pro ověření jestli jednotlivé metody, třídy nebo cele moduly fungují správně a komunikují mezi sebou bezchybné komunikují mezi sebou. Druhou častí testování je ověření jestli testy pokrývají dostatečnou část kódu a jestli pokrývají důležité funkcí. V této sekci jsou popsány nástroje pro zaručení kvalitního testování, které budou následně využité při implementaci testů a jejích analýze.
+    
     \subsection{Spring}
-    TODO popis nastroju pro testovani
-    \subsection{JUint 5}
-    TODO popis nastroju pro testovani
+        Framework Spring poskytuje velký počet nástrojů pro testování softwaru. Každý z dodatečných frameworků, jako Súring Boot nebo Spring Security, spolu s novými funkcemi, přidávají vhodné nástroje pro kvalitní testování těchto funkcí. Celý přehled nástrojů, které poskytuje framework jsou na oficiálních stránkách dokumentace\cite{spring-tests-doc}. V této sekci jsou uvedeny jenom nejdůležitější použité nástroje.
+        
+        Prvním nástrojem je anotace \texttt{SpringBootTest}, který poskytuje framework Spring Boot pro implementaci integračních testů. Při použití této anotace framework vytvoří potřebný kontext aplikace pro kompletní testování.
+        
+        Druhým důležitým nástrojem je třída \texttt{MockMvc}, která poskytuje možnost kvalitního testování aplikačně vrstvy serveru. Tento nástroj je součásti frameworku Spring Web Services.
+        
+    \subsection{JUnit}
+        JUnit je framework určený pro testování softwaru. V této bakalářské práci bude použita verze 5. Tento framework bude použit pro vytvoření kostry testů. TODO
+        
     \subsection{JaCoCo}\label{resere:testovani:jacoco}
-    TODO nastroj pro analyzu pokryti kodu testy \cite{JoCoCo}
+         %https://www.jacoco.org/jacoco/trunk/doc/implementation.html
+        JaCoCo je nástroj poskytující podrobnou analýzu testů. Tento nástroj bude použit pro výslednou analýzu implementovaných testů a také jako pomocný nástroj pro nalezení důležitých neotestovaných funkcí během implementaci testů. Nástroj existuje v reprezentaci přídavného modulu pro nástroj Gradle\footnote{nástroj pro automatizaci sestavování programu}, který již se používá v současné implementace programu. Výsledky práci jsou následně uloženy do předem definované složky a jsou reprezentovány pomoci HTML\footnote{Hypertext Markup Language} stránek. Nástroj je otevřeným softwarem, proto podrobnou informaci o implementaci lze najít na oficiálních stránkách\cite{jacoco-implementation}. Výsledky analýzy podle JaCoCo jsou dostupné v příloze \ref{dodatek:code-coverage}.
+        
     \subsection{IntelliJ IDEA}\label{resere:testovani:intellij-idea}
-    TODO nastroj pro analyzu pokryti kodu testy \cite{intellij-idea-code-coverage}
+        % https://www.jetbrains.com/help/idea/code-coverage.html
+        % TODO nastroj pro analyzu pokryti kodu testy \cite{intellij-idea-code-coverage}
+        Pro provedení analýzy testů také bylo využité vývojové prostředí IntelliJ IDEA, používané autorem této práci pro implementaci programu. Nástroj pro pokrytí kódu testy je implicitním nástrojem zmíněného vývojového prostředí a poskytuje možnost zobrazování výsledku analýzy přímo v kódu. Takový přístup zrychluje proces implementaci testů. Nástroj také dovoluje vygenerovat výsledky zvlášť od kódu, proto tyto také jsou dostupné v příloze \ref{dodatek:code-coverage}.
+
 
 \section{Dokumentace}\label{resere:dokumentace}
-    Swagger
+    Pro dokumentace API se v současné implementace aplikace používá framework Swagger. Důležitou funkcí, kterou poskytuje framework, je automatické generování dokumentace na základě přidaných anotací v kódu. Dokumentace je následně dostupna z internetu ze stejného adresy jako i server, ale na jiném portu.
     
 \section{Databáze}\label{resere:databaze}
 
     \subsection{H2}
         TODO Pro proces vývoje a testování byla zvolena databáze H2\cite{h2-db}, která je relační databází. 
     \subsection{PostgresSQL}
-        TODO PostgresSQL
-    
-\section{Buildováci sstém}\label{resere:build}
-    TODO Gradle...
+        
 
 \section{CLOC}\label{reserse:cloc}
     Nástroj CLOC\footnote{Count Lines of Code}\cite{cloc-download} poskytuje možnost spočítat počet řádek kódu v dáne složce. Nástroj podporuje velký počet jazyku programování. Výsledek obsahuje počet řádek kódu oddělený od komentářů a prázdných řádků.
