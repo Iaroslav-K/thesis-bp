@@ -1,7 +1,7 @@
 \chapter{Teoretická část}\label{resere}
 Tato kapitola obsahuje základní teoretickou informací o technologiích, které jsou použité v současné implementaci aplikace a také o technologiích, které se budou použity při implementaci a analýze.
 
-\section{Pravidla farameworku Angular pro Git}\label{reserse:git}
+\section{Pravidla frameworku Angular pro Git}\label{reserse:git}
     Na začátku je potřeba říct, že framework Angular nebude pouźit v této bakalářské práci. Prozkoumané pravidla nebyly kompletně převzaty, ale byla provedena analýza a následně byly převzaté části, která jsou použitelné při implementaci serveru, který je předmětem teto bakalářské práci. Kompletní přehled pravidel se nachází na GitHub\footnote{ GitHub je webový platformou pro vývoj softwaru pomocí systému řízení verzí Git}\cite{angular-git}.
     
     Pravidla, které byly použity v této bakalářské práce, definují formátování pro \verb|commit| v rámci verzovacího systému Git\footnote{TODO git}. Příčinou zavedení konvenci je potřebnost přidání přehledností dřevu větví. Po dokončeni této bakalářské práci, server bude kompletně funkční, ale proces vývoje se tím neskončí. Budoucí kroky budou podrobně popsány v kapitole \ref{zhodnocení} . Pochopení jednotlivým změnám, udělaným během vývoje softwaru, pomáhají srozumitelné popisy jednotlivých změn. Dosažení takového výsledku působí zavedení jednoho formátu pro každý \verb|commit| v rámci projektu.
@@ -47,16 +47,16 @@ Tato kapitola obsahuje základní teoretickou informací o technologiích, kter�
     \subsection{Rozsah}
         Rozsah definuje konkretní soubory nebo baličky, které byly změněny. Uvedení rozsah není povinné, ale v rámci této bakalářské práci rozsah bude uveden pro každý \verb|commit|. V případě, že změny byly současně udělaný v několika různých souborech nebo balíčcích, je potřeba uvést je jako seznám oddělený čárkami v kulatých závorkách.
     
-    \subsection{Subject}
+    \subsection{Předmět}
         Předmět je stručným popisem udělaných změn. Změny mají být odděleny od typu dvojtečkou. V případě, že \verb|commit| obsahuje několik změn, je potřeba je oddělit čárkou. První písmeno každé změny musí být malé. Poslední změna nekončí tečkou.
     
     \subsection{Tělo}
-        Tělo je určeno pro podrobnější popis udělaných změn. Táto část není povinná, ale je doporučena v případě, že udělané změny nejsou pochopitelné po přečtení pŕedmětu nebo není jasná příčina udělané změny.
+        Tělo je určeno pro podrobnější popis udělaných změn. Táto část není povinná, ale je doporučena v případě, že udělané změny nejsou pochopitelné po přečtení předmětu nebo není jasná příčina udělané změny.
     
     \subsection{Zápatí}
         Zápatí je určeno pro definování přelomových změn a definování závislostí na konkretní požadavky v rámci GitHub nebo GitLab\footnote{webová platforma pro vývoj softwaru pomocí systému řízení verzí Git}. V rámci této bakalářské práci každému požadavku v rámci GitLab jsou přiděleny jednotlivé větví, proto není potřeba uvádět identifikátor požadavku ve zápatí.
     
-\section{Kotlin}\label{resere:kotlin}
+\section{Použitý jazyk programování}\label{resere:kotlin}
     Současný návrh aplikace byl proveden v jazyce Kotlin, který je relativně novým jazykem pro JVM\footnote{Java Virtual Machine}. Poprvé tento jazyk byl představen společností JetBrains v 2011 roku. Na moment odevzdání této bakalářské práci byla použita verze 1.3.72 . V porovnání s Java, podpora které je zaručena společností Oracle  a je dlouhodobou a předem definovanou, Kotlin nemá předem definovaný period podpory, ale, podle oficiálních webových stránek zaručuje šeptnou kompatibilitu pro alespoň jednu stabilní verzi, což dovoluje pohodlně migrovat do novější verze jazyku\cite{java-support-period}\cite{kotlin-compatibility}.
     
     %===================================================================
@@ -75,7 +75,7 @@ Tato kapitola obsahuje základní teoretickou informací o technologiích, kter�
     % https://www.baeldung.com/ant-maven-gradle
     Pro automatizaci sestavování programu se používá nástroj Gradle, který už se používá v současné implementace aplikace. Existuje populární alternativa -- Maven --, ale Gradle je modernější a pohodlnější. Konfigurace se provádí v jazyce Groove nebo přímo v jazyce Kotlin. Také Gradle poskytuje možnost definovat vlastní úkoly spustitelné pomoci příkazové řádky, které pak budou využité pro analýzu a spuštění testů. Podrobnější informaci o porovnání nástrojů Gradle a Maven lze najit na stránkách \cite{grale-vs-mavem} a \cite{gradle-vs-maven-bealsung}.
 
-\section{Framework pro vývoj podnikových aplikací}\label{resere:j2ee}
+\section{Nástroj pro vývoj podnikových aplikací}\label{resere:j2ee}
     % https://spring.io/projects/spring-framework
     % https://spring.io/projects
     % \cite{spring-framework}
@@ -158,7 +158,7 @@ fun startAlimonyFactory(): AlimonyFactory {
 \section{Dokumentace}\label{resere:dokumentace}
     Pro dokumentace API v současné implementace aplikace se používá framework Swagger. Důležitou funkcí, kterou poskytuje framework, je automatické generování dokumentace na základě přidaných anotací v kódu. Dokumentace je následně dostupna z internetu ze stejného adresy jako i server, ale na jiném portu. Podrobná informace o framewoku je dostupná na oficiálních webových stránkách\cite{swagger-doc}.
     
-\section{Databáze}\label{resere:databaze}
+\section{Použité databáze}\label{resere:databaze}
 
     \subsection{H2}
         % Pro proces vývoje a testování byla zvolena databáze H2\cite{h2-db}, která je relační databází. 
@@ -171,5 +171,5 @@ fun startAlimonyFactory(): AlimonyFactory {
         PostgresSQL je široce využívanou objektově relační databází napsánou v jazyce C. Na moment odevzdání této bakalářské práci je udržovaná PostgreSQL Global Development Group a je otevřeným softwarem. Pro implementaci byla zvolena poslední stabilní verze -- 12. Kompletní dokumentace je dostupná online\cite{postgres-documentation}. Framework Spring, zmíněný v sekci \ref{resere:j2ee}, nativně podporuje použití PostgresSQL\cite{spring-data-postgres}.
         
 
-\section{CLOC}\label{reserse:cloc}
+\section{Nástroj pro analýzu rozsahu implementace}\label{reserse:cloc}
     Nástroj CLOC\footnote{Count Lines of Code}\cite{cloc-download} poskytuje možnost spočítat počet řádek kódu v dáne složce. Nástroj podporuje velký počet jazyku programování. Výsledek obsahuje počet řádek kódu oddělený od komentářů a prázdných řádek. Tento nástroj bude použit pro analýzu současné implementace aplikace a analýzu provedené práce v rámci bakalářské práci.
