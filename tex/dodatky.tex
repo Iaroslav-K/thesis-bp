@@ -20,3 +20,16 @@
 	    \includegraphics[angle=90, width=1.0\textwidth]{pdfs/Domain-Model}
 	    \caption[TODO Výsledný doménový model]{Doménový model po navržení a implementaci všech úprav}\label{image:DomainModel2}
     \end{figure}
+\chapter{Konfigurace výsledného našeptavače pro chyby}\label{dodatek:excpetion-handler2}
+    \begin{sidewaystable} \centering
+            \caption[Konfigurace výsledného našeptavače pro řadiče]{Ukázka výsledné konfigurace našeptavače zachycování výjimek pro řadiče}
+            \begin{tabular}{|l|c|c|c|}\hline
+        	  Typ chyby		& HTTP status		& zpáva	& URL 	\tabularnewline \hline \hline
+        	  \texttt{IllegalAccessException}	& 401	& původní zpráva chyby		& původní cesta     \tabularnewline \hline
+        	  \texttt{IllegalArgumentException}	& 400	& původní zpráva chyby		& původní cesta     \tabularnewline \hline
+        	  \texttt{NullPointerException}	& 500	& nic		& původní cesta     \tabularnewline \hline
+        	  \texttt{No Such Element}	& 404	& nic		& nic     \tabularnewline \hline
+        	  \texttt{MissingKotlinParameterException}	& 400	& původní zpráva chyby		& původní cesta     \tabularnewline \hline
+            \end{tabular}
+    \end{sidewaystable}
+
