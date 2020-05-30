@@ -336,7 +336,7 @@ class RozvodyApplicationTests {
         \label{code:test-context-loads1}
         \end{figure}
         
-\section{Průběžná integrace}
+\section{Průběžná integrace}\label{analyza:ci}
     Na začátku je potřeba popsat pravidla zavedené pro distribuovaný systém správy verzí -- Git -- před začátkem implementace serveru. Proces vývoje byl rozdělen do dvou hlavních větví. První větev reprezentuje aktuální verzi aplikace a je označena jako \enquote{master}, což je implicitní větev v rámci Git. Druha větev je označena jako \enquote{dev} a určena pro proces vývoje. Pro implementaci jednotlivých úkolů je potřeba udělat kopii této větví a po vyřešení tohoto úkoly je potřeba zařadit všechny změny zpět do větví \verb|dev|. Takový přístup dává možnost pracovat na stejném projektu několika programátorům najednou a s jistotou uschovávat vlastní změny na server bez ohledu na jejích kompletnost.
     
     Vedoucím této bakalářské práce, a současně vedoucím tohoto projektu, byl poskytnout server pro testování, dostupný z IP: \enquote{http://37.46.80.230/}. Větve \verb|master| a \verb|dev| se automaticky nasazují po aktualizaci. Aplikace uložena do větvi \verb|master| je dostupná na portu 8998. Aplikace uložena do větvi \verb|dev| je dostupná na portu 8778.
