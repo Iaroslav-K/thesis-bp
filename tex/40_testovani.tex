@@ -82,7 +82,7 @@ task integrationTests(type: Test) {
         \label{code:gradle-tests}
     \end{figure}
     Pro spouštění testů je potřeba využít nástroj pro automatizaci sestavování programu -- Gradle, který byl podrobně popsán v sekci \ref{resere:build} . Testy jsou rozděleny podle jejich typu pomocí tagů, proto byla přidána možnost, nejenom spustit všechny testy najednou, ale i spustit jenom unit testy nebo jenom integrační testy (viz obrázek \ref{code:gradle-tests}). Kombinací tagů je mnohem více, ale konfigurační soubor obsahuje jenom konfigurace, které potřeboval autor této práce během vývoje. 
-    Přidat další konfigurace však není složité. Je potřeba pouze okopírovat předchozí konfiguraci v konfiguračním souboru a změnit seznam tagů podle potřeby. Seznam tagů je také možné doplnit. Všechny aktuální tagy se nacházejí ve složce \verb|src/test/kotlin/cz/cvut/fit/sp/rozvody/annotation/tag|.
+    Přidat další konfigurace však není složité. Je potřeba pouze okopírovat předchozí konfiguraci v konfiguračním souboru a změnit seznam tagů podle potřeby. Seznam tagů je také možné doplnit. Všechny aktuální tagy se nacházejí ve složce \verb|src/test/kotlin/cz/cvut/fit/sp/rozvody/annotation/tag|~.
     
     Spuštění testů není omezené příkazovým řádkem. Testy je také možné spustit pomocí vývojového prostředí nebo jiných nástrojů. Můžeme použít například vývojové prostředí IntelliJ IDEA. 
     % Během vývoje velkých projektů zpouštění testů je významným problémem pro programátory. 
