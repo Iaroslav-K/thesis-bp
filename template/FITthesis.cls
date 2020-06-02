@@ -346,25 +346,25 @@ sp\^ osobom, ktor\'y nezni\v zuje hodnotu Diela (vr\'atane komer\v cn\'eho vyu\v
 
 \DeclareRobustCommand{\titlepage}{
         \begin{titlingpage}
-        \begin{center}
-			\noindent\begin{tabular*}{\textwidth}{m{.77\textwidth}m{.165\textwidth}}
-				{\large\scshape
-						České vysoké učení technické v~Praze
+%         \begin{center}
+% 			\noindent\begin{tabular*}{\textwidth}{m{.77\textwidth}m{.165\textwidth}}
+% 				{\large\scshape
+% 						České vysoké učení technické v~Praze
 					
-					\vspace{4mm}
-						Fakulta informačních technologií
-					\vspace{4mm}
+% 					\vspace{4mm}
+% 						Fakulta informačních technologií
+% 					\vspace{4mm}
 					
-					\if@departmentdefined
-						\thedepartment
-					\else
-						\ClassError{FITthesis}{Department unspecified}{Specify the department using the \department command.}
-					\fi
-				} & \centering\includegraphics[width=.24\textwidth]{pdfs/cvut-logo-bw}
-			\end{tabular*}
-		\end{center}
-        % \noindent
-        % \if\@lang1{\includegraphics[width=0.5\textwidth]{pdfs/cvut-logo-bw}}\else\if\@lang2{\includegraphics[width=0.5\textwidth]{pdfs/cvut-logo-bw}}\else{\includegraphics[width=0.5\textwidth]{pdfs/cvut-logo-bw-en}}\fi\fi
+% 					\if@departmentdefined
+% 						\thedepartment
+% 					\else
+% 						\ClassError{FITthesis}{Department unspecified}{Specify the department using the \department command.}
+% 					\fi
+% 				} & \centering\includegraphics[width=.24\textwidth]{pdfs/cvut-logo-bw}
+% 			\end{tabular*}
+% 		\end{center}
+        \noindent
+        \if\@lang1{\includegraphics[width=0.5\textwidth]{pdfs/cvut-logo-bw}}\else\if\@lang2{\includegraphics[width=0.5\textwidth]{pdfs/cvut-logo-bw}}\else{\includegraphics[width=0.5\textwidth]{pdfs/cvut-logo-bw-en}}\fi\fi
         
         \vfill
 		
