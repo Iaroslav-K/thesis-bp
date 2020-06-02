@@ -135,7 +135,7 @@ mvc.perform(
     \end{figure}
     Většina integračních testů je zaměřena na ověření správného fungování vrstvy řadičů (\textit{controller}). Testování se provádí pomocí nástroje MockMvc\cite{mock-mvc}, který poskytuje framework Spring. Nástroj umožňuje otestovat funkcionalitu aplikace bez jejího úplného nastartování. Příklad využití nastroje je na obrázku \ref{code:mockmvc}. Tento kód má za úkol otestovat, zda řadič správně vytváří instanci entity \textit{Comment}. Kontrola správnosti atributu se provádí na základě DTO, který se vrátí jako návratová hodnota.
     
-    V rámci integračních testu byla také ověřena přístupová práva (viz sekci \ref{navrh:bezpecnost}). Při testování řadičů bylo zapnuto filtrování podle role přihlášeného uživatele. Každému testu patří jeden uživatel, který je nastaven pomocí uživatelského jména\footnote{Uživatelským jménem v systému je adresa elektronické pošty.}. V případě, že uživatel nemá dostatečná přístupová práva, řadič musí vrátit HTTP status s číslem 400\footnote{\textit{Bad Request}.}.
+    V rámci integračních testu byla také ověřena přístupová práva (viz sekci \ref{navrh:bezpecnost}). Při testování řadičů bylo zapnuto filtrování podle role přihlášeného uživatele. Každému testu patří jeden uživatel, který je nastaven pomocí uživatelského jména\footnote{Uživatelským jménem v systému je adresa elektronické pošty.}. V případě, že uživatel nemá dostatečná přístupová práva, řadič musí vrátit HTTP status s číslem 400\footnote{Bad Request.}.
     
 \section{Samostatný profil pro testování}
 
