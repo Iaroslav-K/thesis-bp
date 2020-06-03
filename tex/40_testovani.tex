@@ -10,7 +10,11 @@ V~této kapitole bude popsán proces testování a doplňující funkce zjednodu
     
     Stejného výsledku bychom mohli dosáhnout pomocí třídění testů do různých složek, ale podstatný rozdíl mezi těmito postupy je v~tom, že jeden test může mít několik tagů najednou a přidání nebo odstranění tagu je jednoduché . Například test může být anotován jako pomalý integrační test a zároveň jako pomalý test proto, že provádí databázovou transakci. Dosáhnout stejného výsledku pomocí třídění testů do specifických složek je náročnější a nedovoluje umístit test do několika složek najednou.
     \begin{figure}
-        \begin{minted}{java}
+        \begin{minted}[frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        fontsize=\footnotesize,
+        linenos]{java}
 @Tags(
         Tag("integration_test")
 )
@@ -29,7 +33,11 @@ V~této kapitole bude popsán proces testování a doplňující funkce zjednodu
     \end{itemize}
     
     \begin{figure}
-        \begin{minted}{java}
+        \begin{minted}[frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        fontsize=\footnotesize,
+        linenos]{java}
 /**
  * Specifies test as a Integration test.
  */
@@ -51,7 +59,11 @@ annotation class IntegrationTest
     Anotace mají stejnou implementaci a liší se pouze pomocí textu uvnitř tagů. Kotlin poskytuje podporu pro vytváření vlastních anotací, proto byla využita vestavěná třída \verb|anotation| (viz obrázek \ref{code:annotation-class}). Výsledné anotace jsou implementovány takovým způsobem, že pomocí nich je možné anotovat nejen testové metody, ale i celé třídy. Pak se anotace aplikuje na každý test, který obsahuje anotovaná třída. Také je možné anotovat i jiné anotace.
 
     \begin{figure}
-        \begin{minted}{groovy}
+        \begin{minted}[frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        fontsize=\footnotesize,
+        linenos]{groovy}
 tasks.test {
     useJUnitPlatform()
     testLogging {
@@ -104,6 +116,8 @@ task integrationTests(type: Test) {
     % Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd
     Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd. Všechny unit testy jsou anotovány jako unit testy (viz sekci \ref{testovani:tagy}) za účelem přidání možnosti spustit tyto testy zvlášť od ostatních testů. Žádný z~testů není závislý na celém kontextu aplikace nebo její části, proto jsou všechny unit testy rychlé.
     
+    Aplikace má malý počet samostatně testovatelných funkcí, proto bylo rozhodnuto se především zaměřit na kvalitní testování pomocí integračních testů, které budou popsány v následující sekci. Současná testování obsahuje 20 unit testů. Popis těchto testů je k nalezení v příloze \ref{image:gradle-unit-tests}.
+    
 \section{Integrační testy}\label{testovani:intergacni}
     % TODO Integrační testy zaměřené na ověření správné komunikace mezi komponentami aplikace.
     Velká pozornost byla věnovaná integračním testům. Tyto testy ověřují, jestli jednotlivé komponenty aplikace pracují podle jejich návrhu. Testy jsou anotovány jako integrační testy (viz sekci \ref{testovani:tagy}) za účelem přidání možnosti spustit tyto testy zvlášť od ostatních, stejně jako unit testy. 
@@ -111,7 +125,11 @@ task integrationTests(type: Test) {
     Integrační testy vyžadují nahrání celého kontextu aplikace nebo jeho částí, proto jsou pomalejší než unit testy. Některé testy navíc mění kontext aplikace a vyžadují zrušení kontextu po dokončení jejich běhu. Takové testy jsou anotovány jako pomalé testy\footnote{Anotace \texttt{SlowTest}, obsahující tag \enquote{slow\_test}.}.
     
         \begin{figure}
-        \begin{minted}{java}
+        \begin{minted}[frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        fontsize=\footnotesize,
+        linenos]{java}
 mvc.perform(
         MockMvcRequestBuilders
             .post("/api/v1/comment")
@@ -138,6 +156,8 @@ mvc.perform(
     
     V~rámci integračních testu byla také ověřena přístupová práva (viz sekci \ref{navrh:bezpecnost}). Při testování řadičů bylo zapnuto filtrování podle role přihlášeného uživatele. Každému testu patří jeden uživatel, který je nastaven pomocí uživatelského jména\footnote{Uživatelským jménem v~systému je adresa elektronické pošty.}. V~případě, že uživatel nemá dostatečná přístupová práva, řadič musí vrátit HTTP status s~číslem 400\footnote{Bad Request.}.
     
+     Současná testování obsahuje 106 integračních testů. Popis těchto testů je k nalezení v příloze \ref{image:gradle-integration-tests}.
+    
 \section{Samostatný profil pro testování}
 
     Testovaní aplikace vyžaduje vlastní nastavení, proto byl vytvořen samostatný profil, který odděluje testovací nastavení od nastavení produkce a vývoje. Profil má vlastní konfigurační soubor (\verb|application-test.properties|), obsahující nastavení databáze.
@@ -162,12 +182,12 @@ mvc.perform(
     
     JaCoCo vyžaduje implementování vlastního úkolu\footnote{Konfigurovatelný úkol pro nástroj Gradle, například \texttt{test} nebo \texttt{build}.}(\verb|task|) v~Gradle. Tento úkol byl nazván \verb|jacocoTestReport| a je možné jej spustit přes příkazový řádek. Generování výsledků závisí na spouštění klasického úkolu \verb|test| od Gradle. 
     
-    Generování výsledků pokrytí testů bylo využito jako nápověda pro identifikování důležitého kódu nepokrytého testy. Proto byl úkol \verb|jacocoTestReport| spuštěn několikrát. Podle poslední verze výsledků, která byla spuštěna pro poslední verzi aplikace, 85 \% instrukcí je pokryté testy. Podrobné informace se můžete dozvědět v~příloze \ref{dodatek:code-coverage}.
+    Generování výsledků pokrytí testů bylo využito jako nápověda pro identifikování důležitého kódu nepokrytého testy. Proto byl úkol \verb|jacocoTestReport| spuštěn několikrát. Podle poslední verze výsledků, která byla spuštěna pro poslední verzi aplikace, 85 \% instrukcí je pokryté testy. Podrobné informace se můžete dozvědět v~příloze \ref{dodatek:testing}.
     % vestaveny junit engine v IntelifIDEA prestal fingovat po dosazeni velkeho poctu testu
     \subsection{IntelliJ IDEA}
     Druhým testovacím nástrojem, který byl využit pro zjištění pokrytí kódů testy, je InteliJ~IDEA. Podrobněji byl tento nástroj popsán v~sekci \ref{resere:testovani:intellij-idea} . 
     
-    Tento nástroj byl také využit jako pomocný nástroj při implementaci testů. V~této sekci budou uvedeny jenom výsledky posledního spuštění pro poslední verzi aplikace. Kompletní informace o~výsledcích jsou k~nalezení v~příloze \ref{dodatek:code-coverage}.
+    Tento nástroj byl také využit jako pomocný nástroj při implementaci testů. V~této sekci budou uvedeny jenom výsledky posledního spuštění pro poslední verzi aplikace. Kompletní informace o~výsledcích jsou k~nalezení v~příloze \ref{dodatek:testing}.
     
     IntelliJ IDEA poskytuje nepatrně odlišnou informaci o~pokrytí kódů než nástroj JaCoCo. Podle výsledků jsou pokryté testy:
     \begin{itemize}

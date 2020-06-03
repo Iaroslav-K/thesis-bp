@@ -103,10 +103,10 @@ scheduled.alimonyFactory=true
             % podle \texttt{property} konfiguračního souboru. V případě, že nutné \texttt{property} nebyly definovány aplikace se neukončí běh a nastaví tyto \texttt{property} na implicitní hodnoty. Pro zapínaní běhu metody vytvářející alimenty je potřeba definovat \texttt{property} \texttt{scheduled.alimonyFactory} a nastavit na hodnotu \texttt{true} (viz obrázek \ref{code:alimony-factory-true}).
         
     \subsection{Pečovatelské dny}\label{navrh:upravy:caredays} % PECOVATELSKE DNY
-        \begin{figure}\centering
-	       \includegraphics[width=1.0\textwidth]{pdfs/CareDays2}
-	       \caption[Nový návrh pečovatelských dnů]{Nový návrh pečovatelských dnů}\label{image:caredays2}
-        \end{figure}
+        % \begin{figure}\centering
+	       %\includegraphics[width=1.0\textwidth]{pdfs/CareDays2}
+	       %\caption[Nový návrh pečovatelských dnů]{Nový návrh pečovatelských dnů}\label{image:caredays2}
+        % \end{figure}
         V~předchozím návrhu implementace dlouhodobé nastavení pečovatelských dnů pro rodiče a jednorázové změny byly reprezentované pomocí jedné entity (viz obrázek \ref{image:caredays1}). Problém je právě ve sjednocení několika problémů do jednoho. Proto bylo rozhodnuto rozdělit řešení do dvou částí. Výsledný návrh se skládá ze čtyř entit (viz obrázek \ref{image:caredays2}):
         \begin{itemize}
             \setlength\itemsep{0.3em}
@@ -122,7 +122,7 @@ scheduled.alimonyFactory=true
         
     \subsection{Oznámení}\label{navrh:upravy:notification}
         \begin{figure}\centering
-	       \includegraphics[width=0.9\textwidth]{pdfs/Notification2}
+	       \includegraphics[width=1.0\textwidth]{pdfs/Notification2}
 	       \caption[Nový návrh oznámení]{Nový návrh oznámení entity \texttt{Notification} a na ně se navazujících}\label{image:notification2}
         \end{figure}
         Předchozí návrh oznámení nebyl vhodný pro frontendovou část aplikace. Oznámení byla určena jenom pro konkrétní případ užití -- oznámení o~požadavku na změnu. Byla navržena obecně a neměla konkrétní typ. Tudíž oznámení elektronické pošty a upozornění v~telefonu byla reprezentována pomocí stejné entity.
@@ -139,7 +139,7 @@ scheduled.alimonyFactory=true
     
     \subsection{Interní DSL jazyk}\label{navrh:zmeny:dsl}
         % TODO popsat podrobneji
-        \begin{figure} % [H] TODO
+        \begin{figure}
             \begin{minted}[frame=lines,
         framesep=2mm,
         baselinestretch=1.2,
@@ -294,7 +294,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
     Pro profil produkce bylo rozhodnuto použít jinou databázi. Volilo se mezi dvěma databázemi: PostgreSQL a MySQL. Tyto databáze jsou jedny z~nejpopulárnějších databází v~současné době a zároveň jsou otevřeným softwarem. Po porovnání těchto dvou databází, byla vybrána databáze PostgreSQL. Některé funkce byly považovány za důležité přesto, že ještě nebyly využity v~implementaci a návrhu. Příklady převah PostgreSQL nad MySQL: 
     \begin{itemize}
             \setlength\itemsep{0.3em}
-            \item PostgreSQL je objektově relační databáze \cite{postgres-about}, zato MySQL je pouze relační databáze\cite{mysql-wiki}. To znamená, že PostgreSQL dovoluje dědění tabulek a přetěžování metod;
+            \item PostgreSQL je objektově relační databáze \cite{postgres-about}, zato MySQL je pouze relační databáze. To znamená, že PostgreSQL dovoluje dědění tabulek a přetěžování metod;
             \item PostgreSQL poskytuje možnost definovat vlastní typy \cite{pstgres-create-type};
             \item autor této práce má zkušenosti s~PostgreSQL.
     \end{itemize}
@@ -305,7 +305,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
     
 \section{Návrh testování}\label{navrh:testovani}
     % Pro testování kódu budou využity frameworky JUnit 5 a Spring. Podrobný popis těchto frameworků byl v sekci \ref{resere:testovani}. Testování se skládá s \texttt{unit}\footnote{testy, zaměřené na ověření správnosti fungování samostatně testovatelné části programu} testů a \texttt{integration}\footnote{testy, zaměřené na ověření správné komunikace mezi komponentami} testů. Návrh testů se bude podstatné lišit mezi sebou. Proto bude využita funkcionalita frameworku JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů\cite{junit-tags}. Princip chování tagů najdete v sekci \ref{resere:testovani}. Podrobnější informaci o implementaci tagů bude popsána v sekci \ref{testovani:tagy}. Kompletní implementace testování bude popsána v kapitole \ref{testovani}.
-    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Tyto frameworky byly podrobně popsány v~sekci \ref{resere:testovani}. Testování se skládá s~\texttt{unit}\footnote{Testy, zaměřené na ověření správnosti fungování samostatně testovatelných částí programu.} testů a \texttt{integračních}\footnote{Testy, zaměřené na ověření správné komunikace mezi komponentami.} testů. Návrhy testů se budou podstatně lišit mezi sebou. Proto budou využité funkce poskytované frameworkem JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů\cite{junit-tags}. Podrobnější informace o~implementaci tagů budou uvedeny v~sekci \ref{testovani:tagy}. Kompletní implementace testování bude popsána v~kapitole \ref{testovani}.
+    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Tyto frameworky byly podrobně popsány v~sekci \ref{reserse:testovani}. Testování se skládá s~\texttt{unit}\footnote{Testy, zaměřené na ověření správnosti fungování samostatně testovatelných částí programu.} testů a \texttt{integračních}\footnote{Testy, zaměřené na ověření správné komunikace mezi komponentami.} testů. Návrhy testů se budou podstatně lišit mezi sebou. Proto budou využité funkce poskytované frameworkem JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů\cite{junit-tags}. Podrobnější informace o~implementaci tagů budou uvedeny v~sekci \ref{testovani:tagy}. Kompletní implementace testování bude popsána v~kapitole \ref{chapter:testovani}.
     
     \subsection{Unit testy}
         Unit testy využívají pouze funkce frameworku JUnit 5 a testují základní funkce. Otestovány mají byt třídy a metody, které mohou být otestovány samostatně. Tyto testy také mají být označeny jako unit testy pomocí tagů.  %TODO popsat podrobneji
