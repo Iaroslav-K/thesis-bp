@@ -15,8 +15,8 @@ Při úpravách současného návrhu byl proveden  velký počet změn různé v
 	        \includegraphics[width=0.8\textwidth]{pdfs/CareDayInterval}
 	        \caption[Návrh entity \texttt{CareDayInterval}]{Návrh entity \texttt{CareDayInterval}}\label{image:careDayInterval}
         \end{figure}
-        První změnou je nový návrh entity \verb|Interval|. Původní návrh nevyhovoval svou složitostí a zároveň jenom částečným pokrytím možných případů užití (viz~obrázek~\ref{image:Interval1}). Entita řešila několik samostatných problémů najednou: pravidla pečovatelských dnů rodičů a klasické intervaly definující pravidla opakování nebo jednorázovou událost. Proto entita \verb|Interval| byla rozdělena do dvou samostatných částí.
-        První část se zabývá pravidly pro pečovatelské dny rodičů (viz obrázek \ref{image:Interval2}). Pravidlo je reprezentováno intervalem, který se opakuje, a skládá se ze seznamu jednotlivých pečovatelských dnů. Každý pečovatelský den je navázán na konkrétního rodiče, který je zodpovědný za dítě v~tento den. Použití tohoto typu intervalu bude popsáno v~sekci \ref{navrh:upravy:caredays}. Ostatní případy použití intervalů nevyžadují, ani specifické atributy, ani specifický rozsah možných pravidel, proto ostatní případy použití řeší stejná entita -- \verb|Interval| -- (viz obrázek \ref{image:Interval2}).
+        První změnou je nový návrh entity \verb|Interval|. Původní návrh nevyhovoval svou složitostí a zároveň jenom částečným pokrytím možných případů užití (viz~obrázek~\ref{image:Interval1}). Entita řešila několik samostatných problémů najednou: pravidla pečovatelských dnů rodičů a klasické intervaly definující pravidla opakování nebo jednorázovou událost. Proto entita \verb|Interval| byla rozdělena do~dvou samostatných částí.
+        První část se zabývá pravidly pro pečovatelské dny rodičů (viz obrázek \ref{image:Interval2}). Pravidlo je reprezentováno intervalem, který se~opakuje, a skládá se ze seznamu jednotlivých pečovatelských dnů. Každý pečovatelský den je navázán na konkrétního rodiče, který je zodpovědný za dítě v~tento den. Použití tohoto typu intervalu bude popsáno v~sekci \ref{navrh:upravy:caredays}. Ostatní případy použití intervalů nevyžadují, ani specifické atributy, ani specifický rozsah možných pravidel, proto ostatní případy použití řeší stejná entita -- \verb|Interval| -- (viz obrázek \ref{image:Interval2}).
         
         % První část reprezentuje (viz obrázek \ref{image:Interval2}) úplně nahrazuje původní entitu. Druhou entitou je \texttt{CareDayInterval} (viz obrázek \ref{image:careDayInterval}), která reprezentuje časové rozmezí pečovatelských dnů.
     
@@ -29,7 +29,7 @@ Při úpravách současného návrhu byl proveden  velký počet změn různé v
         Druhou důležitou úpravou současného návrhu je změna entity \verb|Alimony| a spravování instancí této třídy.
     
         \subsubsection{Úprava entity}
-            Za účelem zvýšení samostatnosti instancí entity \verb|Alimony| byla přidána závislost na entitu \verb|Family|. Také byl přidán atribut \verb|value|, který se kopíruje z~entity \verb|AlimonySetting|. Příčinou přidání tohoto atributu je možnost aktualizace nastavení alimentů, což působí zneplatnění již existujících instancí alimentů. V~případě, že rodiče změní hodnotu v~nastavení alimentů, ztratí se možnost zjistit hodnoty alimentů, které byly vytvořeny do změny.
+            Za účelem zvýšení samostatnosti instancí entity \verb|Alimony| byla přidána závislost na entitu \verb|Family|. Také byl přidán atribut \verb|value|, který se kopíruje z~entity \verb|AlimonySetting|. Příčinou přidání tohoto atributu je možnost aktualizace nastavení alimentů, což působí zneplatnění již existujících instancí alimentů. V~případě, že rodiče změní hodnotu v~nastavení alimentů, ztratí se~možnost zjistit hodnoty alimentů, které byly vytvořeny do změny.
             
         \subsubsection{Spravování alimentů} 
             V~této sekci bude popsán návrh třídy, která se věnuje vytváření alimentů.
@@ -65,7 +65,7 @@ fun createAlimonyForEachAlimonySetting() {
                 \caption{Ukázka metody vytvářející instance alimentů} 
                 \label{code:create-alimony}
             \end{figure}
-            Všechny instance alimentů je potřeba vytvářet pravidelně. Proto vytváření bylo objednáno do jednoho procesu, který je stejný pro všechny instance. Proces vytváření alimentů zajišťuje specifická metoda, která se nachází ve třídě \verb|AlimonyFactory| (viz obrázek \ref{code:create-alimony}). Metoda vyhledává všechny aktivní instance \verb|AlimonySetting| a pro každou vytvoří instanci entity \verb|Alimony|. 
+            Všechny instance alimentů je potřeba vytvářet pravidelně. Proto vytváření bylo objednáno do jednoho procesu, který je stejný pro všechny instance. Proces vytváření alimentů zajišťuje specifická metoda, která se nachází ve~třídě \verb|AlimonyFactory| (viz obrázek \ref{code:create-alimony}). Metoda vyhledává všechny aktivní instance \verb|AlimonySetting| a pro každou vytvoří instanci entity \verb|Alimony|. 
             
             % Proces vytváření alimentů je nastavitelný pomoci proměnných prostředí příslušného profilu.
             \begin{figure}
@@ -99,7 +99,7 @@ scheduled.alimonyFactory=true
             \end{figure}
             Byla přidána možnost měnit čas spouštění metody pomocí konfiguračního souboru, ale také bychom potřebovali mít možnost vypnout tuto metodu, například pro robustní testování. Proto byla přidána třída, která vytváří instanci tříd obsahující automaticky spustitelné metody. Třída je definována jako komponenta frameworku Spring a každá její metoda je určena pro vytváření instancí jiných tříd podle předem definované podmínky.
             V~případě, že podmínka má hodnotu \verb|false|, příslušná komponenta se nevytváří.
-            Pro vytváření třídy \verb|AlimonyFactory| byla definována podmínka která ověřuje jestli proměnná \verb|scheduled.alimonyFactory| je nastavená na hodnotu \verb|true| (viz obrázek \ref{code:alimony-factory-true}). V~případě, že tato proměnná nebyla definována pro aktuální profil aplikace, proměnná se automaticky nastaví na hodnotu \verb|false| a instance třídy \verb|AlimonyFactory| nebude vytvořena.
+            Pro vytváření třídy \verb|AlimonyFactory| byla definována podmínka, která ověřuje, jestli proměnná \verb|scheduled.alimonyFactory| je nastavená na hodnotu \verb|true| (viz obrázek \ref{code:alimony-factory-true}). V~případě, že tato proměnná nebyla definována pro aktuální profil aplikace, proměnná se automaticky nastaví na hodnotu \verb|false| a instance třídy \verb|AlimonyFactory| nebude vytvořena.
             % podle \texttt{property} konfiguračního souboru. V případě, že nutné \texttt{property} nebyly definovány aplikace se neukončí běh a nastaví tyto \texttt{property} na implicitní hodnoty. Pro zapínaní běhu metody vytvářející alimenty je potřeba definovat \texttt{property} \texttt{scheduled.alimonyFactory} a nastavit na hodnotu \texttt{true} (viz obrázek \ref{code:alimony-factory-true}).
         
     \subsection{Pečovatelské dny}\label{navrh:upravy:caredays} % PECOVATELSKE DNY
@@ -107,7 +107,7 @@ scheduled.alimonyFactory=true
 	       %\includegraphics[width=1.0\textwidth]{pdfs/CareDays2}
 	       %\caption[Nový návrh pečovatelských dnů]{Nový návrh pečovatelských dnů}\label{image:caredays2}
         % \end{figure}
-        V~předchozím návrhu implementace dlouhodobé nastavení pečovatelských dnů pro rodiče a jednorázové změny byly reprezentované pomocí jedné entity (viz obrázek \ref{image:caredays1}). Problém je právě ve sjednocení několika problémů do jednoho. Proto bylo rozhodnuto rozdělit řešení do dvou částí. Výsledný návrh se skládá ze čtyř entit (viz obrázek \ref{image:caredays2}):
+        V~předchozím návrhu implementace dlouhodobé nastavení pečovatelských dnů pro rodiče a jednorázové změny byly reprezentované pomocí jedné entity (viz obrázek \ref{image:caredays1}). Problém je právě ve sjednocení několika problémů do jednoho. Proto bylo rozhodnuto rozdělit řešení do dvou částí. Výsledný návrh se~skládá ze čtyř entit (viz obrázek \ref{image:caredays2}):
         \begin{itemize}
             \setlength\itemsep{0.3em}
             \item \texttt{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů;
@@ -115,15 +115,15 @@ scheduled.alimonyFactory=true
             \item \texttt{CareDay}, reprezentující jeden pečovatelský den pro dlouhodobé nastavení;
             \item \texttt{CareDayChange}, reprezentující změnu pečovatelských dnů.
         \end{itemize}
-        Dlouhodobá nastavení pečovatelský dnů rodičů již byla zmíněna v~sekci \ref{navrh:upravy:interval}. Nastavení se skládají z~po sobě jdoucích dnů, kde každý den má odkaz na rodiče, který má v~péče dítě v~tento den. Interval je uchováván v~entitě \verb|CareDaysSetting|, která reprezentuje nastavení pečovatelských dnů rodičů pro konkrétní rodinu. Tato nastavení definují implicitní nastavení pečovatelských dnů, podle kterých se vyplní kalendář rodiny.
+        Dlouhodobá nastavení pečovatelský dnů rodičů již byla zmíněna v~sekci \ref{navrh:upravy:interval}. Nastavení se skládají z~po sobě jdoucích dnů, kde každý den má odkaz na~jednoho rodiče, který má v~péče dítě v~tento den. Interval je uchováván v~entitě \verb|CareDaysSetting|, která reprezentuje nastavení pečovatelských dnů rodičů pro konkrétní rodinu. Tato nastavení definují implicitní nastavení pečovatelských dnů, podle kterých se vyplní kalendář rodiny.
         
-        Změny pečovatelských dnů jsou reprezentovány entitou \verb|CareDayChange|. Změna může být, jak jednorázová, tak i dlouhodobá. Interval změny nebo pravidlo opakování změny je reprezentován pomocí entity \verb|Interval|. Každá změna se vztahuje ke konkrétnímu členovi rodiny a instanci nastavení pečovatelských dnů příslušné rodiny.
+        Změny pečovatelských dnů jsou reprezentovány entitou \verb|CareDayChange|. Změna může být, jak jednorázová, tak i dlouhodobá. Interval změny nebo pravidlo opakování změny je reprezentován pomocí entity \verb|Interval|. Každá změna se~vztahuje ke konkrétnímu členovi rodiny a instanci nastavení pečovatelských dnů příslušné rodiny.
         % Dlouhodobá nastavení jsou reprezentovány seznamem pečovatelských dnů, kde každý den má odkaz na člena rodiny, který má v tento den peče o dítě. Jeden \texttt{CareDayInterval} obsahuje seznám takových pečovatelských dnů, ale nereprezentuje nastavení. Za účelem pohodlné modifikovatelností, \texttt{CareDayInterval} je jenom pomocnou entitou, kterou udržuje entita \texttt{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů. Tudíž, uživatel má možnost změnit interval pečovatelských dnů tím, že nahradí jiným záznamem, a současně bude vytvořena kopie tohoto záznamu v historii (viz sekci \ref{navrh:testovani}).
         
     \subsection{Oznámení}\label{navrh:upravy:notification}
         \begin{figure}\centering
 	       \includegraphics[width=1.0\textwidth]{pdfs/Notification2}
-	       \caption[Nový návrh oznámení]{Nový návrh oznámení entity \texttt{Notification} a na ně se navazujících}\label{image:notification2}
+	       \caption[Nový návrh oznámení]{Nový návrh entity \texttt{Notification} a na ně se navazujících}\label{image:notification2}
         \end{figure}
         Předchozí návrh oznámení nebyl vhodný pro frontendovou část aplikace. Oznámení byla určena jenom pro konkrétní případ užití -- oznámení o~požadavku na změnu. Byla navržena obecně a neměla konkrétní typ. Tudíž oznámení elektronické pošty a upozornění v~telefonu byla reprezentována pomocí stejné entity.
         
@@ -131,11 +131,11 @@ scheduled.alimonyFactory=true
         Současná implementace frontendové části aplikace vyžaduje zavedení typu upozornění, které by reprezentovaly upozornění v~rámci Android aplikace. Proto byla přidána entita \verb|Alert| (viz obrázek \ref{image:notification2}), která dědí základní údaje od entity \verb|Notification|. Pro zaručení konkretizace příčiny vytvoření oznámení byl přidán odkaz na událost, která je důvodem vzniku tohoto oznámení, do abstraktní entity a také typ této události. Typ oznámení je reprezentován pomocí entity výčtového typu -- \verb|AlertCause|. 
         Každá instance entity \verb|Alert| obsahuje atribut \verb|read| označující, jestli je oznámení přečteno uživatelem. Pro zaručení kvalitního návrhu API byla přidána možnost přečtení všech upozornění najednou. Přečtení upozornění je reprezentováno pomocí přidání atributu \verb|read| hodnoty \verb|true|.
         
-        Výsledný návrh oznámení reprezentuje jednotlivá oznámení, která jsou dostupná pouze pro konkrétního uživatele. Přidané komentáře do oznámení jsou viditelné pouze pro adresáta příslušného oznámení, proto proces přidávaní komentářů byl odstraněn. Také byl přidán atribut \verb|text|, který je nutným pro uvádění podrobnějšího popisu oznámení.
+        Výsledný návrh oznámení reprezentuje jednotlivá oznámení, která jsou dostupná pouze pro konkrétního uživatele. Přidané komentáře do oznámení jsou viditelné pouze pro adresáta příslušného oznámení, proto proces přidávaní komentářů byl odstraněn. Také byl přidán atribut \verb|text|, který je nutným pro~uvádění podrobnějšího popisu oznámení.
         % Výsledný návrh oznámení nepotřebuje proces přidávání komentářů, proto byla odstraněna závislost na entitu \verb|Comment|.
             
 \section{Navržené změny}
-    V~této sekci budou popsány změny navržené autorem této práce zaměřené na vylepšení výsledné aplikace.
+    V~této sekci budou popsány změny navržené autorem této práce zaměřené na~vylepšení výsledné aplikace.
     
     \subsection{Interní DSL jazyk}\label{navrh:zmeny:dsl}
         % TODO popsat podrobneji
@@ -170,7 +170,7 @@ private val validInterval = Interval(
         Libovolný člen rodiny může mít několik vlastních alb, která potřebuje rozlišovat mezi sebou. Předchozí návrh entity \verb|Album| neposkytoval možnost přidání názvu, proto do entity byl přidán příslušný atribut.
         
     \subsection{Konverter}
-        V~sekci \ref{analyza:soucasnaImplementace} již bylo zmíněno, že pro implementaci serveru byla zvolena třívrstvá architektura. Doménová vrstva komunikuje s~datovou vrstvou pomocí tříd reprezentujících entity databáze, ale s~aplikační vrstvou tato komunikace probíhá pomocí DTO. Konverze mezi entitou a DTO se provádí v~této vrstvě. Za konverzi z~entity na DTO odpovídá třída entity. Za konverzi z~DTO na entitu odpovídá třída DTO.
+        V~sekci \ref{analyza:soucasnaImplementace} již bylo zmíněno, že pro implementaci serveru byla zvolena třívrstvá architektura. Doménová vrstva komunikuje s~datovou vrstvou pomocí tříd reprezentujících entity databáze, ale s~aplikační vrstvou tato komunikace probíhá pomocí DTO. Konverze mezi entitou a DTO se provádí v~této vrstvě. Za konverzi z~entity na DTO odpovídá třída entity. Za konverzi z~DTO na~entitu odpovídá třída DTO.
         Takový postup těsně provazuje entitu s~příslušnou třídou DTO, tennto problém se také nazývá \textit{tight coupling}. Zavedení konvertorů zmenšuje takovou závislost. Každý konvertor obsahuje metodu konvertující entitu na příslušné DTO a metodu konvertující DTO na příslušnou entitu. Takový postup umožňuje odstranit stejné metody z~příslušných tříd, což zvětšuje modularitu návrhu. 
         Pak je možné snadno přidat jiné DTO reprezentující stejnou entitu bez úprav entity samotné, a naopak.
         
@@ -198,7 +198,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
         Našeptávač pro výjimky byl zmíněn již v~sekci \ref{analyza:implementace:tridy}. Tato komponenta byla rozšířena o~typ výjimky označující, že DTO nebyl správně serializován kvůli nedostatku potřebných atributů. Příkladem může být překlep v~názvu povinného atributu. Také návratová zpráva byla rozšířena o~textový název chyby a časové razítko. Výslednou konfiguraci našeptávače najdete v~příloze \ref{dodatek:excpetion-handler2}.
         
     \subsection{Aplikační vrstva}
-        V~předchozí implementaci byl použit POST požadavek, jak pro vytváření, tak pro aktualizaci. Požadavky se rozlišují mezi sebou přítomností identifikátoru. Pokud je ID nastaveno na \verb|null| vytvoří se nový záznam v~databázi. V~opačném případě se server pokusí najít a aktualizovat záznam.
+        V~předchozí implementaci byl použit POST požadavek, jak pro vytváření, tak pro aktualizaci. Tento požadavek očekává Data Transfer Object (DTO) v těle požadavku. Požadavky se rozlišují mezi sebou přítomností identifikátoru entity v DTO. Pokud je ID nastaveno na \verb|null| vytvoří se nový záznam v~databázi. V~opačném případě se server pokusí najít a aktualizovat záznam.
         
         
         Nový návrh aplikační vrstvy podporuje POST a PUT požadavky. POST požadavek je určen pro vytvoření nového záznamu a vyžaduje aby atribut \verb|id| v~DTO byl nastaven na hodnotu \verb|null|. PUT požadavek je určen pro aktualizaci záznamu a vyžaduje aby atribut \verb|id| v~DTO byl nastaven na číslo.
@@ -210,7 +210,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
         Dokumentace aplikační vrstvy byla též rozšířena o~návratové stavy pro každou metodu. Všechny parametry metod jsou získány z~požadavků, proto byly přidány i podrobné popisy parametrů metod. 
         
     \subsection{Doménová vrstva}%prejmenovat na ceskou verzi
-        Nový návrh aplikační vrstvy rozděluje proces vytváření nových záznamů a proces aktualizace již existujících záznamů. Proto tento proces byl rozdělen do dvou separátních procesů i v~doménové vrstvě.
+        Nový návrh aplikační vrstvy rozděluje proces vytváření nových záznamů a proces aktualizace již existujících záznamů. Proto tento proces byl rozdělen do~dvou separátních procesů i v~doménové vrstvě.
         
         
         Proces filtrování záznamů podle aktuálně přihlášeného uživatele se provádí na datové vrstvě. Doménová vrstva jenom používá specifické metody datové vrstvy obsahující filtraci. V~případě, že požadovaná data nepatří konkrétnímu uživateli, ale celé rodině, provádí se ověření, jestli aktuálně přihlášený uživatel patří do této rodiny.
@@ -243,7 +243,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
         %TODO image
         Výsledný návrh entity \verb|History| (viz přílohu \ref{dodatek:DomainModel2}) byl kompletně implementován. Také byly přidány řadiče pro každý typ historie, které poskytují možnost vyhledat záznamy. Uživatel nemůže vytvořit nový záznam historie nebo změnit již existující záznam. Proto API serveru nepodporuje příslušné požadavky. Vytvoření instancí historie se provádí serverem automaticky při aktualizacích příslušných entit.
         Spravování entit historie v~doménové vrstvě bylo rozděleno do dvou logických bloků. První blok se zabývá spravováním požadavků Android aplikace. Každý typ historie má vlastní rozhraní reprezentující metody, které je možné provádět s~touto entitou. Druhým logickým blokem je proces vytváření instancí historie. Za tímto účelem bylo přidáno rozhraní \verb|InternalHistoryService|, které poskytuje metodu \verb|toHistory| pro uložení instance do databáze.
-        Metoda očekává jako parametr instanci třídy před provedením změn a konvertuje tuto instanci do příslušné instance historie. Každý typ historie má též vlastní konvertor z~entity do entity historie. Například, po vložení do metody \verb|toHistory| parametru typu \verb|Bill|, bude zavolán konvertor \verb|BillToHistoryConvertor|, který vrátí instanci třídy \verb|BillHistory|. 
+        Metoda očekává jako parametr instanci třídy před provedením změn a konvertuje tuto instanci do příslušné instance historie. Každý typ historie má též vlastní konvertor z~entity do entity historie. Například, po~vložení do metody \verb|toHistory| parametru typu \verb|Bill|, bude zavolán konvertor \verb|BillToHistoryConvertor|, který vrátí instanci třídy \verb|BillHistory|. 
 
 \section{Návrh bezpečnosti}\label{navrh:bezpecnost}
     \subsection{OAuth 2.0}
@@ -282,16 +282,16 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
     Prvním profilem, který byl přidán, je profil pro produkci. Hlavním rozdílem tohoto profilu od profilu vývoje je použitá databáze. Podrobněji bude zvolená databáze popsána v~sekci \ref{navrh:db}. Pro tuto sekci je postačující zmínit, že zvolená databáze je PostrgeSQl. Druhou odlišností je jiná implementace rozhraní \verb|UserDetails|. Produkční verze aplikace by neměla mít \verb|root| uživatele. Jiný konfigurační soubor také dovoluje nechat konfiguraci pro produkci nedotčenou při možném velkém počtu změn v~jiných profilech.
     Například, můžeme nechat vypnuté plánované vytváření alimentů pro vývojový profil.
     
-    Druhým profilem, který byl přidán do aplikace, je profil pro testování. Změny se dotkly stejných aspektů jako profilu produkce. Byla přidána nová implementace rozhraní \verb|UserDetails|, která obsahuje implicitních uživatele s~různými rolemi. Také byla přidána konfigurace databáze. Pro tento profil byla zvolena stejná databáze jako i pro profil produkce. Takový postup zmenšuje šance na výskyt nečekaných chyb, působených použitím odlišné databáze v~produkci.
+    Druhým profilem, který byl přidán do aplikace, je profil pro testování. Změny se dotkly stejných aspektů jako profilu produkce. Byla přidána nová implementace rozhraní \verb|UserDetails|, která obsahuje implicitních uživatele s~různými rolemi. Také byla přidána konfigurace databáze. Pro tento profil byla zvolena stejná databáze jako i pro profil produkce. Takový postup zmenšuje šance na~výskyt nečekaných chyb, působených použitím odlišné databáze v~produkci.
     
 \section{Databáze} \label{navrh:db}
     Použité databáze byly popsány v~sekci \ref{resere:databaze}. V~této sekci bude vysvětleno, proč byly zvoleny tyto databáze.
     % Popis používané databáze už vyskytoval v rešerši (viz sekci \ref{resere:databaze}) a analýze (viz sekci \ref{analyza:soucasnaImplementace:databaze}), proto tady jenom zmíním, že se používá relační databáze H2. Pro popis zvolených databází pro proces realizace praktické části je potřeba zmínit, že aplikace byla rozdělena do různých profilů. Používána databáze je jedním z rozdílů těchto profilů. Podrobněji profily aplikace byly popsány v sekci \ref{navrh:profily} .
     
-    Profil pro vývoj používá databázi H2. Stejná databáze byla použita při předchozí implementaci. Databáze nevyžadovala její nahrazení jinou databází, protože nevyžaduje nastartování databáze zvlášť od aplikace, ale nastartuje se spolu s~aplikací. Všechna data se ukládají přímo v~paměti aplikace, proto po restartování aplikace smaže všechny vytvořené záznamy.
+    Profil pro vývoj používá databázi H2. Stejná databáze byla použita při předchozí implementaci. Databáze nevyžadovala její nahrazení jinou databází, protože nevyžaduje nastartování databáze zvlášť od aplikace, ale nastartuje se~spolu s~aplikací. Všechna data se ukládají přímo v~paměti aplikace, proto po~restartování aplikace smaže všechny vytvořené záznamy.
     % Zdroj databáze byl změněn z konkrétního souboru na paměť aplikace, což znamená, že databáze se vytváří při každém spouštění aplikace a zničí se po její ukončení. Také byl definován konkrétní dialekt databáze. Byl zvolen implicitní dialekt, který poskytuje databáze H2, protože zvolená databáze pro produkci.
     
-    Pro profil produkce bylo rozhodnuto použít jinou databázi. Volilo se mezi dvěma databázemi: PostgreSQL a MySQL. Tyto databáze jsou jedny z~nejpopulárnějších databází v~současné době a zároveň jsou otevřeným softwarem. Po porovnání těchto dvou databází, byla vybrána databáze PostgreSQL. Některé funkce byly považovány za důležité přesto, že ještě nebyly využity v~implementaci a návrhu. Příklady převah PostgreSQL nad MySQL: 
+    Pro profil produkce bylo rozhodnuto použít jinou databázi. Volilo se mezi dvěma databázemi: PostgreSQL a MySQL. Tyto databáze jsou jedny z~nejpopulárnějších databází v~současné době a zároveň jsou otevřeným softwarem. Po~porovnání těchto dvou databází, byla vybrána databáze PostgreSQL. Některé funkce byly považovány za důležité přesto, že ještě nebyly využity v~implementaci a návrhu. Příklady převah PostgreSQL nad MySQL: 
     \begin{itemize}
             \setlength\itemsep{0.3em}
             \item PostgreSQL je objektově relační databáze \cite{postgres-about}, zato MySQL je pouze relační databáze. To znamená, že PostgreSQL dovoluje dědění tabulek a přetěžování metod;

@@ -27,13 +27,16 @@
 \usepackage{enumitem} % for pretty lists
 \usepackage{verbatim} % for pretty variables
 \usepackage{xcolor} % for backgroung in minted
-\usepackage{rotating} % for table rotating
 \usepackage{adjustbox}
 \addbibresource{template/mybibliographyfile.bib}
 
 \setlength{\parindent}{0em}
 \setlength{\parskip}{1em}
-
+% \setenumerate{itemsep=0.1em}
+% \setlength{\itemsep}{0.1em}
+\setlist[itemize]{
+    itemsep=0.1em
+}
 
 % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}

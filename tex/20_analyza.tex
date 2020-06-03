@@ -11,7 +11,6 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
     % TODO REST footmote to first mention
     V~rámci předmětu Softwarový týmový projekt 1 (BI-SP1) pracovalo sedm lidí včetně autora této práce. Tým měl za úkol analyzovat požadavky zákazníka a navrhnout implementaci aplikace. Během semestru tým provedl kompletní analýzu požadavků zákazníka. Tým navrhl scénáře užití aplikace:
     \begin{itemize}
-    \setlength\itemsep{0.3em}
 	   \item Přihlašování/Registrace;
 	   \item Přihlašování/Registrace do rodiny;
 	   \item Role v~aplikaci a jejich vytváření;
@@ -35,7 +34,7 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         
     
 \section{Doménový model}\label{analyza:navrh:DomainModel}
-    Hlavním zdrojem informace o~výsledném návrhu serveru je doménový model. Kompletní doménový model se nachází v~příloze \ref{dodatek:DomainModel}. Během implementace tým označoval entity, které jsou kompletně nebo částečně implementovány. Zelenou barvou jsou označeny třídy, které už jsou implementovány. Žlutou barvou jsou označeny třídy, které ještě nejsou implementovány. Třídy označené zároveň žlutě i zeleně jsou implementovány pouze částečně. Taková situace mohla nastat v~případě, že implementace vyžadovala implementaci jiné třídy, která ještě neexistovala. Tento doménový model má nedostatky detekované při implementaci, jak frontendové, tak i backendové části aplikace. Jako příklad takových nedostatků je možné uvést zbytečně komplikovaný návrh entity \texttt{Interval} (viz obrázek \ref{image:Interval1}). Podrobný popis problému bude uveden v~sekci \ref{analyza:pozadavky-frontendu}.
+    Hlavním zdrojem informace o~výsledném návrhu serveru je doménový model. Kompletní doménový model se nachází v~příloze \ref{dodatek:DomainModel}. Během implementace tým označoval entity, které jsou kompletně nebo částečně implementovány. Zelenou barvou jsou označeny třídy, které už jsou implementovány. Žlutou barvou jsou označeny třídy, které ještě nejsou implementovány. Třídy označené zároveň žlutě i zeleně jsou implementovány pouze částečně. Tento doménový model má nedostatky detekované při implementaci, jak frontendové, tak i backendové části aplikace. Jako příklad takových nedostatků je možné uvést zbytečně komplikovaný návrh entity \texttt{Interval} (viz obrázek \ref{image:Interval1}). Podrobný popis problému bude uveden v~sekci \ref{analyza:pozadavky-frontendu}.
 
 \section{Analýza předešlého návrhu} \label{analyza:analyza navrhu}
     V~této sekci budou podrobně popsány klíčové aspekty aplikace podle již existujícího návrhu aplikace. Problémy a navržené změny těchto části budou popsány v~následujících sekcích.
@@ -43,7 +42,6 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
     \subsection{Registrace a přihlášeni do systému}
         Aplikace je navržena takovým způsobem, že první uživatel, který má vytvořit svůj účet je jeden z~rodičů. Pro registraci je potřeba řada povinných údajů:
         \begin{itemize}
-        \setlength\itemsep{0.3em}
 	        \item jméno -- zvolené jméno se stává implicitním jménem v~systému;
 	        \item příjmení -- zvolené příjmení se stává implicitním příjmením v~systému;
 	        \item e-mailová adresa -- zvolený e-mail je identifikátorem uživatele v~rámci systému;
@@ -58,13 +56,13 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         Potom má uživatel možnost vytvořit rodinu nebo se přihlásit do již existující rodiny. Pro vytvoření nové rodiny, potřebuje uživatel zadat jméno rodiny a přidat členy rodiny. Autor této rodiny se automaticky stává jedním z~rodičů této rodiny. Jinou možností je se přihlásit do rodiny, která již existuje. Podmínkou je pozvání do některé existující rodiny, což znamená, že přidat nového uživatele do rodiny může jenom člen této rodiny. V~takovém případě uživatel už nemá možnost zvolit role v~rámci rodiny. Role má být nastavena uživatelem, který vytvořil toto pozvání.
 
     \subsection{Kalendář}    
-        Kalendář je hlavním zdrojem informaci pro celou rodinu a je společný pro všechny uživatele. Na něm jsou zobrazené pečovatelské dny obou rodičů zvýrazněné různými barvami. Kalendář též zobrazuje jednorázové a pravidelné události.
+        Kalendář je nejdůležitějším zdrojem informaci pro celou rodinu a je společný pro~všechny uživatele. Na něm jsou zobrazené pečovatelské dny obou rodičů zvýrazněné různými barvami. Kalendář též zobrazuje jednorázové a pravidelné události.
         
         \begin{figure}\centering
 	        \includegraphics[width=1.0\textwidth]{pdfs/CalendarInfo1}
 	        \caption[Předešlý návrh kalendáře]{Návrh kalendáře podle doménového modelu z~předmětu BI-SP2}\label{image:calendar-info}
         \end{figure}
-        Doménový model neobsahuje informace o~kalendáři, ale obsahuje entity reprezentující informaci, kterou kalendář bude zobrazovat (viz obrázek \ref{image:calendar-info}). Každý element, který bude zobrazen v~kalendáři, je reprezentován stejnou entitou \verb|CalendarEvent|. Entita obsahuje jenom informaci o~barvě, kterou událost bude zobrazená v~kalendáři a závislost na entitě \verb|Comment|. Za reprezentaci pečovatelských dnů odpovídá entita \verb|CareInterval|, která se dědí od entity \verb|CalendarEvent|. Za reprezentaci jednorázových a opakujících se událostí odpovídají entity \verb|OneTimeEvent| a \verb|RecurringEvent|, kde \verb|RecurringEvent| se dědí od \verb|OneTimeEvent|.
+        Doménový model neobsahuje informace o~kalendáři, ale obsahuje entity reprezentující informaci, kterou kalendář bude zobrazovat (viz obrázek \ref{image:calendar-info}). Každý element, který bude zobrazen v~kalendáři, je reprezentován stejnou entitou \verb|CalendarEvent|. Entita obsahuje jenom informaci o~barvě, kterou událost bude zobrazená v~kalendáři a závislost na entitě \verb|Comment|. Za reprezentaci pečovatelských dnů odpovídá entita \verb|CareInterval|, která se dědí od entity \verb|CalendarEvent|. Za reprezentaci jednorázových a opakujících se~událostí odpovídají entity \verb|OneTimeEvent| a \verb|RecurringEvent|, kde se \verb|RecurringEvent| dědí od \verb|OneTimeEvent|.
         
         % Současný návrh kalendáře nepokrývá všechny scénáře použití. Podrobný popis problémů a navržené změny budou uvedeny v sekci \ref{analyza:kalendar}. 
         
@@ -89,15 +87,14 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         \end{figure}
         Jedním s~častých problémů, které vznikají během procesu rozvodu, je nakupování příliš drahých dárků, o~kterých ostatní členové rodiny nevědí. Jako příklad je možné uvést nakupování bot pro dítě. Jeden z~rodičů si může chtít \enquote{koupit lásku dítěte} a koupí několikanásobně dražší boty než, dítě ve skutečnosti potřebuje. Kniha potřeb dítěte (viz obrázek \ref{image:Need1}) je zaměřena na překonání takových situací.
         
-        \begin{figure}\centering
-	        \includegraphics[width=0.8\textwidth]{pdfs/NeedPermissions1}
-	        \caption[Návrh entity \texttt{NeedPermissions}]{Návrh entity \texttt{NeedPermissions} podle doménového modelu z~předmětu BI-SP2}\label{image:NeedPermissions1}
-        \end{figure}
-        Potřeba může být typu \verb|need| nebo \verb|wish|. Podle dosavadního návrhu je rozdíl mezi typy pouze pro informační účely. Každé instanci entity \verb|Need| patří instance entity \verb|NeedPermission| (viz obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivé členy rodiny. V~případě, že uživatel nemá žádné z~přístupových práv, potřeba se nevyskytuje v~jeho seznamu potřeb dítěte. Toto pravidlo se netýká jenom rodičů, kteří mají přístup ke všem potřebám automaticky.
+        % \begin{figure}\centering
+	       % \includegraphics[width=0.8\textwidth]{pdfs/NeedPermissions1}
+	       % \caption[Návrh entity \texttt{NeedPermissions}]{Návrh entity \texttt{NeedPermissions} podle doménového modelu z~předmětu BI-SP2}\label{image:NeedPermissions1}
+        % \end{figure}
+        Potřeba může být typu \verb|need| nebo \verb|wish|. Podle dosavadního návrhu je rozdíl mezi typy pouze pro informační účely. Každé instanci entity \verb|Need| patří instance entity \verb|NeedPermission| (viz obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivé členy rodiny. V~případě, že uživatel nemá žádné z~přístupových práv, potřeba se nevyskytuje v~jeho seznamu potřeb dítěte. Toto~pravidlo se netýká jenom rodičů, kteří mají přístup ke všem potřebám automaticky.
        
        Potřeba obsahuje následující informaci:
         \begin{itemize}
-            \setlength\itemsep{0.3em}
             \item popis -- popis potřeby;
             \item příčina -- příčina, proč dítě toto potřebuje;
             \item obrázky -- obrázky věcí, které dítě potřebuje;
@@ -113,10 +110,9 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         V~sekci \ref{analyza:navrh:need} už bylo zmíněno, že je potřeba řešit problém nakupování dárků pro dítě, ale kniha potřeb dítěte řeší tento problém jenom částečně. Nikdo nezabrání uživateli uvést v~popisu splněného požadavku nebo potřeby neplatné údaje, proto byla zavedena možnost přidání účtenky (viz obrázek \ref{image:bill1}). Tato entita, kromě údajů o~nakoupeném zboží, umožňuje přidání fotografií potvrzujících platnost uvedených údajů.
     
     \subsection{Požadavky na změny}
-        Každý člen rodiny může udělat určité změny v~rámci rodiny. Například nastavit přezdívku pro konkrétního uživatele nebo přidat fotografii do události v~kalendáři. Každá taková změna je důležitá, ale jsou změny, které by měly být kontrolovány rodiči. Pro zaručení kontroly byly zavedeny požadavky na změny pro některé změny v~rámci rodiny. Následně, pro provedení změny v~příslušných entitách uživatel potřebuje nejdřív vytvořit požadavek a schválit ho.
-        Právo na schválení nebo zamítnutí požadavků mají jenom rodiče. Požadavky, které byly vytvořeny jedním z~rodičů, mají být potvrzeny druhým rodičem. Ostatní požadavky musí být potvrzeny oběma rodiči. Seznám požadavků se skládá z:
+        Každý člen rodiny může udělat určité změny v~rámci rodiny. Například nastavit přezdívku pro konkrétního uživatele nebo přidat fotografii do události v~kalendáři. Každá taková změna je důležitá, ale jsou změny, které by měly být kontrolovány rodiči. Pro zaručení kontroly byly zavedeny požadavky na~změny pro některé změny v~rámci rodiny. Následně, pro provedení změny v~příslušných entitách uživatel potřebuje nejdřív vytvořit požadavek a schválit ho.
+        Právo na schválení nebo zamítnutí požadavků mají jenom rodiče. Požadavky, které byly vytvořeny jedním z~rodičů, mají být potvrzeny druhým rodičem. Ostatní požadavky musí být potvrzeny oběma rodiči. Seznám požadavků se~skládá z:
         \begin{itemize}
-            \setlength\itemsep{0.3em}
             \item \texttt{AlimonySettingRequest} -- požadavek na změnu nastavení alimentů, který může být vytvořen jedním z~rodičů;
             \item \texttt{AlimonyChangeRequest} -- požadavek na změnu stavu instance alimentů, který může být vytvořen jedním z~rodiců;
             \item \texttt{OneTimeEventRequest} -- požadavek na vytvoření jednorázové události v~kalendáři, který může být vytvořen jakýmkoliv členem rodiny;
@@ -129,12 +125,11 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         \end{figure}
         Každá entita požadavku je zděděna od společné abstraktní entity obsahující základní informace o~požadavku (viz obrázek \ref{image:abstr-request1}). Mezi základní informace patří datum vytvoření, datum poslední změny, příčina a také aktuální stav požadavku.
         
-        Stavy požadavků reprezentují jejích životní cyklus. Při vytvoření každý požadavek má stejný stav -- \verb|CREATED|. Po potvrzení požadavku jeho autorem má požadavek stav \verb|WAITING_FOR_ACCEPTING|. Po schválení se stav mění na \verb|ACCEPTED| nebo na \verb|WAITING_FOR_EXECUTION| v~případě, že je změna akceptována, ale ještě není uplatněna. Též může nastat případ, že byl požadavek zamítnut, pak se stav mění na \verb|REJECTED|. V~okamžik, kdy je požadavek schválen nebo se čeká na uplatnění, není možné měnit položky tohoto záznamu.
+        Stavy požadavků reprezentují jejich životní cyklus. Při vytvoření každý požadavek má stejný stav -- \verb|CREATED|. Po potvrzení požadavku jeho autorem má požadavek stav \verb|WAITING_FOR_ACCEPTING|. Po schválení se stav mění na~\verb|ACCEPTED| nebo na \verb|WAITING_FOR_EXECUTION| v~případě, že je změna akceptována, ale~ještě není uplatněna. Též může nastat případ, že byl požadavek zamítnut, pak se stav mění na \verb|REJECTED|. V~okamžik, kdy je požadavek schválen nebo se čeká na uplatnění, není možné měnit položky tohoto záznamu.
     
     \subsection{Historie změn}
-        Podle požadavků zákazníka by všechny změny v~rámci rodiny měly být zaznamenány. Proto byly zavedeny entity historií, které kopírují všechny položky entit a přidávají datum vytvoření záznamu a odkaz do patřičné entity v~případě, že tato příslušná entita byla aktualizována. Takové entity jsou zavedeny jenom pro důležité části aplikace, které mohou být změněny uživatelem:
+        Každá provedená v rámci rodiny změna má význam při debatách mezi rodiči. Podle požadavků zákazníka by všechny změny v~rámci rodiny měly být zaznamenány. Proto byly zavedeny entity historií, které kopírují všechny položky entit a přidávají datum vytvoření záznamu a odkaz do patřičné entity v~případě, že tato příslušná entita byla aktualizována. Takové entity jsou zavedeny jenom pro důležité části aplikace, které mohou být změněny uživatelem:
         \begin{itemize}
-            \setlength\itemsep{0.3em}
             \item \texttt{CalendarEventHistory};
             \item \texttt{BillHistory};
             \item \texttt{AlimonyHistory};
@@ -152,23 +147,21 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
      
     Pro implementaci serverového backendu byla zvolena architektura REST skládající se ze tří vrstev:
     \begin{itemize}
-         \setlength\itemsep{0.3em}
          \item Aplikační vrstva, která pokrývá scénáře využití aplikace;
          \item Doménová vrstva, která obsahuje logiku aplikace;
          \item Datová vrstva, která komunikuje s~databází.
     \end{itemize}
     
-    Pro implementaci datové vrstvy byl použit framework Spring Data, který byl popsán v~sekci \ref{resere:j2ee}. Nástroj přidává dodatečnou vrstvu pro implementaci JPA a tím zrychluje a zjednodušuje implementaci. Pro implementaci této vrstvy bylo zvoleno rozhraní \verb|CrudRepository|, které vyžaduje uvedení typu doménové třídy a typu identifikátoru. Každé entitě patří jedna taková třída pro práci s~databází.
+    Pro implementaci datové vrstvy byl použit framework Spring Data, který byl popsán v~sekci \ref{resere:j2ee}. Nástroj přidává dodatečnou vrstvu pro implementaci JPA a tím zrychluje a zjednodušuje implementaci. Pro implementaci této vrstvy bylo zvoleno rozhraní \verb|CrudRepository|, které vyžaduje uvedení typu doménové třídy a typu identifikátoru. Každé entitě patří jedna taková třída pro~práci s~databází.
     
     Pro implementaci doménové vrstvy byly pro každou entitu přidány rozhraní reprezentující funkci, které je možné provádět s~příslušnou entitou. Implementace byla oddělená od definicí metod pro zvětšení modularity výsledného softwaru. Implementace této vrstvy přímo komunikuje s~datovou vrstvou. Provázání tříd se vzniká na základě vkládání závislostí. Proces vkládaní řídí framework Spring podle principu IoC. Tato vrstva komunikuje s~datovou vrstvou pomocí reprezentací entit, ale s~aplikační vrstvou komunikuje pomocí Data Tranfer Object (DTO). Konverzace z~entity na DTO se provádí v~příslušné třídě entity. Konverzace z~DTO na entitu se provádí v~příslušné třídě DTO.
     
     % http requests https://www.ibm.com/support/knowledgecenter/SSGMCP_5.2.0/com.ibm.cics.ts.internet.doc/topics/dfhtl21.html
-    Aplikační vrstva je reprezentována sadou řadičů (\textit{controllers}), kde každý řadič je určen pro konkrétní aspekt použití aplikace. Například existuje řadič určený pro práci s~entitou \verb|Bill| nebo řadič pro ověření, jestli aplikace funguje. Pro každý řadič je vymezená samostatná cesta, která se zadává jako řetězec požadavku \cite{http-request-components}. Tato vrstva přímo komunikuje s~doménovou vrstvou. Provázání tříd se provádí také pomocí vkládaní závislostí. Komunikace aplikační vrstvy přes API se provádí pomocí DTO.
+    Aplikační vrstva je reprezentována sadou řadičů (\textit{controllers}), kde každý řadič je určen pro konkrétní aspekt použití aplikace. Například existuje řadič určený pro práci s~entitou \verb|Bill| nebo řadič pro ověření, jestli aplikace funguje. Pro~každý řadič je vymezená samostatná cesta, která se zadává jako řetězec požadavku \cite{http-request-components}. Tato vrstva přímo komunikuje s~doménovou vrstvou. Provázání tříd se provádí také pomocí vkládaní závislostí. Komunikace aplikační vrstvy přes API se provádí pomocí DTO.
     
     \subsection{Implementované entity}\label{analyza:implementace:tridy}
         Seznam implementovaných entit:
         \begin{itemize}
-            \setlength\itemsep{0.3em}
             \item \texttt{AlimonyStatus};
             \item \texttt{Bill};
             \item \texttt{CalendarEvent};
@@ -194,9 +187,9 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
 		  \texttt{Illegal Argument}	& 400	& původní zpráva chyby		& původní cesta     \tabularnewline \hline
 		  \texttt{Null Pointer}	& 500	& původní zpráva chyby		& původní cesta     \tabularnewline \hline
 		  \texttt{No Such Element}	& 404	& nic		& nic     \tabularnewline \hline
-	    \end{tabular}\caption[Konfigurace našeptávače pro řadiče]{Ukázka konfigurace našeptavače zachycování výjimek pro řadiče}\label{tab:excpetion-handler1}
+	    \end{tabular}\caption[Konfigurace našeptávače pro řadiče]{Ukázka konfigurace našeptávače zachycování výjimek pro řadiče}\label{tab:excpetion-handler1}
         \end{table}
-        Kromě kostry aplikace, která zaručuje třívrstvou architekturu, byly také implementovány pomocné třídy zlepšující výsledný návrh aplikace. Jednou z~takových tříd je třída, která uvádí nápovědy pro všechny řadiče ohledně zachycování výjimek. Tato třída byla zavedena za účelem poskytnutí uživateli pouze korektně formátované informace a filtrování zbytečných informací pro koncového uživatele. Konfigurace našeptávače je uvedena v~tabulce \ref{tab:excpetion-handler1}. Jinou pomocnou třídou je řadič určený pro ověření, zda server funguje. Tento řadič je namapován na cestu \enquote{/}.
+        Kromě kostry aplikace, která zaručuje třívrstvou architekturu, byly také implementovány pomocné třídy zlepšující výsledný návrh aplikace. Jednou z~takových tříd je třída, která uvádí nápovědy pro všechny řadiče ohledně zachycování výjimek. Tato třída byla zavedena za účelem poskytnutí uživateli pouze korektně formátované informace a filtrování zbytečných informací pro~koncového uživatele. Konfigurace našeptávače je uvedena v~tabulce \ref{tab:excpetion-handler1}. Jinou pomocnou třídou je řadič určený pro ověření, zda server funguje. Tento řadič je namapován na cestu \enquote{/}.
         
         % Byl přidán \texttt{controller}\footnote{vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kóda zajišťuje omezení pro jednotlivých uživatelů} pro testování, zda aplikace běží, který je namapován\footnote{přidání konkrétnímu controlleru adresy pomocí anotací frameworku Spring, která se zadává jako URI při odesílaní požadavků na Server} na cestu \enquote{/}. Také, byla přidaná třída, která obsahuje nápovědy pro ostatní \texttt{controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz tabulku \ref{tab:excpetion-handler1}). 
         
@@ -241,7 +234,7 @@ fun api(): Docket {
         Druhý konfigurační soubor patří profilu \texttt{development}. Tento profil je určen pro pohodlný proces vývoje aplikace. Soubor obsahuje konfiguraci databáze a konfiguraci žurnálu aplikace. Podrobněji bude použitá databáze popsána v~sekci \ref{analyza:soucasnaImplementace:databaze}.
         
     \subsection{Databáze}\label{analyza:soucasnaImplementace:databaze}
-        Pro proces vývoje byla zvolena jednoduchá relační databáze H2, která nevyžaduje nastartování serveru zvlášť od aplikace. Tato databáze má též režim, při kterém jsou všechna data uložena přímo v~paměti aplikace. Podrobněji byla tato databáze a její princip fungování popsány v~sekci \ref{resere:databaze}.
+        Pro proces vývoje byla zvolena jednoduchá relační databáze H2, která nevyžaduje nastartování serveru zvlášť od aplikace. Tato databáze má též režim, při~kterém jsou všechna data uložena přímo v~paměti aplikace. Podrobněji byla tato databáze a její princip fungování popsány v~sekci \ref{resere:databaze}.
     
 \section{Analýza požadavků na změny frontendové části aplikace}\label{analyza:pozadavky-frontendu}
     V~rámci předmětu BI-SP2 probíhala současně s~implementací backendové částí aplikace implementace frontendové částí aplikace, která je reprezentovaná Android aplikací. Během vývoje frontendové části aplikace byly identifikovány nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu. V~této sekci budou popsány jednotlivé požadavky na změny od frontendového týmu.
@@ -255,7 +248,7 @@ fun api(): Docket {
             
         Jádro problému je v~tom, že entita je navržena pomocí generalizace, neboli dědičnosti z~hlediska implementace. Takový návrh dává možnost vytvořit konkrétní typ intervalu pomocí zvolení odpovídající třídy. Na druhou stranu takový návrh působí komplikaci při implementaci a současně nepokrývá všechny možné případy využití intervalů. Například, není možné sestavit interval, který se bude opakovat každý poslední den měsíce. Pokud bychom se chtěli držet aktuální implementace a zároveň pokrýt všechny možné případy, ztratili bychom přehlednost zvolení správné třídy při vytváření instance.
             
-        Dalším problémem návrhu entity \verb|Interval| je provázanost s~pečovatelskými dny. Při návrhu frontendové části aplikace bylo zjištěno, že pečovatelské dny nepotřebují komplikované nastavení a zároveň by potřebovaly mít odkazy na konkrétního rodiče, který je zodpovědný za dítě v~tento den nebo časový úsek. Proto je potřeba oddělit interval pečovatelských dnů zvlášť od ostatních intervalů
+        Dalším problémem návrhu entity \verb|Interval| je provázanost s~pečovatelskými dny. Při návrhu frontendové části aplikace bylo zjištěno, že pečovatelské dny nepotřebují komplikované nastavení a zároveň by potřebovaly mít odkazy na~konkrétního rodiče, který je zodpovědný za dítě v~tento den nebo časový úsek. Proto je potřeba oddělit interval pečovatelských dnů zvlášť od ostatních intervalů
     
     \subsection{Alimenty}
         \begin{figure}\centering
@@ -269,23 +262,22 @@ fun api(): Docket {
         Dodatečný požadavek frontendového týmu se týká entity \texttt{Alimony} samotné. Za účelem zjednodušení návrhu frontendové části aplikace je potřeba přidat závislost na entitu \texttt{Family}. % V takovém pŕípade aplikace může ihned po nalazení novych alimentu rict uZivateli ktere rodine patri tyto alimenty.
         
     \subsection{Pečovatelské dny}\label{analyza:pozadavky:caredays}
-        Než se začneme zabývat podrobným popisem problému, je potřeba popsat účel této entity a její využití backendem a frontendem. Tato entita reprezentuje jednorázový interval nebo opakující se interval pečovatelských dnů jednoho z~rodičů nebo ostatních členů rodiny. Pro rozlišování pečovatelských dnů různých členů rodiny má každý uživatel přiřazenou vlastní barvu. Tato entita se používá por dva účely. První a nejdůležitější účel je nastavení pečovatelských dnů pro rodiče. Nastavení musí pokrývat všechny dny kalendáře. Dítě by nemělo mít ve svém kalendáři den, který není označen žádnou barvou a zároveň by neměly vznikat konflikty. Druhým účelem jsou jednorázové změny pečovatelských dnů. Tyto změny jsou vyžadovány pro případy, kdy dlouhodobé nastavení kalendáře neplatí. Příkladem může být výlet dítěte k~prarodičům. Během tohoto časového intervalu nejsou rodiče zodpovědní za dítě, proto je potřeba uvést jednorázovou změnu do kalendáře, která zaznamená tuto situaci. Jiným příkladem je předání péče jednoho rodiče druhému, což může nastat z~různých důvodu.
+        Než se začneme zabývat podrobným popisem problému, je potřeba popsat účel této entity a její využití backendem a frontendem. Tato entita reprezentuje jednorázový interval nebo opakující se interval pečovatelských dnů jednoho z~rodičů nebo ostatních členů rodiny. Pro rozlišování pečovatelských dnů různých členů rodiny má každý uživatel přiřazenou vlastní barvu. Tato entita se~používá por dva účely. První a nejdůležitější účel je nastavení pečovatelských dnů pro rodiče. Nastavení musí pokrývat všechny dny kalendáře. Dítě by nemělo mít ve svém kalendáři den, který není označen žádnou barvou a zároveň by neměly vznikat konflikty. Druhým účelem jsou jednorázové změny pečovatelských dnů. Tyto změny jsou vyžadovány pro případy, kdy dlouhodobé nastavení kalendáře neplatí. Příkladem může být výlet dítěte k~prarodičům. Během tohoto časového intervalu nejsou rodiče zodpovědní za dítě, proto je~potřeba uvést jednorázovou změnu do kalendáře, která zaznamená tuto situaci. Jiným příkladem je předání péče jednoho rodiče druhému, což může nastat z~různých důvodu.
 
         \begin{figure}\centering
             \includegraphics[width=1.0\textwidth]{pdfs/CareDays1}
             \caption[Předešlý návrh pečovatelských dnů]{Návrh pečovatelských dnů podle doménového modelu předmětu BI-SP2}\label{image:caredays1}
         \end{figure}
-        Aktuální návrh pečovatelských dnů je navržen příliš komplikovaně (viz obrázek \ref{image:caredays1}) a zahrnuje dva různé případy využití. Dlouhodobá nastavení pečovatelských dnů rodičů nevyžadují komplikovaný návrh intervalů (viz sekci \ref{analyza:pozadavky-frontendu}), proto je potřeba oddělit řešení tohoto problému. Také je potřeba přidat odkaz na konkrétního rodiče, který je zodpovědný za tento den pro zjednodušení práce s~touto entitou v~rámci frontedové části aplikace. Jednorázové změny pečovatelských dnů je druhým problém, který je potřeba oddělit. Návrh této entity je podobnější aktuálnímu návrhu, protože tyto změny mohou vyžadovat složitá pravidla opakování. Navržené změny a následné implementace budou popsány v~sekci \ref{navrh:upravy:caredays}
+        Aktuální návrh pečovatelských dnů je navržen příliš komplikovaně (viz obrázek \ref{image:caredays1}) a současně zahrnuje dva různé případy využití: jednorázové změny pečovatelských dnů členů rodiny a dlouhodobá nastavení pečovatelských dnů rodičů. Dlouhodobá nastavení pečovatelských dnů rodičů nevyžadují komplikovaný návrh intervalů (viz sekci \ref{analyza:pozadavky-frontendu}), proto je potřeba oddělit řešení tohoto problému. Také je potřeba přidat odkaz na konkrétního rodiče, který je zodpovědný za tento den pro zjednodušení práce s~touto entitou v~rámci frontedové části aplikace. Jednorázové změny pečovatelských dnů je druhým problém, který je potřeba oddělit. Návrh této entity je podobnější aktuálnímu návrhu, protože tyto změny mohou vyžadovat složitá pravidla opakování. Navržené změny a následné implementace budou popsány v~sekci \ref{navrh:upravy:caredays}.
         
      \subsection{Oznámení}
         % \begin{figure}\centering
         %     \includegraphics[width=1.0\textwidth]{pdfs/Notification1}
         %     \caption[Předchozí návrh oznámení]{Návrh oznámení podle doménového modelu předmětu BI-SP2}\label{image:notification1}
         % \end{figure}
-        Dosavadní návrh oznámení reprezentuje upozornění uživatele o~požadavku na změnu (viz obrázek \ref{image:notification1}). Po provedení částečné implementace frontendové a backendové částí bylo zjištěno, že návrh oznámení potřebuje úprav ve dvou různých směrech. Prvním směrem je zavedení různých typu oznámení, například oznámení pomocí e-mailu nebo SMS zprávy. Předešla implementace frontendové části aplikace vyžaduje zavedení typu upozornění, které by reprezentovaly upozornění v~rámci Android aplikace. 
-        Druhým směrem je rozšíření přičiň pro upozornění. Příčinami mohou být:
+        Dosavadní návrh oznámení reprezentuje upozornění uživatele o~požadavku na~změnu (viz obrázek \ref{image:notification1}). Po provedení částečné implementace frontendové a backendové částí bylo zjištěno, že návrh oznámení potřebuje úprav ve~dvou různých směrech. Prvním směrem je zavedení různých typu oznámení, například oznámení pomocí e-mailu nebo SMS zprávy. Současná implementace frontendové části aplikace vyžaduje zavedení typu upozornění, které by reprezentovaly upozornění v~rámci Android aplikace. 
+        Tyto upozornění vyžadují specifické nastavení entity, například možnost přečtení jednotlivé instance. Druhým směrem je rozšíření seznamu událostí, které mohou působit vzniku oznámení. Příčinami mohou být:
         \begin{itemize}
-            \setlength\itemsep{0.3em}
             \item změny pečovatelských dnů;
             \item alimenty;
             \item změny nastavení alimentů;
@@ -319,7 +311,7 @@ fun api(): Docket {
 	       % \includegraphics[width=1.0\textwidth]{pdfs/Role1}
 	       % \caption[Návrh \texttt{Role}]{Návrh entity \texttt{Role} podle doménového modelu z~předmětu BI-SP2}\label{image:Role1}
         % \end{figure}
-        Než se uživatel přihlásí do rodiny, nemá žádnou roli. Po přihlášení do rodiny má uživatel roli v~rámci přihlášené rodiny (viz obrázek \ref{image:Role1}), podle které se mohou lišit jeho přístupová práva. Hlavní rolí v~aplikaci je rodič. Uživatel s~takovou rolí má přístup ke všem potřebám dítěte a všem záznamům v~kalendáři. Rodič také může vytvářet pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně role rodiče. Mimořádnou rolí v~rámci systému je dítěte. 
+        Než se uživatel přihlásí do rodiny, nemá žádnou roli. Po přihlášení do rodiny má uživatel roli v~rámci přihlášené rodiny (viz obrázek \ref{image:Role1}), podle které se~mohou lišit jeho přístupová práva. Hlavní rolí v~aplikaci je rodič. Uživatel s~takovou rolí má přístup ke všem potřebám dítěte a všem záznamům v~kalendáři. Rodič také může vytvářet pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně role rodiče. Mimořádnou rolí v~rámci systému je dítěte. 
         Uživatel s~takovou rolí nemůže vlastnit pečovatelský den nebo splnit přání. Přihlášení dítěte muže proběhnout i bez vytvoření klasického uživatele v~rámci systému. Ostatní uživatelé v~rodině mají roli příbuzných. 
     
     \subsection{Autorizace}
@@ -350,4 +342,4 @@ class RozvodyApplicationTests {
 \section{Průběžná integrace}\label{analyza:ci}
     Na začátku je potřeba popsat pravidla zavedená pro distribuovaný systém správy verzí -- Git -- před začátkem implementace serveru. Proces vývoje byl rozdělen do dvou hlavních větví. První větev reprezentuje aktuální verzi aplikace a je označena jako \enquote{master}, což je implicitní větev v~rámci Git. Druhá větev je označena jako \enquote{dev} a je určena pro proces vývoje. Pro implementaci jednotlivých úkolů je potřeba udělat kopii této větvi a po vyřešení úkolu je potřeba zařadit všechny změny zpět do větve \verb|dev|. Takový přístup dává možnost pracovat na stejném projektu několika programátorům najednou a s~jistotou uschovávat vlastní změny na server bez ohledu na jejich kompletnost.
     
-    Vedoucím této bakalářské práce a současně vedoucím tohoto projektu byl poskytnut server pro testování, dostupný z~IP: \enquote{http://37.46.80.230/}. Větve \verb|master| a \verb|dev| se automaticky nasazují po aktualizaci. Aplikace uložena do větve \verb|master| je dostupná na portu 8998. Aplikace uložena do větve \verb|dev| je dostupná na portu 8778.
+    Vedoucím této bakalářské práce a současně vedoucím tohoto projektu byl poskytnut server pro testování, dostupný z~IP: \enquote{http://37.46.80.230/}. Větve \verb|master| a \verb|dev| se automaticky nasazují po aktualizaci. Aplikace uložena do~větve \verb|master| je dostupná na portu 8998. Aplikace uložena do větve \verb|dev| je dostupná na portu 8778.
