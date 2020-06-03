@@ -1,3 +1,3 @@
-# Serverový backend Android aplikace pro podporu rodin v rozvodovém řízení 
-## Bakalářská práce
+# Bakalářská práce
+## Téma: Serverový backend Android aplikace pro podporu rodin v rozvodovém řízení 
 ## Autor: Iaroslav Kolodka
