@@ -34,7 +34,7 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         
     
 \section{Doménový model}\label{analyza:navrh:DomainModel}
-    Hlavním zdrojem informace o~výsledném návrhu serveru je doménový model. Kompletní doménový model se nachází v~příloze \ref{dodatek:DomainModel}. Během implementace tým označoval entity, které jsou kompletně nebo částečně implementovány. Zelenou barvou jsou označeny třídy, které už jsou implementovány. Žlutou barvou jsou označeny třídy, které ještě nejsou implementovány. Třídy označené zároveň žlutě i zeleně jsou implementovány pouze částečně. Tento doménový model má nedostatky detekované při implementaci, jak frontendové, tak i backendové části aplikace. Jako příklad takových nedostatků je možné uvést zbytečně komplikovaný návrh entity \texttt{Interval} (viz obrázek \ref{image:Interval1}). Podrobný popis problému bude uveden v~sekci \ref{analyza:pozadavky-frontendu}.
+    Hlavním zdrojem informace o~výsledném návrhu serveru je doménový model. Kompletní doménový model se nachází v~příloze \ref{dodatek:DomainModel}. Během implementace tým označoval entity, které jsou kompletně nebo částečně implementovány. Zelenou barvou jsou označeny třídy, které už jsou implementovány. Žlutou barvou jsou označeny třídy, které ještě nejsou implementovány. Třídy označené zároveň žlutě i zeleně jsou implementovány pouze částečně. Tento doménový model má nedostatky detekované při implementaci, jak frontendové, tak i backendové části aplikace. Jako příklad takových nedostatků je možné uvést zbytečně komplikovaný návrh entity \texttt{Interval} (viz obrázek \ref{image:Interval1}). Podrobný popis tohoto problému bude uveden v~sekci \ref{analyza:pozadavky-frontendu}.
 
 \section{Analýza předešlého návrhu} \label{analyza:analyza navrhu}
     V~této sekci budou podrobně popsány klíčové aspekty aplikace podle již existujícího návrhu aplikace. Problémy a navržené změny těchto části budou popsány v~následujících sekcích.
@@ -73,16 +73,16 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
 	        \caption[Návrh entity \texttt{AlimonySettings}]{Návrh entity \texttt{AlimonySettings} podle doménového modelu z~předmětu BI-SP2}\label{image:AlimonySettings1}
         \end{figure}
         \begin{figure}\centering
-	        \includegraphics[width=0.7\textwidth]{pdfs/Alimony1}
+	        \includegraphics[width=0.8\textwidth]{pdfs/Alimony1}
 	        \caption[Návrh entity \texttt{Alimony}]{Návrh entity \texttt{Alimony} podle doménového modelu z~předmětu BI-SP2}\label{image:Alimony1}
         \end{figure}
-        Důležitou částí aplikace je správa alimentů, které má pravidelně uhrazovat jeden z~rodičů. Tento proces byl rozdělen do dvou částí. První částí je dlouhodobé nastavení alimentů (viz obrázek \ref{image:AlimonySettings1}). Druhou částí jsou samotné alimenty (viz obrázek \ref{image:Alimony1}), které se generují na základě dlouhodobých nastavení. Jedna rodina může mít zároveň několik nastavení v~případě, že jedna rodina má několik dětí nebo chce rozdělit alimenty do logických bloků.
+        Důležitou částí aplikace je správa alimentů, které má pravidelně uhrazovat jeden z~rodičů. Tento proces byl rozdělen do dvou částí. První částí je dlouhodobé nastavení alimentů (viz obrázek \ref{image:AlimonySettings1}). Druhou částí jsou samotné alimenty (viz obrázek \ref{image:Alimony1}), které se generují na základě dlouhodobých nastavení. Jedna rodina může mít zároveň několik nastavení v~případě, že rodina má několik dětí nebo chce rozdělit alimenty do logických bloků.
         
         Každá instance alimentů má stav, který se postupně mění. V~moment vytvoření instance má stav \verb|NONE|. Po odeslání alimentů druhému rodiči se stav mění na \verb|SEND|. Druhý rodič následně potvrdí, že alimenty přijal a tím se změní stav stav na \verb|ACCEPTED|. Také může nastat situace, kdy rodič nemá možnost odeslat alimenty včas. V~takovém případě se stav instance mění na \verb|POSTPONED|.
     
     \subsection{Kniha potřeb dítěte}\label{analyza:navrh:need}
         \begin{figure}\centering
-	        \includegraphics[width=0.9\textwidth]{pdfs/Need1}
+	        \includegraphics[width=1.0\textwidth]{pdfs/Need1}
 	        \caption[Návrh \texttt{Need}]{Návrh entity \texttt{Need} podle doménového modelu z~předmětu BI-SP2}\label{image:Need1}
         \end{figure}
         Jedním s~častých problémů, které vznikají během procesu rozvodu, je nakupování příliš drahých dárků, o~kterých ostatní členové rodiny nevědí. Jako příklad je možné uvést nakupování bot pro dítě. Jeden z~rodičů si může chtít \enquote{koupit lásku dítěte} a koupí několikanásobně dražší boty než, dítě ve skutečnosti potřebuje. Kniha potřeb dítěte (viz obrázek \ref{image:Need1}) je zaměřena na překonání takových situací.
@@ -120,12 +120,12 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
             \item \texttt{ChildItemRequest} -- požadavek na změnu nastavení pečovatelských dnů, který může být vytvořen jakýmkoliv členem rodiny. Změna může být jak jednorázová, tak i dlouhodobá.
         \end{itemize}
         \begin{figure}\centering
-	        \includegraphics[width=0.9\textwidth]{pdfs/Abstr-Requrest1}
+	        \includegraphics[width=1.0\textwidth]{pdfs/Abstr-Requrest1}
 	        \caption[Návrh abstraktní entity \texttt{Request}]{Návrh abstraktní entity \texttt{Request} podle doménového modelu z~předmětu BI-SP2}\label{image:abstr-request1}
         \end{figure}
-        Každá entita požadavku je zděděna od společné abstraktní entity obsahující základní informace o~požadavku (viz obrázek \ref{image:abstr-request1}). Mezi základní informace patří datum vytvoření, datum poslední změny, příčina a také aktuální stav požadavku.
+        Každá entita požadavku je zděděna od společné abstraktní entity \verb|Request| obsahující základní informace o~požadavku (viz obrázek \ref{image:abstr-request1}). Mezi základní informace patří datum vytvoření, datum poslední změny, příčina a také aktuální stav požadavku. Také tato entita obsahuje závislosti na základních aktérech tohoto požadavku a komentáře.
         
-        Stavy požadavků reprezentují jejich životní cyklus. Při vytvoření každý požadavek má stejný stav -- \verb|CREATED|. Po potvrzení požadavku jeho autorem má požadavek stav \verb|WAITING_FOR_ACCEPTING|. Po schválení se stav mění na~\verb|ACCEPTED| nebo na \verb|WAITING_FOR_EXECUTION| v~případě, že je změna akceptována, ale~ještě není uplatněna. Též může nastat případ, že byl požadavek zamítnut, pak se stav mění na \verb|REJECTED|. V~okamžik, kdy je požadavek schválen nebo se čeká na uplatnění, není možné měnit položky tohoto záznamu.
+        Stavy požadavků reprezentují jejich životní cyklus. Při vytvoření každý požadavek má stejný stav -- \verb|CREATED|. Po potvrzení požadavku jeho autorem má požadavek stav \verb|WAITING_FOR_ACCEPTING|. Po schválení rodiči se stav mění na~\verb|ACCEPTED| nebo na \verb|WAITING_FOR_EXECUTION| v~případě, že je změna akceptována, ale~ještě není uplatněna. Též může nastat případ, že byl požadavek zamítnut, pak se stav mění na \verb|REJECTED|. Požadavek je zamítnut v případě, že alespoň jeden z rodičů ho zamítl. V~okamžik, kdy je požadavek schválen nebo se čeká na uplatnění, není možné měnit položky tohoto záznamu.
     
     \subsection{Historie změn}
         Každá provedená v rámci rodiny změna má význam při debatách mezi rodiči. Podle požadavků zákazníka by všechny změny v~rámci rodiny měly být zaznamenány. Proto byly zavedeny entity historií, které kopírují všechny položky entit a přidávají datum vytvoření záznamu a odkaz do patřičné entity v~případě, že tato příslušná entita byla aktualizována. Takové entity jsou zavedeny jenom pro důležité části aplikace, které mohou být změněny uživatelem:
@@ -157,7 +157,7 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
     Pro implementaci doménové vrstvy byly pro každou entitu přidány rozhraní reprezentující funkci, které je možné provádět s~příslušnou entitou. Implementace byla oddělená od definicí metod pro zvětšení modularity výsledného softwaru. Implementace této vrstvy přímo komunikuje s~datovou vrstvou. Provázání tříd se vzniká na základě vkládání závislostí. Proces vkládaní řídí framework Spring podle principu IoC. Tato vrstva komunikuje s~datovou vrstvou pomocí reprezentací entit, ale s~aplikační vrstvou komunikuje pomocí Data Tranfer Object (DTO). Konverzace z~entity na DTO se provádí v~příslušné třídě entity. Konverzace z~DTO na entitu se provádí v~příslušné třídě DTO.
     
     % http requests https://www.ibm.com/support/knowledgecenter/SSGMCP_5.2.0/com.ibm.cics.ts.internet.doc/topics/dfhtl21.html
-    Aplikační vrstva je reprezentována sadou řadičů (\textit{controllers}), kde každý řadič je určen pro konkrétní aspekt použití aplikace. Například existuje řadič určený pro práci s~entitou \verb|Bill| nebo řadič pro ověření, jestli aplikace funguje. Pro~každý řadič je vymezená samostatná cesta, která se zadává jako řetězec požadavku \cite{http-request-components}. Tato vrstva přímo komunikuje s~doménovou vrstvou. Provázání tříd se provádí také pomocí vkládaní závislostí. Komunikace aplikační vrstvy přes API se provádí pomocí DTO.
+    Aplikační vrstva je reprezentována sadou řadičů (\textit{controllers}), kde každý řadič je určen pro konkrétní aspekt použití aplikace. Pro~každý řadič je vymezená samostatná cesta, která se zadává jako řetězec požadavku \cite{http-request-components}. Tato vrstva přímo komunikuje s~doménovou vrstvou. Provázání tříd se provádí také pomocí vkládaní závislostí. Komunikace aplikační vrstvy přes API se provádí pomocí DTO.
     
     \subsection{Implementované entity}\label{analyza:implementace:tridy}
         Seznam implementovaných entit:
@@ -180,7 +180,7 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
             \item \texttt{User}.
         \end{itemize}
         
-        \begin{table}\centering
+        \begin{table}[h]\centering
 	    \begin{tabular}{|l|c|c|c|}\hline
 		  Typ chyby		& HTTP status		& zpáva	& URL	\tabularnewline \hline \hline
 		  \texttt{Illegal Access}	& 401	& původní zpráva chyby		& původní cesta     \tabularnewline \hline
@@ -189,13 +189,7 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
 		  \texttt{No Such Element}	& 404	& nic		& nic     \tabularnewline \hline
 	    \end{tabular}\caption[Konfigurace našeptávače pro řadiče]{Ukázka konfigurace našeptávače zachycování výjimek pro řadiče}\label{tab:excpetion-handler1}
         \end{table}
-        Kromě kostry aplikace, která zaručuje třívrstvou architekturu, byly také implementovány pomocné třídy zlepšující výsledný návrh aplikace. Jednou z~takových tříd je třída, která uvádí nápovědy pro všechny řadiče ohledně zachycování výjimek. Tato třída byla zavedena za účelem poskytnutí uživateli pouze korektně formátované informace a filtrování zbytečných informací pro~koncového uživatele. Konfigurace našeptávače je uvedena v~tabulce \ref{tab:excpetion-handler1}. Jinou pomocnou třídou je řadič určený pro ověření, zda server funguje. Tento řadič je namapován na cestu \enquote{/}.
-        
-        % Byl přidán \texttt{controller}\footnote{vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kóda zajišťuje omezení pro jednotlivých uživatelů} pro testování, zda aplikace běží, který je namapován\footnote{přidání konkrétnímu controlleru adresy pomocí anotací frameworku Spring, která se zadává jako URI při odesílaní požadavků na Server} na cestu \enquote{/}. Také, byla přidaná třída, která obsahuje nápovědy pro ostatní \texttt{controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz tabulku \ref{tab:excpetion-handler1}). 
-        
-    
-    \subsection{Dokumentace API}
-        \begin{figure}
+        \begin{figure}[h]\centering
             \begin{minted}
         [frame=lines,
         framesep=2mm,
@@ -217,21 +211,49 @@ fun api(): Docket {
             \end{minted}
             \caption{Ukázka nastavení frameworku Swagger}\label{code:swagger-configuration}
         \end{figure}
+        Kromě kostry aplikace, která zaručuje třívrstvou architekturu, byly také implementovány pomocné třídy zlepšující výsledný návrh aplikace. Jednou z~takových tříd je třída, která uvádí nápovědy pro všechny řadiče ohledně zachycování výjimek. Tato třída byla zavedena za účelem poskytnutí uživateli pouze korektně formátované informace a filtrování zbytečných informací pro~koncového uživatele. Konfigurace našeptávače je uvedena v~tabulce \ref{tab:excpetion-handler1}. Jinou pomocnou třídou je řadič určený pro ověření, zda server funguje. Tento řadič je namapován na cestu \enquote{/}.
         
-        Pro dokumentaci API byl zvolen framework Swagger, který byl popsán v~sekci \ref{resere:dokumentace}. V~předešle implementaci je použitá druhá verze tohoto frameworku. Také byla provedena konfigurace pro generování dokumentace při každém spouštění aplikace na základě do kódu přidaných anotací (viz obrázek \ref{code:swagger-configuration}). Po spuštění aplikace je online dokumentace dostupná na cestě \enquote{/swagger-ui.html}
+        % Byl přidán \texttt{controller}\footnote{vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kóda zajišťuje omezení pro jednotlivých uživatelů} pro testování, zda aplikace běží, který je namapován\footnote{přidání konkrétnímu controlleru adresy pomocí anotací frameworku Spring, která se zadává jako URI při odesílaní požadavků na Server} na cestu \enquote{/}. Také, byla přidaná třída, která obsahuje nápovědy pro ostatní \texttt{controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz tabulku \ref{tab:excpetion-handler1}). 
+        
+    
+    \subsection{Dokumentace API}
+%         \begin{figure}
+%             \begin{minted}
+%         [frame=lines,
+%         framesep=2mm,
+%         baselinestretch=1.2,
+%         fontsize=\footnotesize,
+%         linenos]{java}
+% @Configuration
+% @EnableSwagger2
+% class SwaggerConfig {
+% @Bean
+% fun api(): Docket {
+%     return Docket(DocumentationType.SWAGGER_2)
+%         .select()
+%         .apis(RequestHandlerSelectors.any())
+%         .paths(PathSelectors.any())
+%         .build()
+%     }
+% }
+%             \end{minted}
+%             \caption{Ukázka nastavení frameworku Swagger}\label{code:swagger-configuration}
+%         \end{figure}
+        
+        Pro dokumentaci API byl zvolen framework Swagger, který již byl zmíněn v~sekci~\ref{resere:dokumentace}. V~předešle implementaci je použitá druhá verze tohoto frameworku. Také byla provedena konfigurace pro generování dokumentace při každém spouštění aplikace na základě do kódu přidaných anotací (viz obrázek \ref{code:swagger-configuration}). Po spuštění aplikace je online dokumentace dostupná na cestě \enquote{/swagger-ui.html}.
     
         % Bylo provedeno nastavení frameworku Swagger pro dokumentace API (viz obrázek \ref{code:swagger-configuration}). Podrobněji framework Swagger byl popsán v sekci \ref{resere:dokumentace}. Po spuštění serveru, dokumentace se automaticky generuje a je přístupná ze stejného portu na cestě \enquote{/swagger-ui.html}.
 
     \subsection{Profily}\label{analyza:soucasnaImplementace:profily}
     %spring profiles: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles
     %applicatioon peoperties: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-application-property-files
-        Framework Spring, použitý v~předešle implementaci, poskytuje možnost rozdělit aplikaci do logických bloků, které budou existovat jenom v~konkrétních profilech\cite{spring-profile}. Implicitně všechny komponenty nezávisí na aktuálně zvoleném profilu. Pro zavedení profilů\footnote{Jedna komponenta může současně patřit několika různým profilům.} pro konkrétní komponentu je potřeba ji označit anotací \texttt{Profile}. V~závorkách vedle anotací je potřeba přidat seznam profilů, ve kterých tato komponenta bude existovat. Konfigurace aktuálně zapnutých profilů se provádí pomocí souboru \texttt{application.properties}, který definuje proměnné pro prostředí aplikace. Soubor se nachází ve složce s~cestou \enquote{be-springboot/src/main/resources}.
+        Framework Spring, použitý v~předešle implementaci, poskytuje možnost rozdělit aplikaci do logických bloků, které budou existovat jenom v~konkrétních profilech.\cite{spring-profile} Implicitně všechny komponenty nezávisí na aktuálně zvoleném profilu. Pro zavedení profilů\footnote{Jedna komponenta může současně patřit několika různým profilům.} pro konkrétní komponentu je potřeba ji označit anotací \texttt{@Profile}. V~závorkách vedle anotací je potřeba přidat seznam profilů, ve kterých tato komponenta bude existovat. Konfigurace aktuálně zapnutých profilů se provádí pomocí souboru \texttt{application.properties}, který definuje proměnné pro prostředí aplikace. Soubor se nachází ve složce s~cestou \enquote{be-springboot/src/main/resources}.
     
         Každý profil také může obsahovat vlastní konfigurační soubor, který definuje všechny nutné proměnné prostředí. Soubor má byt zadán ve formátu \texttt{application-\{profile\}.properties}, kde \texttt{profile} je názvem profilu kterému patří tento soubor. Dosavadní návrh aplikace obsahuje dva konfigurační soubory.
     
         První konfigurační soubor obsahuje implicitní proměnné pro prostředí aplikace. Aktuálně má soubor jenom definici aktuálního profilu aplikace. 
     
-        Druhý konfigurační soubor patří profilu \texttt{development}. Tento profil je určen pro pohodlný proces vývoje aplikace. Soubor obsahuje konfiguraci databáze a konfiguraci žurnálu aplikace. Podrobněji bude použitá databáze popsána v~sekci \ref{analyza:soucasnaImplementace:databaze}.
+        Druhý konfigurační soubor patří profilu \texttt{development}. Tento profil je určen pro pohodlný proces vývoje aplikace. Soubor obsahuje konfiguraci databáze a konfiguraci logování aplikace. Podrobněji bude použitá databáze popsána v~sekci \ref{analyza:soucasnaImplementace:databaze}.
         
     \subsection{Databáze}\label{analyza:soucasnaImplementace:databaze}
         Pro proces vývoje byla zvolena jednoduchá relační databáze H2, která nevyžaduje nastartování serveru zvlášť od aplikace. Tato databáze má též režim, při~kterém jsou všechna data uložena přímo v~paměti aplikace. Podrobněji byla tato databáze a její princip fungování popsány v~sekci \ref{resere:databaze}.
@@ -248,27 +270,27 @@ fun api(): Docket {
             
         Jádro problému je v~tom, že entita je navržena pomocí generalizace, neboli dědičnosti z~hlediska implementace. Takový návrh dává možnost vytvořit konkrétní typ intervalu pomocí zvolení odpovídající třídy. Na druhou stranu takový návrh působí komplikaci při implementaci a současně nepokrývá všechny možné případy využití intervalů. Například, není možné sestavit interval, který se bude opakovat každý poslední den měsíce. Pokud bychom se chtěli držet aktuální implementace a zároveň pokrýt všechny možné případy, ztratili bychom přehlednost zvolení správné třídy při vytváření instance.
             
-        Dalším problémem návrhu entity \verb|Interval| je provázanost s~pečovatelskými dny. Při návrhu frontendové části aplikace bylo zjištěno, že pečovatelské dny nepotřebují komplikované nastavení a zároveň by potřebovaly mít odkazy na~konkrétního rodiče, který je zodpovědný za dítě v~tento den nebo časový úsek. Proto je potřeba oddělit interval pečovatelských dnů zvlášť od ostatních intervalů
+        Dalším problémem návrhu entity \verb|Interval| je provázanost s~pečovatelskými dny. Při návrhu frontendové části aplikace bylo zjištěno, že dlouhodobá nastavení pečovatelských dnů rodičů nepotřebují komplikované nastavení a zároveň by potřebovaly mít odkazy na~konkrétního rodiče, který je zodpovědný za dítě v~tento den nebo časový úsek. Proto je potřeba oddělit tyto intervaly pečovatelských dnů zvlášť od ostatních intervalů.
     
     \subsection{Alimenty}
         \begin{figure}\centering
 	        \includegraphics[width=1.0\textwidth]{pdfs/AlimonyDraft1}
 	        \caption[Návrh entit \texttt{Alimony} a \texttt{AlimonySettings}]{Návrh entit \texttt{Alimony} a \texttt{AlimonySettings} podle doménového modelu z~předmětu BI-SP2}\label{image:aliomny-draft1}
         \end{figure}
-        Entita \verb|Alimony| reprezentuje alimenty, které jeden rodič má posílat druhému rodiči. Jedna instance odpovídá alimentům za jeden měsíc. Předešlý návrh popisuje entitu a její navázanost na entitu \verb|AlimonySettings| (viz obrázek \ref{image:aliomny-draft1}). Nastavení alimentů definují dlouhodobou konfiguraci. Potom se na základě této konfigurace se vytváří jednotlivé instance alimentů. Nastavení se definují v~rámci jedné rodiny. V~případě potřeby mají rodiče možnost rozdělit alimenty do několika nastavení, které budou současně validní.
+        Entita \verb|Alimony| reprezentuje alimenty, které jeden rodič má posílat druhému rodiči. Jedna instance odpovídá alimentům za jeden měsíc. Předešlý návrh popisuje entitu a její navázanost na entitu \verb|AlimonySettings| (viz obrázek \ref{image:aliomny-draft1}). Nastavení alimentů definují dlouhodobou konfiguraci. Potom se na základě této konfigurace vytváří jednotlivé instance alimentů. Nastavení se definují v~rámci jedné rodiny. V~případě potřeby mají rodiče možnost rozdělit alimenty do několika nastavení, které budou současně validní.
         
-        Hlavní problém je v~tom, že instance alimentů by se měly vytvářet nezávisle na frontendové části aplikace, což není popsáno v~předešlém návrhu aplikace. Podrobně návrh řešení problému bude popsán v~sekci \ref{navrh:upravy:alimenty}.
+        Hlavní problém je v~tom, že instance alimentů by se měly vytvářet nezávisle na frontendové části aplikace, což není popsáno v~předešlém návrhu aplikace. Podrobně návrh řešení problému bude podrobně popsán v~sekci \ref{navrh:upravy:alimenty}.
         
         Dodatečný požadavek frontendového týmu se týká entity \texttt{Alimony} samotné. Za účelem zjednodušení návrhu frontendové části aplikace je potřeba přidat závislost na entitu \texttt{Family}. % V takovém pŕípade aplikace může ihned po nalazení novych alimentu rict uZivateli ktere rodine patri tyto alimenty.
         
     \subsection{Pečovatelské dny}\label{analyza:pozadavky:caredays}
-        Než se začneme zabývat podrobným popisem problému, je potřeba popsat účel této entity a její využití backendem a frontendem. Tato entita reprezentuje jednorázový interval nebo opakující se interval pečovatelských dnů jednoho z~rodičů nebo ostatních členů rodiny. Pro rozlišování pečovatelských dnů různých členů rodiny má každý uživatel přiřazenou vlastní barvu. Tato entita se~používá por dva účely. První a nejdůležitější účel je nastavení pečovatelských dnů pro rodiče. Nastavení musí pokrývat všechny dny kalendáře. Dítě by nemělo mít ve svém kalendáři den, který není označen žádnou barvou a zároveň by neměly vznikat konflikty. Druhým účelem jsou jednorázové změny pečovatelských dnů. Tyto změny jsou vyžadovány pro případy, kdy dlouhodobé nastavení kalendáře neplatí. Příkladem může být výlet dítěte k~prarodičům. Během tohoto časového intervalu nejsou rodiče zodpovědní za dítě, proto je~potřeba uvést jednorázovou změnu do kalendáře, která zaznamená tuto situaci. Jiným příkladem je předání péče jednoho rodiče druhému, což může nastat z~různých důvodu.
+        Než se začneme zabývat podrobným popisem problému, je potřeba popsat účel této entity a její využití backendem a frontendem. Tato entita reprezentuje jednorázový interval nebo opakující se interval pečovatelských dnů jednoho z~rodičů nebo ostatních členů rodiny. Pro rozlišování pečovatelských dnů různých členů rodiny má každý uživatel přiřazenou vlastní barvu. Tato entita se~používá pro dva účely. První a nejdůležitější účel je nastavení pečovatelských dnů pro rodiče. Nastavení musí pokrývat všechny dny kalendáře. Dítě by nemělo mít ve svém kalendáři den, který není označen žádnou barvou a zároveň by neměly vznikat konflikty. Druhým účelem jsou jednorázové změny pečovatelských dnů. Tyto změny jsou vyžadovány pro případy, kdy dlouhodobé nastavení kalendáře neplatí. Příkladem může být výlet dítěte k~prarodičům. Během tohoto časového intervalu nejsou rodiče zodpovědní za dítě, proto je~potřeba uvést jednorázovou změnu do kalendáře, která zaznamená tuto situaci. Jiným příkladem je předání péče jednoho rodiče druhému, což může nastat z~různých důvodu.
 
         \begin{figure}\centering
             \includegraphics[width=1.0\textwidth]{pdfs/CareDays1}
             \caption[Předešlý návrh pečovatelských dnů]{Návrh pečovatelských dnů podle doménového modelu předmětu BI-SP2}\label{image:caredays1}
         \end{figure}
-        Aktuální návrh pečovatelských dnů je navržen příliš komplikovaně (viz obrázek \ref{image:caredays1}) a současně zahrnuje dva různé případy využití: jednorázové změny pečovatelských dnů členů rodiny a dlouhodobá nastavení pečovatelských dnů rodičů. Dlouhodobá nastavení pečovatelských dnů rodičů nevyžadují komplikovaný návrh intervalů (viz sekci \ref{analyza:pozadavky-frontendu}), proto je potřeba oddělit řešení tohoto problému. Také je potřeba přidat odkaz na konkrétního rodiče, který je zodpovědný za tento den pro zjednodušení práce s~touto entitou v~rámci frontedové části aplikace. Jednorázové změny pečovatelských dnů je druhým problém, který je potřeba oddělit. Návrh této entity je podobnější aktuálnímu návrhu, protože tyto změny mohou vyžadovat složitá pravidla opakování. Navržené změny a následné implementace budou popsány v~sekci \ref{navrh:upravy:caredays}.
+        Aktuální návrh pečovatelských dnů je navržen příliš komplikovaně (viz obrázek \ref{image:caredays1}) a současně zahrnuje dva různé případy využití: jednorázové změny pečovatelských dnů členů rodiny a dlouhodobá nastavení pečovatelských dnů rodičů. Dlouhodobá nastavení pečovatelských dnů rodičů nevyžadují komplikovaný návrh intervalů (viz sekci \ref{analyza:pozadavky-frontendu}), proto je potřeba oddělit řešení tohoto problému. Také je potřeba přidat odkaz na konkrétního rodiče, který je zodpovědný za tento den pro zjednodušení práce s~touto entitou v~rámci frontedové části aplikace. Jednorázové změny pečovatelských dnů je druhý problém, který je potřeba oddělit. Návrh této entity je podobnější aktuálnímu návrhu, protože tyto změny mohou vyžadovat složitá pravidla opakování. Navržené změny a následné implementace budou popsány v~sekci \ref{navrh:upravy:caredays}.
         
      \subsection{Oznámení}
         % \begin{figure}\centering
@@ -318,7 +340,7 @@ fun api(): Docket {
         Návrh bezpečné aplikace nebyl cílem předmětů zmíněných v~sekcích \ref{analyza:navrh:sp1} a \ref{analyza:navrh:sp2}. Proto návrh a předešla implementace neobsahuje proces přihlašování uživatele do systému. Navržené procesy autentizace a autorizace budou podrobně popsány v~sekci \ref{navrh:bezpecnost}.
         
 \section{Analýza testování}\label{analyza:testovani}
-    Dosavadní návrh neobsahuje informaci o~implementaci testování. Ale dosavadní implementace obsahuje jeden test, který se zaměřuje na ověření, jestli se načetl {kontext aplikace}\footnote{Pokročilý kontejner, který funguje podobně jako \texttt{BeanFactory}. Načítá definice beanů, provazuje je a vydává v~případě nutnosti.} (viz obrázek \ref{code:test-context-loads1}).
+    Dosavadní návrh neobsahuje informaci o~implementaci testování. Ale předešlá implementace obsahuje pouze jeden test, který se zaměřuje na ověření, jestli se načetl {kontext aplikace}\footnote{Pokročilý kontejner, který funguje podobně jako \texttt{BeanFactory}. Načítá definice beanů, provazuje je a vydává v~případě nutnosti.} (viz obrázek \ref{code:test-context-loads1}). Cela implementace testování aplikace bude provedená v rámci této bakalářské práce.
     \begin{figure}
     \begin{minted}[frame=lines,
         framesep=2mm,

@@ -1,5 +1,5 @@
 \chapter{Návrh a implementace}\label{chapter:navrh}
-V~této kapitole budou popsány změny návrhu programu, které se skládají z~navržených změn podle požadavků frontendového týmu a návrhu chybějící funkce. Dalé bude popsána implementace změn návrhu a chybějící funkce. Nakonec bude popsán návrh a následná implementace funkcí, které jsou zaměřené na zlepšení kvality výsledného softwaru.
+V~této kapitole budou popsány změny návrhu programu, které se skládají z~navržených změn podle požadavků frontendového týmu a návrhu chybějících funkcí. Dále bude popsána implementace změn návrhu a chybějících funkcí. Nakonec bude popsán návrh a následná implementace funkcí, které jsou zaměřené na zlepšení kvality výsledného softwaru.
 
 Při úpravách současného návrhu byl proveden  velký počet změn různé významnosti. V~této kapitole budou uvedeny klíčové změny. Při implementaci návrhu autorovi pomohlo přečtení doporučené literatury.\cite{pro-spring-boot-2}
 
@@ -15,33 +15,14 @@ Při úpravách současného návrhu byl proveden  velký počet změn různé v
 	        \includegraphics[width=0.8\textwidth]{pdfs/CareDayInterval}
 	        \caption[Návrh entity \texttt{CareDayInterval}]{Návrh entity \texttt{CareDayInterval}}\label{image:careDayInterval}
         \end{figure}
-        První změnou je nový návrh entity \verb|Interval|. Původní návrh nevyhovoval svou složitostí a zároveň jenom částečným pokrytím možných případů užití (viz~obrázek~\ref{image:Interval1}). Entita řešila několik samostatných problémů najednou: pravidla pečovatelských dnů rodičů a klasické intervaly definující pravidla opakování nebo jednorázovou událost. Proto entita \verb|Interval| byla rozdělena do~dvou samostatných částí.
-        První část se zabývá pravidly pro pečovatelské dny rodičů (viz obrázek \ref{image:Interval2}). Pravidlo je reprezentováno intervalem, který se~opakuje, a skládá se ze seznamu jednotlivých pečovatelských dnů. Každý pečovatelský den je navázán na konkrétního rodiče, který je zodpovědný za dítě v~tento den. Použití tohoto typu intervalu bude popsáno v~sekci \ref{navrh:upravy:caredays}. Ostatní případy použití intervalů nevyžadují, ani specifické atributy, ani specifický rozsah možných pravidel, proto ostatní případy použití řeší stejná entita -- \verb|Interval| -- (viz obrázek \ref{image:Interval2}).
+        První změnou je nový návrh entity \verb|Interval|. Původní návrh nevyhovoval svou složitostí a zároveň jenom částečným pokrytím možných případů užití (viz~obrázek~\ref{image:Interval1}). Podrobně tento problém byl popsán v sekci \ref{analyza:pozadavky:interval}. Entita řešila několik samostatných problémů najednou: pravidla pečovatelských dnů rodičů a klasické intervaly definující pravidla opakování nebo jednorázovou událost. Proto entita \verb|Interval| byla rozdělena do~dvou samostatných částí.
+        První část se zabývá pravidly pro pečovatelské dny rodičů (viz obrázek \ref{image:Interval2}). Tento typ intervalu bude podrobně popsán v~sekci \ref{navrh:upravy:caredays}. Ostatní případy použití intervalů nevyžadují, ani specifické atributy, ani specifický rozsah možných pravidel, proto ostatní případy použití řeší stejná entita -- \verb|Interval| -- (viz obrázek \ref{image:Interval2}).
         
         % První část reprezentuje (viz obrázek \ref{image:Interval2}) úplně nahrazuje původní entitu. Druhou entitou je \texttt{CareDayInterval} (viz obrázek \ref{image:careDayInterval}), která reprezentuje časové rozmezí pečovatelských dnů.
     
         Nový návrh entity \verb|Interval| je kompilovaný, proto je potřeba podrobně popsat použitou architekturu. Nový návrh je postaven na jiném principu, kde časové rozmezí může být reprezentováno dvěma způsoby. Oba dva způsoby vyžadují uvedení začátku intervalu. Tento parametr je povinný. První způsob vyžaduje kromě začátku intervalu i konec intervalu. Takovým způsobem můžeme definovat jednorázový interval po sobě jdoucích dnů. Druhý způsob vyžaduje zadání pravidla opakování. Takto můžeme definovat stejný interval, ale mnohem složitějším způsobem. Na druhou stranu, pomocí takového pravidla můžeme definovat libovolně složitý interval. 
-        Například interval zmíněný v~sekci \ref{analyza:pozadavky:interval}, který se bude opakovat každý poslední den měsíce. Výsledný návrh sestavení intervalu vyžaduje, aby byl zadán buď jenom konec intervalu, nebo aby bylo zadáno jenom pravidlo opakování. V~případě, že tyto dva parametry budou zadány najednou, server vyhodí chybu a zastaví vytvoření nesprávného intervalu.
-    
-        Pravidlo opakování je reprezentováno pomocí textového řetězce, který má být zadán podle standardu {RFC 5545}\cite{recurrence-rule}. Pro pohodlné testování byl navržen a implementován {interní DSL jazyk}\footnote{DSL jazyk využívající obecný programovací jazyk.}, který bude popsán v~sekci \ref{navrh:zmeny:dsl}.
-        
-    \subsection{Alimenty}\label{navrh:upravy:alimenty}
-        Druhou důležitou úpravou současného návrhu je změna entity \verb|Alimony| a spravování instancí této třídy.
-    
-        \subsubsection{Úprava entity}
-            Za účelem zvýšení samostatnosti instancí entity \verb|Alimony| byla přidána závislost na entitu \verb|Family|. Také byl přidán atribut \verb|value|, který se kopíruje z~entity \verb|AlimonySetting|. Příčinou přidání tohoto atributu je možnost aktualizace nastavení alimentů, což působí zneplatnění již existujících instancí alimentů. V~případě, že rodiče změní hodnotu v~nastavení alimentů, ztratí se~možnost zjistit hodnoty alimentů, které byly vytvořeny do změny.
-            
-        \subsubsection{Spravování alimentů} 
-            V~této sekci bude popsán návrh třídy, která se věnuje vytváření alimentů.
-%         /**
-% *  Method generating Alimony instances based 
-% *   on AlimonySettings(enabled) from DB.
-% *
-% *  Scheduling is configured by the cron expression,
-% *  that you need to configure in application-{profile}.properties 
-% *   (scheduled.alimonyFactory.cronExpression).
-% */
-            \begin{figure}
+        Například zmíněný v~sekci \ref{analyza:pozadavky:interval} interval, který se bude opakovat každý poslední den měsíce. Výsledný návrh sestavení intervalu vyžaduje, aby byl zadán buď jenom konec intervalu, nebo aby bylo zadáno jenom pravidlo opakování. V~případě, že tyto dva parametry budou zadány najednou, server vyhodí chybu a zastaví vytvoření nesprávného intervalu. Pravidlo opakování je reprezentováno pomocí textového řetězce, který má být zadán podle standardu {RFC 5545}.\cite{recurrence-rule} Pro pohodlné sestavení pravidel opakování při testování aplikace byl navržen a implementován {interní DSL jazyk}\footnote{DSL jazyk využívající obecný programovací jazyk.}. Tento jazyk bude podrobně popsán v sekci \ref{navrh:zmeny:dsl}.
+        \begin{figure}[h]
                 \begin{minted}[frame=lines,
         framesep=2mm,
         baselinestretch=1.2,
@@ -65,6 +46,48 @@ fun createAlimonyForEachAlimonySetting() {
                 \caption{Ukázka metody vytvářející instance alimentů} 
                 \label{code:create-alimony}
             \end{figure}
+        
+    \subsection{Alimenty}\label{navrh:upravy:alimenty}
+        Druhou důležitou úpravou současného návrhu je změna entity \verb|Alimony|. Tyto úpravy se dotykají entity samotné a spravování instancí této entity.
+    
+        \subsubsection{Úprava entity}
+            Za účelem zvýšení samostatnosti instancí entity \verb|Alimony| byla přidána závislost na entitu \verb|Family|. Také byl přidán atribut \verb|value|, který kopíruje z~entity \verb|AlimonySetting| částku, která má být uhrazena jedním z rodičů. Příčinou přidání tohoto atributu je existence možnosti aktualizace nastavení alimentů, což působí zneplatnění již existujících instancí alimentů. V~případě, že rodiče změní hodnotu v~nastavení alimentů, ztratí se~možnost zjistit hodnoty alimentů, které byly vytvořeny do změny.
+            
+        \subsubsection{Spravování alimentů} 
+            V~této sekci bude popsán návrh třídy, která se věnuje pravidelnému vytváření alimentů.
+%         /**
+% *  Method generating Alimony instances based 
+% *   on AlimonySettings(enabled) from DB.
+% *
+% *  Scheduling is configured by the cron expression,
+% *  that you need to configure in application-{profile}.properties 
+% *   (scheduled.alimonyFactory.cronExpression).
+% */
+%             \begin{figure}
+%                 \begin{minted}[frame=lines,
+%         framesep=2mm,
+%         baselinestretch=1.2,
+%         fontsize=\footnotesize,
+%         linenos]{java}
+% @Scheduled(cron = "\${scheduled.alimonyFactory.cronExpression}")
+% fun createAlimonyForEachAlimonySetting() {
+%     logger.info("Started scheduled alimony creation process;")
+%     val alimony = alimonySettingRepository
+%                         .findAllByEnabledTrue()
+%                         .map { it.createAlimony() }
+%     if (alimony.isNotEmpty()) {
+%         alimonyRepository.saveAll(alimony)
+%     } else {
+%         logger.debug(
+%             "AlimonyFactory didn't find any AlimonySetting to work with;"
+%             )
+%     }
+% }
+%                 \end{minted}
+%                 \caption{Ukázka metody vytvářející instance alimentů} 
+%                 \label{code:create-alimony}
+%             \end{figure}
+            
             Všechny instance alimentů je potřeba vytvářet pravidelně. Proto vytváření bylo objednáno do jednoho procesu, který je stejný pro všechny instance. Proces vytváření alimentů zajišťuje specifická metoda, která se nachází ve~třídě \verb|AlimonyFactory| (viz obrázek \ref{code:create-alimony}). Metoda vyhledává všechny aktivní instance \verb|AlimonySetting| a pro každou vytvoří instanci entity \verb|Alimony|. 
             
             % Proces vytváření alimentů je nastavitelný pomoci proměnných prostředí příslušného profilu.
@@ -81,8 +104,8 @@ scheduled.alimonyFactory.cronExpression=0 1 1 1 * ?
                 \label{code:cron-expression}
             \end{figure}
             Vytvářeni alimentů má být pravidelné a nemusí vyžadovat účast člověka. Proto byla využita funkcionalita frameworku Spring, která poskytuje možnost plánování automatického spouštění.\cite{spring-scheduling} Anotace \verb|@Scheduled| vytváří z~dané metody komponentu, která se vykonává podle uvedeného pravidla. Existuje několik podporovaných typů pravidel. 
-            Například nastavení intervalu mezi nastartováními nebo mezi ukončeními. Ale pro plánovaní vytváření alimentů je potřeba nastavit konkrétní den měsíce nebo roku, který se bude opakovat. Proto bylo zvoleno \verb|cron| pravidlo, které je také podporováno anotací.\cite{cron-expression} Tento výraz je textovou řádkou, která se skládá z~čísel oddělených mezerou reprezentujících čas spouštění.
-            Toto pravidlo nebylo zadáno přímo do kódu. Pro přidání možnosti pohodlné konfigurace pravidla byla definována proměnná prostředí, která se nachází v~konfiguračním souboru příslušného profilu (viz obrázek \ref{code:cron-expression}). Implementace byla provedena podle návodu z~knihy\cite{sbr:spring-task-scheduling}. Podrobněji budou profily popsány v~sekci \ref{navrh:profily}.
+            Například nastavení intervalu mezi nastartováními nebo mezi ukončeními. Ale pro plánovaní vytváření alimentů je potřeba nastavit konkrétní den měsíce nebo roku, který se bude opakovat. Proto bylo zvoleno \verb|cron| pravidlo, které je také touto podporováno anotací.\cite{cron-expression} Tento výraz je textovou řádkou, která se skládá z~čísel oddělených mezerami reprezentujících čas spouštění.
+            Toto pravidlo nebylo zadáno přímo do kódu. Pro přidání možnosti pohodlné konfigurace pravidla byla definována proměnná prostředí, která se nachází v~konfiguračním souboru příslušného profilu (viz obrázek \ref{code:cron-expression}). Implementace byla provedena podle návodu z~knihy~\cite{sbr:spring-task-scheduling}. Podrobněji budou profily popsány v~sekci \ref{navrh:profily}.
          
             % Anotace \verb|Scheduled|, která zapíná plánování pro konkrétní metodu, vyžaduje \texttt{cron} výraz. Tento výraz je textovou řádkou, která se skládá z čísel oddělených čárou, reprezentujících čas spouštění metod\cite{cron-expression}. Implementace byla provedena podle návody z knihy\cite{sbr:spring-task-scheduling}.
             % Pro pohodlnou konfiguraci času spouštěni metody, \texttt{cron} výraz byl přesunut do souboru \texttt{application-{profile}.properties}, kde \texttt{profile} je aktuální profilem serveru. Podrobněji návrh profilu bude popsán v sekci \ref{navrh:profily}. Pro zadání \texttt{cron} výrazu je potřeba definovat \texttt{property} \texttt{scheduled.alimonyFactory.cronExpression} (viz obrázek \ref{code:cron-expression}).
@@ -98,7 +121,7 @@ scheduled.alimonyFactory=true
                 \label{code:alimony-factory-true}
             \end{figure}
             Byla přidána možnost měnit čas spouštění metody pomocí konfiguračního souboru, ale také bychom potřebovali mít možnost vypnout tuto metodu, například pro robustní testování. Proto byla přidána třída, která vytváří instanci tříd obsahující automaticky spustitelné metody. Třída je definována jako komponenta frameworku Spring a každá její metoda je určena pro vytváření instancí jiných tříd podle předem definované podmínky.
-            V~případě, že podmínka má hodnotu \verb|false|, příslušná komponenta se nevytváří.
+            V~případě, že podmínka má hodnotu \verb|false|, příslušná třída se nevytváří.
             Pro vytváření třídy \verb|AlimonyFactory| byla definována podmínka, která ověřuje, jestli proměnná \verb|scheduled.alimonyFactory| je nastavená na hodnotu \verb|true| (viz obrázek \ref{code:alimony-factory-true}). V~případě, že tato proměnná nebyla definována pro aktuální profil aplikace, proměnná se automaticky nastaví na hodnotu \verb|false| a instance třídy \verb|AlimonyFactory| nebude vytvořena.
             % podle \texttt{property} konfiguračního souboru. V případě, že nutné \texttt{property} nebyly definovány aplikace se neukončí běh a nastaví tyto \texttt{property} na implicitní hodnoty. Pro zapínaní běhu metody vytvářející alimenty je potřeba definovat \texttt{property} \texttt{scheduled.alimonyFactory} a nastavit na hodnotu \texttt{true} (viz obrázek \ref{code:alimony-factory-true}).
         
@@ -107,9 +130,9 @@ scheduled.alimonyFactory=true
 	       %\includegraphics[width=1.0\textwidth]{pdfs/CareDays2}
 	       %\caption[Nový návrh pečovatelských dnů]{Nový návrh pečovatelských dnů}\label{image:caredays2}
         % \end{figure}
-        V~předchozím návrhu implementace dlouhodobé nastavení pečovatelských dnů pro rodiče a jednorázové změny byly reprezentované pomocí jedné entity (viz obrázek \ref{image:caredays1}). Problém je právě ve sjednocení několika problémů do jednoho. Proto bylo rozhodnuto rozdělit řešení do dvou částí. Výsledný návrh se~skládá ze čtyř entit (viz obrázek \ref{image:caredays2}):
+        V~předchozím návrhu implementace dlouhodobých nastavení pečovatelských dnů pro rodiče a jednorázových změn byly reprezentované pomocí stejné entity (viz obrázek \ref{image:caredays1}). Problém je právě ve sjednocení několika problémů do~jednoho. Proto bylo rozhodnuto rozdělit řešení do dvou částí. Výsledný návrh se~skládá ze čtyř entit (viz obrázek \ref{image:caredays2}):
         \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item \texttt{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů;
             \item \texttt{CareDayInterval}, reprezentující interval pečovatelských dnů pro dlouhodobé nastavení;
             \item \texttt{CareDay}, reprezentující jeden pečovatelský den pro dlouhodobé nastavení;
@@ -117,7 +140,7 @@ scheduled.alimonyFactory=true
         \end{itemize}
         Dlouhodobá nastavení pečovatelský dnů rodičů již byla zmíněna v~sekci \ref{navrh:upravy:interval}. Nastavení se skládají z~po sobě jdoucích dnů, kde každý den má odkaz na~jednoho rodiče, který má v~péče dítě v~tento den. Interval je uchováván v~entitě \verb|CareDaysSetting|, která reprezentuje nastavení pečovatelských dnů rodičů pro konkrétní rodinu. Tato nastavení definují implicitní nastavení pečovatelských dnů, podle kterých se vyplní kalendář rodiny.
         
-        Změny pečovatelských dnů jsou reprezentovány entitou \verb|CareDayChange|. Změna může být, jak jednorázová, tak i dlouhodobá. Interval změny nebo pravidlo opakování změny je reprezentován pomocí entity \verb|Interval|. Každá změna se~vztahuje ke konkrétnímu členovi rodiny a instanci nastavení pečovatelských dnů příslušné rodiny.
+        Změny pečovatelských dnů jsou reprezentovány entitou \verb|CareDayChange|. Interval změny nebo pravidlo opakování změny je reprezentován pomocí entity \verb|Interval|. Každá změna se~vztahuje ke konkrétnímu členovi rodiny a instanci nastavení pečovatelských dnů příslušné rodiny.
         % Dlouhodobá nastavení jsou reprezentovány seznamem pečovatelských dnů, kde každý den má odkaz na člena rodiny, který má v tento den peče o dítě. Jeden \texttt{CareDayInterval} obsahuje seznám takových pečovatelských dnů, ale nereprezentuje nastavení. Za účelem pohodlné modifikovatelností, \texttt{CareDayInterval} je jenom pomocnou entitou, kterou udržuje entita \texttt{CareDaysSetting}, reprezentující dlouhodobé nastavení pečovatelských dnů. Tudíž, uživatel má možnost změnit interval pečovatelských dnů tím, že nahradí jiným záznamem, a současně bude vytvořena kopie tohoto záznamu v historii (viz sekci \ref{navrh:testovani}).
         
     \subsection{Oznámení}\label{navrh:upravy:notification}
@@ -207,7 +230,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
         Jeden uživatel může být současně členem několika různých rodin. Serverový backend nemůže předem vědět, ve které rodině se aktuálně uživatel nachází. Proto do API byly přidány požadavky, které vyžadují zadání identifikátoru konkrétní rodiny. Na základě tohoto identifikátoru se filtrují záznamy, které obdrží uživatel. Požadavky nevyžadující identifikátor rodiny nebyly odstraněny, protože všechny požadavky procházejí proces filtrace. Následně konečný uživatel obdrží jenom záznamy, které jsou pro něj dostupné.
         
         
-        Dokumentace aplikační vrstvy byla též rozšířena o~návratové stavy pro každou metodu. Všechny parametry metod jsou získány z~požadavků, proto byly přidány i podrobné popisy parametrů metod. 
+        Dokumentace aplikační vrstvy byla též rozšířena o~návratové statusy pro každou metodu. Všechny parametry metod jsou získány z~požadavků, proto byly přidány i podrobné popisy parametrů metod. 
         
     \subsection{Doménová vrstva}%prejmenovat na ceskou verzi
         Nový návrh aplikační vrstvy rozděluje proces vytváření nových záznamů a proces aktualizace již existujících záznamů. Proto tento proces byl rozdělen do~dvou separátních procesů i v~doménové vrstvě.
@@ -236,9 +259,9 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
         
         Dalším krokem úprav je navržení úprav, které už nejsou nutné, ale výrazně zlepšují výsledný návrh programu:
         \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item přidání do každé entity reprezentující historii odkazy na příslušné entity, například entita \texttt{AlimonyHistory} bude mít navíc odkaz na entitu \texttt{Alimony};
-            \item zavedení nové entity \textit{CareDaysSettingHistory} podle návrhu entity \textit{CareDaysSetting}, která byla popsána v~sekci \ref{navrh:upravy:caredays}.
+            \item zavedení nové entity historie \texttt{CareDaysSettingHistory} podle návrhu entity \texttt{CareDaysSetting}, která byla popsána v~sekci \ref{navrh:upravy:caredays}.
         \end{itemize}
         %TODO image
         Výsledný návrh entity \verb|History| (viz přílohu \ref{dodatek:DomainModel2}) byl kompletně implementován. Také byly přidány řadiče pro každý typ historie, které poskytují možnost vyhledat záznamy. Uživatel nemůže vytvořit nový záznam historie nebo změnit již existující záznam. Proto API serveru nepodporuje příslušné požadavky. Vytvoření instancí historie se provádí serverem automaticky při aktualizacích příslušných entit.
@@ -250,7 +273,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
         % TODO
         Za účelem zabezpečení procesu autorizace byl zvolen protokol OAuth 2.0. Tento protokol je nativně podporován frameworkem Spring. Proto byla provedena jeho konfigurace, která vyžadovala implementaci následujících rozhraní:
         \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item \texttt{UserDetailsService} -- pro definování zdroje informací o~uživatelích;
             \item \texttt{WebSecurityConfigurerAdapter} -- pro definování implementace rozhraní \texttt{UserDetailsService} a nastavení kontextu bezpečnosti;
             \item \texttt{AuthorizationServerConfigurerAdapter} -- pro nastavení procesu přihlašování;
@@ -269,7 +292,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
     
     Pro podrobnější popis přidaných profilů je potřeba nejdřív popsat výslednou konfiguraci existujícího profilu vytvořeného pro proces vývoje. Seznam provedených změn a rozšíření, které navazují na tento profil:
     \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item Rozšířena konfigurace databáze. Změny byly provedeny za účelem přesnější definice konfigurace (viz sekci \ref{navrh:db});
             \item Přidána nutná konfigurace pro bezpečnost aplikace, která byla popsána v~sekci \ref{navrh:bezpecnost};
             \item Přidána proměnná do konfiguračního souboru, která zapíná pravidelné vytváření alimentů (viz sekci \ref{navrh:upravy:alimenty}) a také proměnná definující pravidlo, podle kterého se řídí plánování spouštění této třídy;
@@ -293,7 +316,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
     
     Pro profil produkce bylo rozhodnuto použít jinou databázi. Volilo se mezi dvěma databázemi: PostgreSQL a MySQL. Tyto databáze jsou jedny z~nejpopulárnějších databází v~současné době a zároveň jsou otevřeným softwarem. Po~porovnání těchto dvou databází, byla vybrána databáze PostgreSQL. Některé funkce byly považovány za důležité přesto, že ještě nebyly využity v~implementaci a návrhu. Příklady převah PostgreSQL nad MySQL: 
     \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item PostgreSQL je objektově relační databáze \cite{postgres-about}, zato MySQL je pouze relační databáze. To znamená, že PostgreSQL dovoluje dědění tabulek a přetěžování metod;
             \item PostgreSQL poskytuje možnost definovat vlastní typy \cite{pstgres-create-type};
             \item autor této práce má zkušenosti s~PostgreSQL.
@@ -305,7 +328,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
     
 \section{Návrh testování}\label{navrh:testovani}
     % Pro testování kódu budou využity frameworky JUnit 5 a Spring. Podrobný popis těchto frameworků byl v sekci \ref{resere:testovani}. Testování se skládá s \texttt{unit}\footnote{testy, zaměřené na ověření správnosti fungování samostatně testovatelné části programu} testů a \texttt{integration}\footnote{testy, zaměřené na ověření správné komunikace mezi komponentami} testů. Návrh testů se bude podstatné lišit mezi sebou. Proto bude využita funkcionalita frameworku JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů\cite{junit-tags}. Princip chování tagů najdete v sekci \ref{resere:testovani}. Podrobnější informaci o implementaci tagů bude popsána v sekci \ref{testovani:tagy}. Kompletní implementace testování bude popsána v kapitole \ref{testovani}.
-    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Tyto frameworky byly podrobně popsány v~sekci \ref{reserse:testovani}. Testování se skládá s~\texttt{unit}\footnote{Testy, zaměřené na ověření správnosti fungování samostatně testovatelných částí programu.} testů a \texttt{integračních}\footnote{Testy, zaměřené na ověření správné komunikace mezi komponentami.} testů. Návrhy testů se budou podstatně lišit mezi sebou. Proto budou využité funkce poskytované frameworkem JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů\cite{junit-tags}. Podrobnější informace o~implementaci tagů budou uvedeny v~sekci \ref{testovani:tagy}. Kompletní implementace testování bude popsána v~kapitole \ref{chapter:testovani}.
+    Pro testování kódu budou využity frameworky JUnit 5 a Spring. Tyto frameworky byly podrobně popsány v~sekci \ref{reserse:testovani}. Testování se skládá s~\texttt{unit}\footnote{Testy, zaměřené na ověření správnosti fungování samostatně testovatelných částí programu.} testů a \texttt{integračních}\footnote{Testy, zaměřené na ověření správné komunikace mezi komponentami.} testů. Návrhy testů se budou podstatně lišit mezi sebou. Proto budou využité funkce poskytované frameworkem JUnit 5, který od verze 5 poskytuje možnost označovat testy pomocí tagů.\cite{junit-tags} Podrobnější informace o~implementaci tagů budou uvedeny v~sekci \ref{testovani:tagy}. Kompletní implementace testování bude popsána v~kapitole \ref{chapter:testovani}.
     
     \subsection{Unit testy}
         Unit testy využívají pouze funkce frameworku JUnit 5 a testují základní funkce. Otestovány mají byt třídy a metody, které mohou být otestovány samostatně. Tyto testy také mají být označeny jako unit testy pomocí tagů.  %TODO popsat podrobneji
@@ -313,3 +336,7 @@ internal interface InterfaceConverter<E : InterfaceEntity, D : InterfaceDTO> {
     \subsection{Integráční testy}
         Integrační testy budou testovat jednotlivé řadiče. Tyto testy jsou navrženy pomocí principu IoC a budou označeny jako integrační testy a zároveň jako pomalé testy.
         %C\footnote{princip, za kterého kontrola nad vytvořením a provázáním tříd vlastní framework}
+
+\section{Implementace bezpečnosti}
+        V~současné implementaci je autorizační server součástí serverového backendu a odpovídá jak za registraci uživatele, tak i za přihlášení. Pro registraci má uživatel poslat DTO se svými údaje na příslušný řadič\footnote{Řadič je namapován na cestu \enquote{/api/v1/aut}.}. Pro přístup do zmíněného řadiče se používá typ přístupu \textit{user credentials}. Uživatel potřebuje uvést adresu pro obdržení \textit{tokenu}\footnote{Alfanumerické heslo.}, identifikátor uživatele a \textit{secret}. Potom uživatel obdrží \textit{tokeny} umožňující provést registraci.
+        Pro přihlašování uživatele se používá typ obdržení průkazů \textit{resource owner password credetials}, kde uživatel potřebuje, navíc od předchozího typu, poslat svoje uživatelské jméno a heslo. Potom uživatel obdrží \textit{access token}\footnote{Tento \textit{token} klient používá pro komunikaci se serverem.} a \textit{refresh token}\footnote{Tento \textit{token} klient používá pro obnovení \textit{access tokenu} po vypršení jeho platnosti.} jako návratové hodnoty. Platnost \textit{tokenu} pro komunikaci je omezen jednou hodinou. Platnost \textit{tokenu} pro obnovení \textit{access tokenu} pro komunikaci je omezen jedním týdnem.

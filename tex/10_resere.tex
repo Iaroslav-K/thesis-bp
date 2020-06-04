@@ -22,7 +22,7 @@ Tato kapitola obsahuje základní teoretickou informaci o~technologiích a nást
 	   \includegraphics[angle=-90, width=1.0\textwidth]{pdfs/GitLabTree}
 	   \caption[Ukázka použití konvence pro práci z~Git]{Ukázka použití konvenci pro práci z~Git na grafu větví}\label{image:gitlab-tree}
     \end{figure}
-    Po provedení analýzy pravidel, pravidla byly opraveny podle potřeb tohoto projektu, ale struktura jednotlivé nebyla změněna. Konvence byla zavedena na začátku práce autora na implementaci této bakalářské práce a neměnila se~během vývoje. Na obrázku \ref{image:gitlab-tree}) je zobrazen kus grafů větví GitLab po~zavedení pravidel. V~následujících podsekcích bude uveden podrobný popis výsledných pravidel po úpravách autora. Struktura pro \verb|commit|, která je definovaná ve~zdroji, se skládá ze pěti částí (viz obrázek \ref{code:angular-commit}):
+    Po provedení analýzy pravidel, pravidla byly opraveny podle potřeb tohoto projektu, ale struktura nebyla změněna. Konvence byla zavedena na začátku práce autora na implementaci této bakalářské práce a neměnila se~během vývoje. Na obrázku \ref{image:gitlab-tree} je zobrazen kus grafu větví GitLab po~zavedení pravidel. V~následujících podsekcích bude uveden podrobný popis výsledných pravidel po úpravách autora. Struktura pro \verb|commit|, která je definovaná ve~zdroji, se skládá ze pěti částí (viz obrázek \ref{code:angular-commit}):
     \begin{itemize}
     \setlength\itemsep{0.3em}
         \item \texttt{typ};
@@ -60,7 +60,7 @@ Tato kapitola obsahuje základní teoretickou informaci o~technologiích a nást
         Zápatí je určeno pro definování přelomových změn a definování závislostí na~konkrétní požadavky v~rámci GitHub nebo GitLab\footnote{Webová platforma pro vývoj softwaru pomocí systému řízení verzí Git.}. V~rámci této bakalářské práce jsou každému požadavku v~rámci GitLab přiděleny jednotlivé větve, proto není potřeba uvádět identifikátor požadavku v~zápatí.
     
 \section{Použitý jazyk programování}\label{resere:kotlin}
-    Současný návrh aplikace byl proveden v~jazyce Kotlin, který je relativně novým jazykem pro JVM\footnote{Java Virtual Machine.}. Poprvé byl tento jazyk představen společností JetBrains v~roku 2011. V~této bakalářské práci byla použita verze 1.3.72 . V~porovnání s~Javou, jejíž podpora je dlouhodobě zaručena společností Oracle, nemá Kotlin předem definovanou periodu podpory, ale podle oficiálních webových stránek zaručuje zpětnou kompatibilitu pro alespoň jednu stabilní verzi, což dovoluje pohodlně migrovat do novější verze jazyka.\cite{java-support-period}\cite{kotlin-compatibility}
+    Současný návrh aplikace byl proveden v~jazyce Kotlin, který je relativně novým jazykem pro JVM\footnote{Java Virtual Machine.}. Poprvé byl tento jazyk představen společností JetBrains v~roku 2011. V~této bakalářské práci je použita verze 1.3.72 . V~porovnání s~Javou, jejíž podpora je dlouhodobě zaručena společností Oracle, nemá Kotlin předem definovanou periodu podpory, ale podle oficiálních webových stránek zaručuje zpětnou kompatibilitu pro alespoň jednu stabilní verzi, což dovoluje pohodlně migrovat do novější verze jazyka.\cite{java-support-period}\cite{kotlin-compatibility}
     
     %===================================================================
     % Kotlin je relativně nový jazyk pro JVM\footnote{Java Virtual Machine}. Poprvé tento jazyk byl představen společnosti v 2011 roku. První stabilní verze byla představena v únoru roku 2016. Ale už v květnu roku 2017 Kotlin se stal oficiálním jazykem pro Android.
@@ -72,7 +72,7 @@ Tato kapitola obsahuje základní teoretickou informaci o~technologiích a nást
 \section{Nástroj pro automatizaci sestavování programu}\label{resere:build}
     % https://gradle.org/maven-vs-gradle/
     % https://www.baeldung.com/ant-maven-gradle
-    Pro automatizaci sestavování programu se používá nástroj Gradle, který už~se používá v~současné implementaci aplikace. Existuje populární alternativa --~Maven, ale Gradle je modernější a pohodlnější. Konfigurace se provádí v~jazyce Groove nebo přímo v~jazyce Kotlin. Také Gradle poskytuje možnost definovat vlastní úkoly spustitelné pomocí příkazové řádky, které pak budou využité pro~analýzu a spuštění testů. Podrobnější informaci o~porovnání nástrojů Gradle a Maven lze najít na stránkách \cite{grale-vs-mavem} a \cite{gradle-vs-maven-bealdung}.
+    Pro automatizaci sestavování programu se používá nástroj Gradle, který už~se používá v~současné implementaci aplikace. Existuje populární alternativa --~Maven, ale Gradle je modernější a pohodlnější. Konfigurace se provádí v~jazyce Groove nebo přímo v~jazyce Kotlin. Také Gradle poskytuje možnost definovat vlastní úkoly spustitelné pomocí příkazové řádky, které pak budou využité pro~analýzu a spuštění testů. Podrobnější informaci o~porovnání nástrojů Gradle a Maven lze najít na webových stránkách \cite{grale-vs-mavem} a \cite{gradle-vs-maven-bealdung}.
 
 \section{Nástroj pro vývoj podnikových aplikací}\label{resere:j2ee}
     % https://spring.io/projects/spring-framework
@@ -124,7 +124,7 @@ fun startAlimonyFactory(): AlimonyFactory {
         Spring Data je framework pro pohodlnou práci programátora při implementaci datové vrstvy\footnote{Vrstva aplikace, která komunikuje s~databází.}. Framewok vytváří dodatečnou vrstvu nad implementací Java Persistense API\footnote{Application programming interface.} (JPA). Implementací JPA může být EclipseLink nebo Hibernate. Příkladem využití je rozhraní \texttt{CrudRepository}, které bude využito v~této bakalářské práci. Rozhraní definuje základní operace s~databází a dovoluje programátorovi jenom definovat typ entity a typ primárního klíče. V~případě, že programátor potřebuje složitější dotazy na databázi, framework poskytuje možnost definování metod, které ve svých názvech obsahují popis dotazů~\cite{query-methods}. Framework rozebírá název na jednotlivé části a překládá ho na~SQL\footnote{Structured Query Language.} dotaz.
     
     \subsection{Spring Web Services}
-        Spring Web Services je framework určený pro implementaci webových služeb. V~rámci této bakalářské práce bude tento framework využit pro implementaci aplikační vrstvy serveru. Aplikační vrstva aplikace má pokrývat případy užití aplikace pomocí příslušných řadičů. Podrobnou informaci lze najít na oficiálních stránkách~\cite{spring-web-services}.
+        Spring Web Services je framework určený pro implementaci webových služeb. V~rámci této bakalářské práce bude tento framework využit pro implementaci aplikační vrstvy serveru. Aplikační vrstva aplikace má pokrývat případy užití aplikace pomocí příslušných řadičů. Podrobnou informaci lze najít na~oficiálních stránkách~\cite{spring-web-services}.
         
 
 %  \section{Spring Boot}\label{reserse:spring-boot}
@@ -140,7 +140,7 @@ fun startAlimonyFactory(): AlimonyFactory {
         
         Prvním nástrojem je anotace \texttt{SpringBootTest}, kterou poskytuje framework Spring Boot pro implementaci integračních testů. Při použití této anotace framework vytvoří nutný kontext aplikace pro kompletní testování.
         
-        Druhým důležitým nástrojem je třída \texttt{MockMvc}, která poskytuje možnost kvalitního testování aplikační vrstvy serveru. Tento nástroj je součástí frameworku Spring Web Services.
+        Druhým důležitým nástrojem je třída \texttt{MockMvc}, která poskytuje možnost kvalitního testování aplikační vrstvy aplikace. Tento nástroj je součástí frameworku Spring Web Services.
         
     \subsection{JUnit}
         JUnit je framework určený pro testování softwaru. V~této bakalářské práci bude použita verze 5. Tento framework bude použit pro vytvoření kostry testování. Podrobnější informace o~funkcích frameworku je dostupná na oficiálních webových stránkách~\cite{junit-doc}.
@@ -156,14 +156,14 @@ fun startAlimonyFactory(): AlimonyFactory {
 
 
 \section{Dokumentace}\label{resere:dokumentace}
-    Pro dokumentace API v~současné implementaci aplikace se používá framework Swagger. Důležitou funkcí, kterou framework poskytuje, je automatické generování dokumentace na základě přidaných anotací v~kódu. Dokumentace je následně dostupná z~internetu ze stejné adresy jako server, ale na jiném portu. Podrobná informace o~framewoku je dostupná na oficiálních webových stránkách~\cite{swagger-doc}.
+    Pro dokumentace API v~současné implementaci aplikace se používá framework Swagger. Důležitou funkcí, kterou framework poskytuje, je automatické generování dokumentace na základě přidaných anotací v~kódu. Dokumentace je následně vygenerována automaticky a je dostupná z~internetu ze stejné adresy a portu jako server. Podrobná informace o~frameworku je dostupná na oficiálních webových stránkách~\cite{swagger-doc}.
     
 \section{Použité databáze}\label{resere:databaze}
 
     \subsection{H2}
         % Pro proces vývoje a testování byla zvolena databáze H2\cite{h2-db}, která je relační databází. 
         % http://www.h2database.com/html/tutorial.html
-        Současná implementace používá relační databáze H2. Hlavním důvodem zvolení právě této databáze je možnost volby několika různých režimů, kde jeden z~režimu je vestavěný režim. Tento režim usnadňuje programátorovi práci s~databází, protože se databáze vytváří při spuštění programů a zaniká při jejich zastavení. Soubory s~daty jsou uloženy na disku nebo přímo v~paměti. H2 má též vlastního manažera, který je dostupný přes webový prohlížeč. Podrobnější informace jsou dostupné na oficiálních webových stránkách~\cite{h2-doc}.
+        Současná implementace používá relační databázi H2. Hlavním důvodem zvolení právě této databáze je možnost volby několika různých režimů, kde jeden z~režimu je vestavěný režim. Tento režim usnadňuje programátorovi práci s~databází, protože se databáze vytváří při spuštění programů a zaniká při jejich zastavení. Soubory s~daty jsou uloženy na disku nebo přímo v~paměti. H2 má též vlastního manažera, který je dostupný přes webový prohlížeč. Podrobnější informace jsou dostupné na oficiálních webových stránkách~\cite{h2-doc}.
         
     \subsection{PostgreSQL}
         % https://www.postgresql.org/docs/12/index.html
@@ -172,4 +172,4 @@ fun startAlimonyFactory(): AlimonyFactory {
         
 
 \section{Nástroj pro analýzu rozsahu implementace}\label{reserse:cloc}
-    Nástroj CLOC\footnote{Count Lines of Code.}\cite{cloc-download} poskytuje možnost spočítat počet řádek kódu je v~dané složce. Nástroj podporuje velký počet programovacích jazyků programování. Výsledek obsahuje počet řádek kódu oddělený od komentářů a prázdných řádek. Tento nástroj bude použit pro analýzu současné implementace aplikace a analýzu provedené práce v~rámci bakalářské práce.
+    Nástroj CLOC\footnote{Count Lines of Code.}\cite{cloc-download} poskytuje možnost spočítat počet řádek kódu je v~dané složce. Nástroj podporuje velký počet programovacích jazyků. Výsledek obsahuje počet řádek kódu oddělený od komentářů a prázdných řádek. Tento nástroj bude použit pro analýzu současné implementace aplikace a analýzu provedené práce v~rámci bakalářské práce.

@@ -8,7 +8,7 @@ V~této kapitole bude popsán proces testování a doplňující funkce zjednodu
     
     Tagy označují jednotlivé testy nebo celé testovací třídy pomocí obyčejného textového řetězce (viz obrázek \ref{code:tag-junit-5}). Obsah řetězce může být libovolný. Za účelem pohodlnějšího využití tagů byly zvoleny řetězce, které popisují konkrétní aspekt chování testu, například pomalý test nebo integrační test. Při spouštění testů pomocí frameworku JUnit můžeme definovat testy, které bychom potřebovali spustit pomocí těchto předem definovaných tagů.
     
-    Stejného výsledku bychom mohli dosáhnout pomocí třídění testů do různých složek, ale podstatný rozdíl mezi těmito postupy je v~tom, že jeden test může mít několik tagů najednou a přidání nebo odstranění tagu je jednoduché. Například test může být anotován jako pomalý integrační test a zároveň jako pomalý test proto, že provádí databázovou transakci. Dosáhnout stejného výsledku pomocí třídění testů do specifických složek je náročnější a nedovoluje umístit test do několika složek najednou.
+    Stejného výsledku bychom mohli dosáhnout pomocí třídění testů do různých složek, ale podstatný rozdíl mezi těmito postupy je v~tom, že jeden test může mít několik tagů najednou a přidání nebo odstranění tagu je jednoduché. Například test může být anotován jako integrační test a zároveň jako pomalý test proto, že provádí databázovou transakci.
     \begin{figure}
         \begin{minted}[frame=lines,
         framesep=2mm,
@@ -25,7 +25,7 @@ V~této kapitole bude popsán proces testování a doplňující funkce zjednodu
     
     Tagy jsou jenom textové řetězce, je zde tedy velká pravděpodobnost překlepu při implementaci velkého počtu testů\footnote{V době odevzdání bakalářské práce bylo implementováno 126 testů v~25 třídách.}. Proto byly definovány vlastní anotace s~předem definovanými tagy:
     \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item \verb|IntegrationTest|, který má tag obsahující text \enquote{integration\_test};
             \item \verb|SecurityTest|, který má tag obsahující text \enquote{security\_test};
             \item \verb|SlowTest|, který má tag obsahující text \enquote{slow\_test};
@@ -97,12 +97,12 @@ task integrationTests(type: Test) {
     Pro spouštění testů je potřeba využít nástroj pro automatizaci sestavování programu -- Gradle, který byl podrobně popsán v~sekci \ref{resere:build} . Testy jsou rozděleny podle jejich typu pomocí tagů, proto byla přidána možnost, nejenom spustit všechny testy najednou, ale i spustit jenom unit testy nebo jenom integrační testy (viz obrázek \ref{code:gradle-tests}). Kombinací tagů je mnohem více, ale konfigurační soubor obsahuje jenom konfigurace, které potřeboval autor této práce během vývoje. 
     Přidat další konfigurace však není složité. Je potřeba pouze okopírovat předchozí konfiguraci v~konfiguračním souboru a změnit seznam tagů podle potřeby. Seznam tagů je také možné doplnit. Všechny aktuální tagy se nacházejí ve složce \verb|src/test/kotlin/cz/cvut/fit/sp/rozvody/annotation/tag|~.
     
-    Spuštění testů není omezené příkazovým řádkem. Testy je také možné spustit pomocí vývojového prostředí nebo jiných nástrojů. Můžeme použít například vývojové prostředí IntelliJ IDEA. 
+    Spuštění testů není omezené příkazovým řádkem. Testy je také možné spustit pomocí vývojového prostředí nebo jiných nástrojů. Je možné použít například vývojové prostředí IntelliJ IDEA. 
     % Během vývoje velkých projektů zpouštění testů je významným problémem pro programátory. 
     % Framework JUnit 5 poskytuje možnost označovat metody a třídy pomocí tagu.
 \section{Zobrazování testů}\label{testovani:zobrazovani}
     % TODO v pripade ze pobezi testy pres IDEA. Pres terminal nefunguje CamelCaseGenerator
-    Správné a pochopitelné zobrazování názvů testů zjednodušuje proces testování. Proto před začátkem implementaci testů bylo navrhnuto pravidlo pro~zobrazování testů. Název testu má obsahovat v~stručný popis toho, co by měl otestovat. 
+    Správné a pochopitelné zobrazování názvů testů zjednodušuje proces testování. Proto před začátkem implementaci testů bylo navrhnuto pravidlo pro~zobrazování testů. Název testu má obsahovat stručný popis toho, co by měl tento test otestovat. 
     
     \begin{figure}\centering
 	   \includegraphics[angle=-90, width=1.0\textwidth]{pdfs/pretty-tests-comparison}
@@ -110,7 +110,7 @@ task integrationTests(type: Test) {
     \end{figure}
     Pro čitelnější zobrazování byl implementován generátor transformující jméno testu nebo jméno třídy do čitelnější podoby (viz obrázek \ref{image:pretty-tests-comparison}). Princip fungování je založen na překladu názvu z~\textit{camel case} na obyčejný text s~mezerami. Výsledné názvy testů nebo tříd neobsahují žádné zbytečné symboly\footnote{Za zbytečné symboly jsou považovány prázdné závorky na konci názvu metody atd.}. Pro~pohodlné využití generátoru byla implementována anotace, která je aplikovatelná na třídy a metody. Anotace aktivuje generátor pro všechny testy, které třída obsahuje nebo pro konkrétní test, na který byla aplikována.
     
-    V~případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použít anotaci \verb|DisplayName| a v~závorkách této anotace uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto může být tato anotace použita ve třídě, která má anotaci generátoru. Příkladem takového nevhodného názvu může být třída se jménem \verb|ImageDTO|, která bude přeložena na \enquote{Image~d~t~o}, což není požadováným výsledkem.
+    V~případě, že název metody obsahuje text, který by se neměl korektně transformovat, potřebujeme použít anotaci \verb|@DisplayName| a v~závorkách této anotace uvést text, který by měl být zobrazen. Tento název přepisuje výsledek generátoru, proto může být tato anotace použita ve třídě, která má anotaci generátoru. Příkladem takového nevhodného názvu může být třída se jménem \verb|ImageDTO|, která bude přeložena na \enquote{Image~d~t~o}, což není požadováným výsledkem.
     
 \section{Unit testy}\label{testovani:unit}
     % Unit testy jsou zaměřené na otestování samostatně testovatelných metod a tříd
@@ -152,9 +152,9 @@ mvc.perform(
         \caption{Příklad použití nástroje MockMvc} 
         \label{code:mockmvc}
     \end{figure}
-    Většina integračních testů je zaměřena na ověření správného fungování vrstvy řadičů (\textit{controller}). Testování se provádí pomocí nástroje MockMvc\cite{mock-mvc}, který poskytuje framework Spring. Nástroj umožňuje otestovat funkcionalitu aplikace bez jejího úplného nastartování. Příklad využití nastroje je na obrázku \ref{code:mockmvc}. Tento kód má za úkol otestovat, zda řadič správně vytváří instanci entity \textit{Comment}. Kontrola správnosti atributu se provádí na základě DTO, který se~vrátí jako návratová hodnota.
+    Většina integračních testů je zaměřena na ověření správného fungování vrstvy řadičů (\textit{controller}). Testování se provádí pomocí nástroje MockMvc, který poskytuje framework Spring.\cite{mock-mvc} Nástroj umožňuje otestovat funkcionalitu aplikace bez jejího úplného nastartování. Příklad využití nastroje je na obrázku \ref{code:mockmvc}. Tento kód má za úkol otestovat, zda řadič správně vytváří instanci entity \textit{Comment}. Kontrola správnosti atributu se provádí na základě serialozovavné verze DTO, který se~vrátí jako návratová hodnota.
     
-    V~rámci integračních testu byla také ověřena přístupová práva (viz sekci \ref{navrh:bezpecnost}). Při testování řadičů bylo zapnuto filtrování podle role přihlášeného uživatele. Každému testu patří jeden uživatel, který je nastaven pomocí uživatelského jména\footnote{Uživatelským jménem v~systému je adresa elektronické pošty.}. V~případě, že uživatel nemá dostatečná přístupová práva, řadič musí vrátit HTTP status s~číslem 400\footnote{Bad Request.}.
+    V~rámci integračních testu byla také ověřena přístupová práva (viz sekci \ref{navrh:bezpecnost}). Při testování řadičů bylo zapnuto filtrování podle údajů přihlášeného uživatele. Každému testu patří jeden uživatel, který je nastaven pomocí uživatelského jména\footnote{Uživatelským jménem v~systému je adresa elektronické pošty.}. V~případě, že uživatel nemá dostatečná přístupová práva, řadič musí vrátit HTTP status s~číslem 400\footnote{Bad Request.}.
     
      Současná testování obsahuje 106 integračních testů. Popis těchto testů je k nalezení v příloze \ref{image:gradle-integration-tests}.
     
@@ -162,11 +162,11 @@ mvc.perform(
 
     Testovaní aplikace vyžaduje vlastní nastavení, proto byl vytvořen samostatný profil, který odděluje testovací nastavení od nastavení produkce a vývoje. Profil má vlastní konfigurační soubor (\verb|application-test.properties|), obsahující nastavení databáze.
     
-    Pro testování byla využita stejná databáze jako i pro produkci, za účelem kompletního testování aplikace za stejných podmínek. Takový postup zmenšuje šance na výskyt nečekaných chyb, působených použitím odlišné databáze v produkci. Automatické generování schématu bylo nastaveno na hodnotu \verb|create-drop|, což znamená, že schéma bude obnovena při nastartování \verb|SessionFactory| a zruší schéma po zastavení \verb|SessionFactory|.
+    Pro testování byla využita stejná databáze jako i pro produkci, za účelem kompletního testování aplikace za stejných podmínek. Takový postup zmenšuje šance na výskyt nečekaných chyb, působených použitím odlišné databáze v produkci. Automatické generování schématu bylo nastaveno na hodnotu \verb|create-drop|, což znamená, že \verb|Hibernate| obnoví schéma při nastartování \verb|SessionFactory| a zruší schéma po zastavení \verb|SessionFactory|.
     
     Profil pro testování má též vlastní implementaci pro \verb|UserDetailsService|\footnote{Základní rozhraní, které framework Spring využívá pro načítaní informací o~uživateli.}, obsahující tři implicitní uživatele:
     \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item \verb|root|, vlastnící role \enquote{ROLE\_USER} a \enquote{ROLE\_ROOT} 
             \item \verb|userEmail|, vlastnící role \enquote{ROLE\_USER}
             \item \verb|user2Email|, vlastnící role \enquote{ROLE\_USER}
@@ -191,7 +191,7 @@ mvc.perform(
     
     IntelliJ IDEA poskytuje nepatrně odlišnou informaci o~pokrytí kódů než nástroj JaCoCo. Podle výsledků jsou pokryté testy:
     \begin{itemize}
-            \setlength\itemsep{0.3em}
+            % \setlength\itemsep{0.3em}
             \item 79 \% tříd
             \item 91,6 \% metod
             \item 87,4 \% řádek kódů
