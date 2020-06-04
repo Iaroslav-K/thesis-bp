@@ -1,14 +1,10 @@
 \chapter{Analýza}\label{chapter:analyza}
-% Hlavním cílem této bakalářské práce je implementovat návrh backendu podle návrhu a fragmentu implementace, které byly udělány v rámci předmětů BI-SP1 a BI-SP2 bakalářského studia vyučovaných na FIT ČVUT v akademickém roce 2018/2019 a 2019/2020. 
-
-%TODO move commit footnote to reserse and git footnote
 Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního stavu implementace. Pro zajištění verze aplikace, která bude předmětem analýzy této kapitoly, uvádím datum ukončení práce na projektu v~rámci předmětu Softwarový týmový projekt 2 (BI-SP2) -- 25. února 2020. Také pro možnost pohodlného vyhledání konkrétní verze  (\url{https://gitlab.fit.cvut.cz/rozvody/be-springboot}), uvádím poslední \texttt{commit} provedený přes distribuovaný systém řízení verzí -- Git -- v~rámci tohoto předmětu: 
 \begin{quote}
     \enquote{252b0288dbfe9942446b78fd452c0edce810a370}
 \end{quote}
 
 \section{Předmět Softwarový týmový projekt 1}\label{analyza:navrh:sp1}
-    % TODO REST footmote to first mention
     V~rámci předmětu Softwarový týmový projekt 1 (BI-SP1) pracovalo sedm lidí včetně autora této práce. Tým měl za úkol analyzovat požadavky zákazníka a navrhnout implementaci aplikace. Během semestru tým provedl kompletní analýzu požadavků zákazníka. Tým navrhl scénáře užití aplikace:
     \begin{itemize}
 	   \item Přihlašování/Registrace;
@@ -24,10 +20,7 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
     
     Výsledný návrh aplikace se skládá ze dvou částí. Frontendová část aplikace je reprezentována Android aplikací, kterou současně řeší kolega Martin Beran v~rámci své bakalářské práce. Backendová část aplikace, která je předmětem této bakalářské práce, je reprezentována serverovým backendem poskytující REST API pro Android aplikaci.
 
-    % Serverového backendu, který je předmětem této bakalářské práci a frontendové částí aplikace, kterou současně řeší kolega -- Martin Beran -- v rámci bakalářské prací. Frontendová část aplikace je Android aplikací. Backendová část je serverovým backendem, poskytujícím REST\footnote{Representational State Transfer} API pro Android aplikaci.
-
 \section{Předmět Softwarový týmový projekt 2}\label{analyza:navrh:sp2}
-    %TODO gradle footnote to reserse and Spring footnote
     Cílem předmětu Softwarový týmový projekt 2 (BI-SP2) byla implementace návrhu předmětu BI-SP1. Autor této práce pracoval v~backendovém týmu a zároveň vystupoval v~roli vedoucího backendového týmu.
     
     Pro vývoj backendove části aplikace byl zvolen jazyk Kotlin, zmíněný v~sekci \ref{resere:kotlin}, a framework Spring, zmíněný v~sekci \ref{resere:j2ee}. Jako nástroj pro automatizaci sestavování programu byl zvolen nástroj Gradle. Podrobněji  budou výsledky předmětu BI-SP2 probrány v~sekci \ref{analyza:soucasnaImplementace}.
@@ -48,10 +41,6 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
 	        \item heslo -- heslo pro autorizaci v~systému.
         \end{itemize}
         Na základě těchto údajů se vytvoří unikátní uživatel v~rámci systému. V~tento okamžik uživatel není přihlášen do žádné rodiny a nemá žádnou roli. Podrobněji budou role popsané v~sekci \ref{analyza:bezpecnost:role}.
-        % \begin{figure}\centering
-	       % \includegraphics[width=0.7\textwidth]{pdfs/User-Image1}
-	       % \caption[Návrh User-Image]{Vztah mezi třídami \texttt{User} a \texttt{Image} podle Doménového modelu z předmětu BI-SP2}\label{image:User-Image1}
-        % \end{figure}
         
         Potom má uživatel možnost vytvořit rodinu nebo se přihlásit do již existující rodiny. Pro vytvoření nové rodiny, potřebuje uživatel zadat jméno rodiny a přidat členy rodiny. Autor této rodiny se automaticky stává jedním z~rodičů této rodiny. Jinou možností je se přihlásit do rodiny, která již existuje. Podmínkou je pozvání do některé existující rodiny, což znamená, že přidat nového uživatele do rodiny může jenom člen této rodiny. V~takovém případě uživatel už nemá možnost zvolit role v~rámci rodiny. Role má být nastavena uživatelem, který vytvořil toto pozvání.
 
@@ -64,9 +53,6 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         \end{figure}
         Doménový model neobsahuje informace o~kalendáři, ale obsahuje entity reprezentující informaci, kterou kalendář bude zobrazovat (viz obrázek \ref{image:calendar-info}). Každý element, který bude zobrazen v~kalendáři, je reprezentován stejnou entitou \verb|CalendarEvent|. Entita obsahuje jenom informaci o~barvě, kterou událost bude zobrazená v~kalendáři a závislost na entitě \verb|Comment|. Za reprezentaci pečovatelských dnů odpovídá entita \verb|CareInterval|, která se dědí od entity \verb|CalendarEvent|. Za reprezentaci jednorázových a opakujících se~událostí odpovídají entity \verb|OneTimeEvent| a \verb|RecurringEvent|, kde se \verb|RecurringEvent| dědí od \verb|OneTimeEvent|.
         
-        % Současný návrh kalendáře nepokrývá všechny scénáře použití. Podrobný popis problémů a navržené změny budou uvedeny v sekci \ref{analyza:kalendar}. 
-        
-        % Kromě dlouhodobých nastavení pečovatelských dnu, kalendář může zobrazovat i jednorázové změny, které mohou vidět všechny členy rodiny. 
     \subsection{Alimenty}
         \begin{figure}\centering
 	        \includegraphics[width=0.7\textwidth]{pdfs/AlimonySettings1}
@@ -87,10 +73,6 @@ Tato kapitola se zabývá analýzou již existujícího návrhu a dosavadního s
         \end{figure}
         Jedním s~častých problémů, které vznikají během procesu rozvodu, je nakupování příliš drahých dárků, o~kterých ostatní členové rodiny nevědí. Jako příklad je možné uvést nakupování bot pro dítě. Jeden z~rodičů si může chtít \enquote{koupit lásku dítěte} a koupí několikanásobně dražší boty než, dítě ve skutečnosti potřebuje. Kniha potřeb dítěte (viz obrázek \ref{image:Need1}) je zaměřena na překonání takových situací.
         
-        % \begin{figure}\centering
-	       % \includegraphics[width=0.8\textwidth]{pdfs/NeedPermissions1}
-	       % \caption[Návrh entity \texttt{NeedPermissions}]{Návrh entity \texttt{NeedPermissions} podle doménového modelu z~předmětu BI-SP2}\label{image:NeedPermissions1}
-        % \end{figure}
         Potřeba může být typu \verb|need| nebo \verb|wish|. Podle dosavadního návrhu je rozdíl mezi typy pouze pro informační účely. Každé instanci entity \verb|Need| patří instance entity \verb|NeedPermission| (viz obrázek \ref{image:NeedPermissions1}), která definuje přístupová práva pro jednotlivé členy rodiny. V~případě, že uživatel nemá žádné z~přístupových práv, potřeba se nevyskytuje v~jeho seznamu potřeb dítěte. Toto~pravidlo se netýká jenom rodičů, kteří mají přístup ke všem potřebám automaticky.
        
        Potřeba obsahuje následující informaci:
@@ -213,37 +195,9 @@ fun api(): Docket {
         \end{figure}
         Kromě kostry aplikace, která zaručuje třívrstvou architekturu, byly také implementovány pomocné třídy zlepšující výsledný návrh aplikace. Jednou z~takových tříd je třída, která uvádí nápovědy pro všechny řadiče ohledně zachycování výjimek. Tato třída byla zavedena za účelem poskytnutí uživateli pouze korektně formátované informace a filtrování zbytečných informací pro~koncového uživatele. Konfigurace našeptávače je uvedena v~tabulce \ref{tab:excpetion-handler1}. Jinou pomocnou třídou je řadič určený pro ověření, zda server funguje. Tento řadič je namapován na cestu \enquote{/}.
         
-        % Byl přidán \texttt{controller}\footnote{vrstva controlleru zajišťuje REST API komunikaci, překládá výjimky na HTTP kóda zajišťuje omezení pro jednotlivých uživatelů} pro testování, zda aplikace běží, který je namapován\footnote{přidání konkrétnímu controlleru adresy pomocí anotací frameworku Spring, která se zadává jako URI při odesílaní požadavků na Server} na cestu \enquote{/}. Také, byla přidaná třída, která obsahuje nápovědy pro ostatní \texttt{controllery} ohledně zachycování chyb. Tato třída byla zavedena za účelem poskytování uživateli jenom korektně formátovanou informaci  a filtrování zbytečné informace pro koncového uživatele (viz tabulku \ref{tab:excpetion-handler1}). 
-        
-    
     \subsection{Dokumentace API}
-%         \begin{figure}
-%             \begin{minted}
-%         [frame=lines,
-%         framesep=2mm,
-%         baselinestretch=1.2,
-%         fontsize=\footnotesize,
-%         linenos]{java}
-% @Configuration
-% @EnableSwagger2
-% class SwaggerConfig {
-% @Bean
-% fun api(): Docket {
-%     return Docket(DocumentationType.SWAGGER_2)
-%         .select()
-%         .apis(RequestHandlerSelectors.any())
-%         .paths(PathSelectors.any())
-%         .build()
-%     }
-% }
-%             \end{minted}
-%             \caption{Ukázka nastavení frameworku Swagger}\label{code:swagger-configuration}
-%         \end{figure}
-        
         Pro dokumentaci API byl zvolen framework Swagger, který již byl zmíněn v~sekci~\ref{resere:dokumentace}. V~předešle implementaci je použitá druhá verze tohoto frameworku. Také byla provedena konfigurace pro generování dokumentace při každém spouštění aplikace na základě do kódu přidaných anotací (viz obrázek \ref{code:swagger-configuration}). Po spuštění aplikace je online dokumentace dostupná na cestě \enquote{/swagger-ui.html}.
     
-        % Bylo provedeno nastavení frameworku Swagger pro dokumentace API (viz obrázek \ref{code:swagger-configuration}). Podrobněji framework Swagger byl popsán v sekci \ref{resere:dokumentace}. Po spuštění serveru, dokumentace se automaticky generuje a je přístupná ze stejného portu na cestě \enquote{/swagger-ui.html}.
-
     \subsection{Profily}\label{analyza:soucasnaImplementace:profily}
     %spring profiles: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles
     %applicatioon peoperties: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-application-property-files
@@ -262,10 +216,6 @@ fun api(): Docket {
     V~rámci předmětu BI-SP2 probíhala současně s~implementací backendové částí aplikace implementace frontendové částí aplikace, která je reprezentovaná Android aplikací. Během vývoje frontendové části aplikace byly identifikovány nedostatky, které zbytečně komplikují implementaci, jak backendu, tak i frontendu. V~této sekci budou popsány jednotlivé požadavky na změny od frontendového týmu.
     
     \subsection{Interval}\label{analyza:pozadavky:interval}
-        % \begin{figure}\centering
-	       % \includegraphics[width=1.0\textwidth]{pdfs/Interval1}
-	       % \caption[Předešlý návrh entity \texttt{Interval}]{Návrh entity \textit{Interval} podle doménovém modelu z~předmětu BI-SP2}\label{image:Interval1}
-        % \end{figure}
         Prvním takovým požadavkem je změna entity \verb|Interval| (viz obrázek \ref{image:Interval1}), která je v~projektu široce využívaná. Návrh řešení tohoto problému bude popsán v~sekci \ref{navrh:upravy}. Zde bude popsán pouze problém samotný. Entita \verb|Interval| reprezentuje časové rozmezí pro pečovatelské dny, opakované události, nastavení alimentů a navazující požadavky na ně na změny a historické záznamy.
             
         Jádro problému je v~tom, že entita je navržena pomocí generalizace, neboli dědičnosti z~hlediska implementace. Takový návrh dává možnost vytvořit konkrétní typ intervalu pomocí zvolení odpovídající třídy. Na druhou stranu takový návrh působí komplikaci při implementaci a současně nepokrývá všechny možné případy využití intervalů. Například, není možné sestavit interval, který se bude opakovat každý poslední den měsíce. Pokud bychom se chtěli držet aktuální implementace a zároveň pokrýt všechny možné případy, ztratili bychom přehlednost zvolení správné třídy při vytváření instance.
@@ -281,7 +231,7 @@ fun api(): Docket {
         
         Hlavní problém je v~tom, že instance alimentů by se měly vytvářet nezávisle na frontendové části aplikace, což není popsáno v~předešlém návrhu aplikace. Podrobně návrh řešení problému bude podrobně popsán v~sekci \ref{navrh:upravy:alimenty}.
         
-        Dodatečný požadavek frontendového týmu se týká entity \texttt{Alimony} samotné. Za účelem zjednodušení návrhu frontendové části aplikace je potřeba přidat závislost na entitu \texttt{Family}. % V takovém pŕípade aplikace může ihned po nalazení novych alimentu rict uZivateli ktere rodine patri tyto alimenty.
+        Dodatečný požadavek frontendového týmu se týká entity \texttt{Alimony} samotné. Za účelem zjednodušení návrhu frontendové části aplikace je potřeba přidat závislost na entitu \texttt{Family}. 
         
     \subsection{Pečovatelské dny}\label{analyza:pozadavky:caredays}
         Než se začneme zabývat podrobným popisem problému, je potřeba popsat účel této entity a její využití backendem a frontendem. Tato entita reprezentuje jednorázový interval nebo opakující se interval pečovatelských dnů jednoho z~rodičů nebo ostatních členů rodiny. Pro rozlišování pečovatelských dnů různých členů rodiny má každý uživatel přiřazenou vlastní barvu. Tato entita se~používá pro dva účely. První a nejdůležitější účel je nastavení pečovatelských dnů pro rodiče. Nastavení musí pokrývat všechny dny kalendáře. Dítě by nemělo mít ve svém kalendáři den, který není označen žádnou barvou a zároveň by neměly vznikat konflikty. Druhým účelem jsou jednorázové změny pečovatelských dnů. Tyto změny jsou vyžadovány pro případy, kdy dlouhodobé nastavení kalendáře neplatí. Příkladem může být výlet dítěte k~prarodičům. Během tohoto časového intervalu nejsou rodiče zodpovědní za dítě, proto je~potřeba uvést jednorázovou změnu do kalendáře, která zaznamená tuto situaci. Jiným příkladem je předání péče jednoho rodiče druhému, což může nastat z~různých důvodu.
@@ -293,10 +243,6 @@ fun api(): Docket {
         Aktuální návrh pečovatelských dnů je navržen příliš komplikovaně (viz obrázek \ref{image:caredays1}) a současně zahrnuje dva různé případy využití: jednorázové změny pečovatelských dnů členů rodiny a dlouhodobá nastavení pečovatelských dnů rodičů. Dlouhodobá nastavení pečovatelských dnů rodičů nevyžadují komplikovaný návrh intervalů (viz sekci \ref{analyza:pozadavky-frontendu}), proto je potřeba oddělit řešení tohoto problému. Také je potřeba přidat odkaz na konkrétního rodiče, který je zodpovědný za tento den pro zjednodušení práce s~touto entitou v~rámci frontedové části aplikace. Jednorázové změny pečovatelských dnů je druhý problém, který je potřeba oddělit. Návrh této entity je podobnější aktuálnímu návrhu, protože tyto změny mohou vyžadovat složitá pravidla opakování. Navržené změny a následné implementace budou popsány v~sekci \ref{navrh:upravy:caredays}.
         
      \subsection{Oznámení}
-        % \begin{figure}\centering
-        %     \includegraphics[width=1.0\textwidth]{pdfs/Notification1}
-        %     \caption[Předchozí návrh oznámení]{Návrh oznámení podle doménového modelu předmětu BI-SP2}\label{image:notification1}
-        % \end{figure}
         Dosavadní návrh oznámení reprezentuje upozornění uživatele o~požadavku na~změnu (viz obrázek \ref{image:notification1}). Po provedení částečné implementace frontendové a backendové částí bylo zjištěno, že návrh oznámení potřebuje úprav ve~dvou různých směrech. Prvním směrem je zavedení různých typu oznámení, například oznámení pomocí e-mailu nebo SMS zprávy. Současná implementace frontendové části aplikace vyžaduje zavedení typu upozornění, které by reprezentovaly upozornění v~rámci Android aplikace. 
         Tyto upozornění vyžadují specifické nastavení entity, například možnost přečtení jednotlivé instance. Druhým směrem je rozšíření seznamu událostí, které mohou působit vzniku oznámení. Příčinami mohou být:
         \begin{itemize}
@@ -307,32 +253,12 @@ fun api(): Docket {
             \item změny v~rámci rodiny.
         \end{itemize}
         Podle požadavků frontendové části aplikace je také potřeba uvádět příčinu vniku upozornění v~každé instanci. Příčinou může být jedná z~výše zmíněných událostí. Za účelem navržení kvalitnějšího API je také potřeba přidat možnost přečíst najednou všechna upozornění, která uživatel má. Kompletní řešení problému bude popsáno v~sekci \ref{navrh:upravy:notification}.
-        % Také frontendová část aplikace vyžaduje přizpůsobení oznámení upozorněním v rámci Android aplikace, což vyžaduje úpravu atributů. Také je potřeba specifikovat která událost způsobilá vytvoření tohoto oznámení a přidat typ této události podle výše uvedeného seznamu. Za účelem navrženi kvalitnějšího API je také potřeba přidat možnost přečíst všechny upozornění, které má uživatel, najednou. Řešení problému bude popsáno v sekci \ref{navrh:upravy:notification}.
-        
-            
-            % reprezentuje libovolný typ oznámení. Tudíž oznámení pomocí elektronické pošty a pomocí upozornění v telefonu jsou reprezentovány pomocí stejné entity.
-            
-            % Frontedová část aplikace vyžaduje přizpůsobení oznámení upozorněním v rámci Android aplikace, což je konkretním typem oznámení a vyžadují sadu specifických atributu:
-            % \begin{itemize}
-            %     \item ID
-            %     \item 
-            % \end{itemize}
-            % Řešení tohoto problému bude popsáno v sekci \ref{navrh:upravy:notification}
-            
-    % \section{Analýza konkurence}
-    %     Tento návrh...
-% \section{Analýza testování}
 
 \section{Analýza bezpečnosti}
     V~této sekci budou popsány procesy, které by měly zaručovat bezpečnost aplikace ze strany serverového backendu.
     
     \subsection{Role}\label{analyza:bezpecnost:role}
     
-    % Aplikace je navržená tak, že první věc, kterou uživatel udělat, je registrace. Uživatel potřebuje zvolit jméno, příjmení, email a heslo. Na základě těchto údajů se vytváří účet uživatele. V Doménovém modelu tato třída se jmenuje \texttt{User}. V tento okamžik uživatel má role \texttt{USER}, která mu nadává možnost udělat jenom omezený počet věcí.  
-        % \begin{figure}\centering
-	       % \includegraphics[width=1.0\textwidth]{pdfs/Role1}
-	       % \caption[Návrh \texttt{Role}]{Návrh entity \texttt{Role} podle doménového modelu z~předmětu BI-SP2}\label{image:Role1}
-        % \end{figure}
         Než se uživatel přihlásí do rodiny, nemá žádnou roli. Po přihlášení do rodiny má uživatel roli v~rámci přihlášené rodiny (viz obrázek \ref{image:Role1}), podle které se~mohou lišit jeho přístupová práva. Hlavní rolí v~aplikaci je rodič. Uživatel s~takovou rolí má přístup ke všem potřebám dítěte a všem záznamům v~kalendáři. Rodič také může vytvářet pozvání do rodiny pro libovolného uživatele a nastavit mu libovolnou roli, včetně role rodiče. Mimořádnou rolí v~rámci systému je dítěte. 
         Uživatel s~takovou rolí nemůže vlastnit pečovatelský den nebo splnit přání. Přihlášení dítěte muže proběhnout i bez vytvoření klasického uživatele v~rámci systému. Ostatní uživatelé v~rodině mají roli příbuzných. 
     

@@ -62,9 +62,6 @@ Tato kapitola obsahuje základní teoretickou informaci o~technologiích a nást
 \section{Použitý jazyk programování}\label{resere:kotlin}
     Současný návrh aplikace byl proveden v~jazyce Kotlin, který je relativně novým jazykem pro JVM\footnote{Java Virtual Machine.}. Poprvé byl tento jazyk představen společností JetBrains v~roku 2011. V~této bakalářské práci je použita verze 1.3.72 . V~porovnání s~Javou, jejíž podpora je dlouhodobě zaručena společností Oracle, nemá Kotlin předem definovanou periodu podpory, ale podle oficiálních webových stránek zaručuje zpětnou kompatibilitu pro alespoň jednu stabilní verzi, což dovoluje pohodlně migrovat do novější verze jazyka.\cite{java-support-period}\cite{kotlin-compatibility}
     
-    %===================================================================
-    % Kotlin je relativně nový jazyk pro JVM\footnote{Java Virtual Machine}. Poprvé tento jazyk byl představen společnosti v 2011 roku. První stabilní verze byla představena v únoru roku 2016. Ale už v květnu roku 2017 Kotlin se stal oficiálním jazykem pro Android.
-    
     % https://kotlinlang.org/docs/reference/
     Kotlin byl vytvořen jako alternativa k~jazyku Java a řeší některé jeho problémy. Například, Kotlin řeší problém rozšířený použití \texttt{null}, také známý jako \texttt{The~Billion~Dollar~Mistake}, a problémy s~ním spojené. Java samotna nemá podporu pro \texttt{not-null} proměnné, ale Kotlin takovou podporu má nativně, a to v~podobě oddělení \texttt{nullable} typu pomocí ? operátoru. Pro kompletní seznámení s~jazykem Kotlin je doporučeno navštívit oficiální webové stránky, kde najdeme podrobný návod k~použití jazyka.\cite{kotlin-documentation}
     
@@ -126,12 +123,6 @@ fun startAlimonyFactory(): AlimonyFactory {
     \subsection{Spring Web Services}
         Spring Web Services je framework určený pro implementaci webových služeb. V~rámci této bakalářské práce bude tento framework využit pro implementaci aplikační vrstvy serveru. Aplikační vrstva aplikace má pokrývat případy užití aplikace pomocí příslušných řadičů. Podrobnou informaci lze najít na~oficiálních stránkách~\cite{spring-web-services}.
         
-
-%  \section{Spring Boot}\label{reserse:spring-boot}
-    % https://spring.io/projects/spring-boot
-    % \cite{spring-boot}
-    % TODO Spring Boot je nástrojem určeným pro rychlý a
-    
 \section{Testování}\label{reserse:testovani}
     Testování aplikace se skládá z~několika částí. První část je testování softwaru samotného pro ověření jestli jednotlivé metody, třídy nebo celé moduly fungují správně a komunikují mezi sebou bezchybně. Druhou částí testování je ověření, jestli testy pokrývají dostatečnou část kódu a jestli pokrývají důležité funkce. V~této sekci jsou popsány nástroje pro zaručení kvalitního testování, které budou následně využity při implementaci testů a jejich analýze.
     
